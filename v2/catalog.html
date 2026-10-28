@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Каталог Тепломаш — шоурум Jamal Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@500;600;700&family=Wix+Madefor+Text:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/v2/style.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Zm5.6 13.8c-.24.67-1.4 1.3-1.95 1.34-.5.05-1 .23-3.36-.7-2.84-1.12-4.63-4-4.77-4.2-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.05.98-2.34.25-.28.56-.35.75-.35h.53c.17 0 .4-.06.62.48l.9 2.18c.08.15.13.33.03.52l-.3.5-.45.5c-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.07 1.3 2.36 1.46.3.15.47.12.64-.07l.96-1.12c.2-.3.4-.25.66-.15l2.1.99c.3.15.5.22.57.35.08.13.08.73-.17 1.4Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+<header class="hdr">
+  <div class="wrap">
+    <div class="pill">
+      <a class="logo" href="/v2/" aria-label="Jamal Group — на главную"><img src="/img/logo.png" alt="Jamal Group" width="71" height="32"></a>
+      <nav aria-label="Основное меню"><a href="/v2/catalog.html" aria-current="page">Каталог</a><a href="/v2/#inside">Устройство</a><a href="/v2/#series">Серии</a><a href="/v2/#where">Применение</a><a href="/v2/#lead">Контакты</a></nav>
+      <a class="tel" href="tel:+77473104846">+7 747 310 48 46</a>
+      <a class="btn btn-ink btn-sm" href="/v2/#lead">Получить цену</a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="sheet" id="sheet" aria-hidden="true">
+  <a class="big" href="/v2/catalog.html">Каталог</a><a class="big" href="/v2/#inside">Устройство</a><a class="big" href="/v2/#series">Серии</a><a class="big" href="/v2/#where">Применение</a><a class="big" href="/v2/#lead">Контакты</a>
+  <div class="foot"><a class="btn btn-heat" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать в WhatsApp</a><a class="btn btn-ghost" href="tel:+77473104846">+7 747 310 48 46</a></div>
+</div>
+
+<main>
+  <section class="ctop">
+    <div class="wrap">
+      <h1 id="title">Тепловые завесы</h1>
+      <p class="lead" id="sub"></p>
+      <div class="cats" role="tablist" aria-label="Категории" id="cats"></div>
+      <div class="filters" id="filters"></div>
+      <p class="count" id="count"></p>
+    </div>
+  </section>
+  <div class="wrap"><h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Модели</h2><div class="cgrid" id="grid" aria-live="polite"></div></div>
+</main>
+<footer><div class="wrap"><div class="fb" style="margin-top:0"><span>ТОО «Jamal Group» — официальный дистрибьютор АО «НПО Тепломаш» в РК</span><a href="tel:+77473104846">+7 747 310 48 46</a></div></div></footer>
+<div class="mbar"><a class="btn btn-ghost" href="tel:+77473104846">Позвонить</a><a class="btn btn-heat" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mT">
+  <div class="m-box">
+    <div class="m-vis" id="mVis"><button class="m-x" id="mX" aria-label="Закрыть"><svg><use href="#i-x"/></svg></button></div>
+    <div class="m-in">
+      <h3 id="mT"></h3>
+      <p style="color:var(--ink-2)" id="mU"></p>
+      <div class="m-spec" id="mS"></div>
+      <p style="color:var(--ink-2);font-size:15px">Пришлём цену официального дистрибьютора и срок поставки. Доставка по Казахстану бесплатная.</p>
+      <a class="btn btn-heat" id="mWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Узнать цену в WhatsApp</a>
+      <a class="btn btn-ghost" href="tel:+77473104846">Позвонить: +7 747 310 48 46</a>
+    </div>
+  </div>
+</div>
+
+<script src="/shared/data.js"></script>
+<script src="/shared/curtain3d.js"></script>
+<script src="/v2/main.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const qs = new URLSearchParams(location.search);
+  const st = { c: qs.get('c') || 'curtains', h: qs.get('h'), e: null };
+  $('#cats').innerHTML = TM.categories.map(c => `<button role="tab" data-c="${c.id}" aria-selected="false">${c.short}</button>`).join('');
+  const render = () => {
+    const cat = TM.categories.find(c => c.id === st.c);
+    $('#title').textContent = cat.name + ' Тепломаш'; $('#sub').textContent = cat.text;
+    $$('#cats button').forEach(b => b.setAttribute('aria-selected', b.dataset.c === st.c));
+    const fl = st.c === 'curtains' ? [['h', 'low', 'Проём до 3,5 м'], ['h', 'high', 'Проём до 6,5 м']] : st.c === 'heaters' ? [['e', 'e', 'Электрические'], ['e', 'w', 'Водяные']] : [];
+    $('#filters').innerHTML = fl.map(([k, v, l]) => `<button class="ft-chip" data-k="${k}" data-v="${v}" aria-pressed="${st[k] === v}">${l}</button>`).join('');
+    const list = TM.products.filter(p => p.cat === st.c && (!st.h || p.hKey === st.h) && (!st.e || p.heatKey === st.e));
+    const n = list.length; $('#count').textContent = n + ' ' + (n === 1 ? 'модель' : n < 5 ? 'модели' : 'моделей') + ' · цена по запросу';
+    $('#grid').innerHTML = list.map(window.V2card).join('');
+    requestAnimationFrame(() => $$('#grid .rv').forEach(e => e.classList.add('in')));
+  };
+  $('#cats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.c = b.dataset.c; st.h = st.e = null; history.replaceState(null, '', '?c=' + st.c); render(); });
+  $('#filters').addEventListener('click', e => { const b = e.target.closest('.ft-chip'); if (!b) return; const k = b.dataset.k; st[k] = st[k] === b.dataset.v ? null : b.dataset.v; render(); });
+  // quick view with a live 3D unit for curtains
+  const modal = $('#modal'), vis = $('#mVis');
+  let canvas = null, c3 = null;
+  const open = id => {
+    const p = TM.products.find(x => x.id === id); if (!p) return;
+    $('#mT').textContent = p.name; $('#mU').textContent = 'Подходит: ' + p.use.toLowerCase();
+    const rows = [['Мощность', p.kw ? p.kw + ' кВт' : 'по расчёту'], ['Нагрев', p.heat || '—'], ['Серия', p.series || '—'], ['Высота проёма', p.height || '—'], ['Гарантия', '24 месяца'], ['Доставка', 'бесплатно по РК']];
+    $('#mS').innerHTML = rows.map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join('');
+    $('#mWa').href = TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.');
+    vis.querySelectorAll('img').forEach(x => x.remove());
+    const is3d = p.cat === 'curtains' && window.Curtain3D;
+    if (is3d && !canvas) {
+      canvas = document.createElement('canvas'); vis.appendChild(canvas);
+      const hint = document.createElement('span'); hint.className = 'hint'; hint.textContent = 'Поверните модель курсором'; vis.appendChild(hint);
+    }
+    if (canvas) { canvas.hidden = !is3d; vis.querySelector('.hint').hidden = !is3d; }
+    if (!is3d) { const im = new Image(); im.src = p.img; im.alt = p.name; vis.appendChild(im); }
+    modal.classList.add('open'); document.body.style.overflow = 'hidden';
+    if (is3d) requestAnimationFrame(() => {
+      const z = Math.min(1.4, vis.clientWidth * .78 / (1.651 * p.len * Math.max(1, vis.clientHeight)));
+      const conf = { len: p.len, zoom: z, yaw: -.5, pitch: .12, heat: .8 };
+      if (!c3) c3 = Curtain3D(canvas, Object.assign({ light: 'studio' }, conf)); else c3.set(conf);
+    });
+    $('#mX').focus();
+  };
+  const close = () => { modal.classList.remove('open'); document.body.style.overflow = ''; };
+  $('#grid').addEventListener('click', e => { if (e.target.closest('a')) return; const c = e.target.closest('.pd'); c && open(c.dataset.id); });
+  $('#grid').addEventListener('keydown', e => { if (e.key === 'Enter') { const c = e.target.closest('.pd'); c && open(c.dataset.id); } });
+  $('#mX').addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  render();
+  const o = qs.get('open'); if (o) setTimeout(() => open(o), 300);
+})();
+</script>
+</body>
+</html>

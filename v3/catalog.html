@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Каталог Тепломаш — цены по запросу, доставка по Казахстану</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/v3/style.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Zm5.6 13.8c-.24.67-1.4 1.3-1.95 1.34-.5.05-1 .23-3.36-.7-2.84-1.12-4.63-4-4.77-4.2-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.05.98-2.34.25-.28.56-.35.75-.35h.53c.17 0 .4-.06.62.48l.9 2.18c.08.15.13.33.03.52l-.3.5-.45.5c-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.07 1.3 2.36 1.46.3.15.47.12.64-.07l.96-1.12c.2-.3.4-.25.66-.15l2.1.99c.3.15.5.22.57.35.08.13.08.73-.17 1.4Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+<header class="hdr scrolled" id="hdr">
+  <div class="wrap">
+    <a class="logo" href="/v3/" aria-label="Jamal Group — на главную"><img src="/img/logo.png" alt="Jamal Group" width="75" height="34"></a>
+    <nav class="nav" aria-label="Основное меню"><a href="/v3/catalog.html" aria-current="page">Каталог</a><a href="/v3/#thermal">Как работает</a><a href="/v3/#where">Решения</a><a href="/v3/#reviews">Отзывы</a><a href="/v3/#lead">Контакты</a></nav>
+    <div class="hdr-r">
+      <a class="tel" href="tel:+77473104846"><small>Звонок и WhatsApp</small>+7 747 310 48 46</a>
+      <a class="btn btn-gold btn-sm" href="/v3/#lead">Рассчитать</a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="sheet" id="sheet" aria-hidden="true">
+  <a class="big" href="/v3/catalog.html">Каталог</a><a class="big" href="/v3/#thermal">Как работает</a><a class="big" href="/v3/#where">Решения</a><a class="big" href="/v3/#reviews">Отзывы</a><a class="big" href="/v3/#lead">Контакты</a>
+  <div class="foot"><a class="btn btn-gold" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать в WhatsApp</a><a class="btn btn-line" href="tel:+77473104846">+7 747 310 48 46</a></div>
+</div>
+
+<main>
+  <section class="ctop">
+    <div class="wrap">
+      <div class="crumbs"><a href="/v3/">Главная</a><span>/</span><span>Каталог</span></div>
+      <h1 id="title">Тепловые завесы Тепломаш</h1>
+      <p class="lead" id="sub" style="margin-top:14px"></p>
+    </div>
+  </section>
+  <div class="wrap shop">
+    <aside class="side-c" aria-label="Категории и фильтры">
+      <div><h2>Категории</h2><div class="clist" id="clist"></div></div>
+      <div id="fBox"><h2>Высота проёма</h2><div class="chips" id="fH"><button class="chipb" data-v="low" aria-pressed="false">до 3,5 м</button><button class="chipb" data-v="high" aria-pressed="false">до 6,5 м</button></div></div>
+      <div class="tline"></div>
+      <p style="font-size:14px;color:var(--ink-2);font-weight:600">Отметьте несколько моделей кнопкой «+» — пришлём счёт и наличие одним сообщением в WhatsApp.</p>
+    </aside>
+    <div>
+      <div class="mcats" id="mcats" role="tablist" aria-label="Категории"></div>
+      <p style="margin:6px 0 16px;color:var(--ink-3);font-weight:700;font-size:14px" id="count"></p>
+      <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Модели</h2><div class="plist" id="plist" aria-live="polite"></div>
+    </div>
+  </div>
+</main>
+<footer style="margin-top:80px"><div class="wrap"><div class="fb" style="margin-top:0;border:0;padding:0"><span>ТОО «Jamal Group» — официальный дистрибьютор АО «НПО Тепломаш» в РК</span><a href="tel:+77473104846">+7 747 310 48 46</a></div></div></footer>
+
+<div class="rq" id="rq" aria-live="polite"><div><b id="rqN">0 моделей</b><br><span>в листе запроса</span></div><a class="btn btn-gold" id="rqSend" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Отправить в WhatsApp</a></div>
+<div class="mbar"><a class="btn btn-line" href="tel:+77473104846">Позвонить</a><a class="btn btn-gold" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a></div>
+
+<script src="/shared/data.js"></script>
+<script src="/v3/main.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const qs = new URLSearchParams(location.search);
+  const st = { c: qs.get('c') || 'curtains', h: null };
+  const n = id => TM.products.filter(p => p.cat === id).length;
+  $('#clist').innerHTML = TM.categories.map(c => `<button data-c="${c.id}" aria-pressed="false"><img src="${c.img}" alt="">${c.name}<em>${n(c.id)}</em></button>`).join('');
+  $('#mcats').innerHTML = TM.categories.map(c => `<button class="chipb" data-c="${c.id}" aria-selected="false">${c.short}</button>`).join('');
+  const row = p => `<article class="row">
+      <div class="ri"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div><h3>${p.name}</h3>
+        <div class="meta">${p.kw ? `<span>Мощность <b>${p.kw} кВт</b></span>` : ''}${p.series ? `<span>Серия <b>${p.series}</b></span>` : ''}${p.height ? `<span>Проём <b>${p.height}</b></span>` : ''}${p.heat ? `<span>Нагрев <b>${p.heat.toLowerCase()}</b></span>` : ''}</div>
+        <p class="use">${p.use}</p></div>
+      <div class="act"><a class="btn btn-ink btn-sm" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a><button class="add" data-id="${p.id}" aria-pressed="false" aria-label="Добавить в лист запроса"><svg><use href="#i-plus"/></svg></button></div>
+    </article>`;
+  const render = () => {
+    const cat = TM.categories.find(c => c.id === st.c);
+    $('#title').textContent = cat.name + ' Тепломаш'; $('#sub').textContent = cat.text + ' Цена официального дистрибьютора по запросу.';
+    $$('#clist button').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === st.c));
+    $$('#mcats button').forEach(b => b.setAttribute('aria-selected', b.dataset.c === st.c));
+    $('#fBox').hidden = st.c !== 'curtains';
+    $$('#fH .chipb').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === st.h));
+    const list = TM.products.filter(p => p.cat === st.c && (!st.h || p.hKey === st.h));
+    const k = list.length; $('#count').textContent = k + ' ' + (k === 1 ? 'модель' : k < 5 ? 'модели' : 'моделей');
+    $('#plist').innerHTML = list.map(row).join('');
+    window.V3sync && window.V3sync();
+  };
+  const setC = c => { st.c = c; st.h = null; history.replaceState(null, '', '?c=' + c); render(); };
+  $('#clist').addEventListener('click', e => { const b = e.target.closest('button'); b && setC(b.dataset.c); });
+  $('#mcats').addEventListener('click', e => { const b = e.target.closest('button'); b && setC(b.dataset.c); });
+  $('#fH').addEventListener('click', e => { const b = e.target.closest('.chipb'); if (!b) return; st.h = st.h === b.dataset.v ? null : b.dataset.v; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

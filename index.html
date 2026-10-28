@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Тепломаш Казахстан — три варианта сайта</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F4F2;--panel:#fff;--ink:#16181B;--ink-2:#5B6068;--line:#E2E2DE;--f:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--f);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(24px,env(safe-area-inset-left))}
+header{padding:72px 0 40px}
+header img{height:38px;width:auto;margin-bottom:40px}
+h1{font-size:clamp(36px,4.6vw,60px);line-height:1.04;letter-spacing:-.03em;font-weight:600;max-width:18ch;text-wrap:balance}
+.lead{font-size:19px;color:var(--ink-2);max-width:60ch;margin-top:20px}
+.v{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:center;background:var(--panel);border-radius:28px;padding:28px;margin-top:28px}
+.shots{position:relative}
+.shots .d{width:100%;border-radius:16px;border:1px solid var(--line);display:block;aspect-ratio:16/10;object-fit:cover;object-position:top;background:#eee}
+.shots .m{position:absolute;right:-10px;bottom:-18px;width:23%;border-radius:18px;border:6px solid #111;aspect-ratio:390/844;object-fit:cover;object-position:top;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);background:#eee}
+.v small{display:block;font-size:14px;color:var(--ink-2);font-weight:500;margin-bottom:8px}
+.v h2{font-size:32px;line-height:1.1;letter-spacing:-.02em;font-weight:600}
+.v p{color:var(--ink-2);margin-top:14px}
+.v ul{list-style:none;margin-top:18px;display:grid;gap:8px;font-size:15px}
+.v li{padding-left:22px;position:relative}
+.v li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--acc)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;height:50px;padding:0 22px;border-radius:999px;font-weight:500;font-size:15px;transition:transform .2s,background .2s}
+.btn:active{transform:scale(.97)}
+.b1{background:var(--ink);color:#fff}.b1:hover{background:#30343a}
+.b2{border:1px solid var(--line)}.b2:hover{border-color:var(--ink)}
+.note{margin:48px 0 80px;display:grid;grid-template-columns:1fr 1fr;gap:28px;color:var(--ink-2);font-size:15px}
+.note h3{color:var(--ink);font-size:17px;font-weight:600;margin-bottom:8px}
+.note ul{padding-left:18px;display:grid;gap:6px}
+@media (max-width:860px){header{padding:40px 0 20px}.v{grid-template-columns:1fr;padding:16px;gap:28px}.v h2{font-size:26px}.note{grid-template-columns:1fr}.shots .m{right:-4px;width:26%}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <img src="/img/logo.png" alt="Jamal Group">
+  <h1>Тепломаш Казахстан: три варианта нового сайта</h1>
+  <p class="lead">Каждый вариант — полноценная главная и каталог, рассчитанные на рекламный трафик: понятное предложение с первого экрана, заявка в WhatsApp или по телефону в одно касание, доверие через официальный статус, команду и реальные отзывы из 2ГИС.</p>
+</header>
+<main class="wrap">
+  <section class="v" style="--acc:#9A6A34">
+    <div class="shots"><img class="d" src="/img/preview/v1-d.jpg" alt="Вариант 1, десктоп"><img class="m" src="/img/preview/v1-m.jpg" alt="Вариант 1, телефон"></div>
+    <div>
+      <small>Вариант 1</small>
+      <h2>Тёплый порог</h2>
+      <p>Зимний вечер в Алматы: настоящий фасад магазина, над дверью смонтирована 3D-завеса, и тёплый поток останавливает снег.</p>
+      <ul><li>Живая температура Алматы на первом экране</li><li>Схема «с завесой / без завесы» одним переключателем</li><li>Решения по типам входа: магазин, кафе, офис, склад, автосервис</li></ul>
+      <div class="acts"><a class="btn b1" href="/v1/">Открыть главную</a><a class="btn b2" href="/v1/catalog.html">Каталог</a></div>
+    </div>
+  </section>
+  <section class="v" style="--acc:#C94F0C">
+    <div class="shots"><img class="d" src="/img/preview/v2-d.jpg" alt="Вариант 2, десктоп"><img class="m" src="/img/preview/v2-m.jpg" alt="Вариант 2, телефон"></div>
+    <div>
+      <small>Вариант 2</small>
+      <h2>Шоурум</h2>
+      <p>Продукт как предмет в студии. Завесой можно управлять как пультом: выключить, включить вентиляцию или обогрев — меняется поток, свечение и свет сцены.</p>
+      <ul><li>3D-модель, которую можно повернуть</li><li>Устройство завесы, раскрывающееся при прокрутке</li><li>В каталоге — 3D-просмотр каждой завесы</li></ul>
+      <div class="acts"><a class="btn b1" href="/v2/">Открыть главную</a><a class="btn b2" href="/v2/catalog.html">Каталог</a></div>
+    </div>
+  </section>
+  <section class="v" style="--acc:#E8A41E">
+    <div class="shots"><img class="d" src="/img/preview/v3-d.jpg" alt="Вариант 3, десктоп"><img class="m" src="/img/preview/v3-m.jpg" alt="Вариант 3, телефон"></div>
+    <div>
+      <small>Вариант 3</small>
+      <h2>Тепловизор</h2>
+      <p>Показываем невидимое: куда уходит тепло через открытую дверь. Тепловизионный слайдер «без завесы / с завесой» объясняет пользу без слов.</p>
+      <ul><li>Сравнение в тепловизоре на реальном интерьере</li><li>Фирменное золото Jamal Group и тепловая палитра</li><li>Лист запроса: несколько моделей одним сообщением в WhatsApp</li></ul>
+      <div class="acts"><a class="btn b1" href="/v3/">Открыть главную</a><a class="btn b2" href="/v3/catalog.html">Каталог</a></div>
+    </div>
+  </section>
+  <div class="note">
+    <div><h3>Что уже работает</h3><ul><li>Кнопки WhatsApp открывают чат с готовым текстом по модели или помещению</li><li>Фильтры каталога, карточка товара, адаптив под телефон</li><li>Фото команды, логотип и отзывы — реальные, с сайта и из 2ГИС</li></ul></div>
+    <div><h3>Что подключим после выбора</h3><ul><li>Отправку формы в CRM, почту или Telegram</li><li>Полный каталог с актуальными характеристиками и наличием</li><li>Сборку на Next.js, домен, аналитику и пиксели рекламы</li></ul></div>
+  </div>
+</main>
+</body>
+</html>
