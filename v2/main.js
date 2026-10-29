@@ -265,6 +265,69 @@
     show(0, true);
   }
 
+  /* FOOTER: the domain under an air curtain — a warm vertical stream sweeps across the letters
+     (or follows the pointer), lifts them, warms their colour and pushes cold particles aside */
+  const fd = $('#fdomain');
+  if (fd) {
+    const word = 'teplomash-kazakhstan.kz';
+    const tx = fd.querySelector('.fd-text'), cv = fd.querySelector('.fd-air'), ctx = cv.getContext('2d');
+    tx.innerHTML = [...word].map(ch => `<span>${ch}</span>`).join('');
+    const spans = [...tx.children];
+    let W = 0, H = 0, dpr = 1, centers = [], vis = false, raf = 0, px = null, sx = 0, t0 = performance.now();
+    const parts = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), v: .4 + Math.random() * .8, r: .8 + Math.random() * 1.6 }));
+    const streaks = Array.from({ length: 46 }, () => ({ u: Math.random(), t: Math.random(), v: .6 + Math.random() * .8, l: 14 + Math.random() * 26 }));
+    const measure = () => {
+      dpr = Math.min(2, devicePixelRatio || 1); W = fd.clientWidth; H = fd.clientHeight;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const fr = fd.getBoundingClientRect();
+      centers = spans.map(s => { const r = s.getBoundingClientRect(); return r.left - fr.left + r.width / 2; });
+    };
+    new ResizeObserver(measure).observe(fd);
+    fd.addEventListener('pointermove', e => { const r = fd.getBoundingClientRect(); px = e.clientX - r.left; });
+    fd.addEventListener('pointerleave', () => { px = null; });
+    const frame = now => {
+      raf = 0;
+      const t = (now - t0) / 1000;
+      const target = px != null ? px : W * (.5 + .46 * Math.sin(t * .45));
+      sx += (target - sx) * (reduce ? 1 : .08);
+      const sig = Math.max(60, W * .07);
+      spans.forEach((s, i) => {
+        const d = (centers[i] - sx) / sig, k = Math.exp(-d * d);
+        const lift = k * 0.16, skew = Math.max(-1, Math.min(1, d)) * k * -8;
+        s.style.transform = `translateY(${-lift}em) skewX(${skew}deg)`;
+        s.style.setProperty('--k', k.toFixed(3));
+      });
+      ctx.clearRect(0, 0, W, H);
+      // warm stream falling from the top edge at sx
+      const sw = sig * 1.6;
+      ctx.save(); ctx.translate(sx, 0); ctx.scale(sw / 2, H * 1.1);
+      const rg = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+      rg.addColorStop(0, 'rgba(233,169,63,.34)'); rg.addColorStop(.55, 'rgba(233,169,63,.12)'); rg.addColorStop(1, 'rgba(233,169,63,0)');
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI); ctx.fill(); ctx.restore();
+      ctx.lineCap = 'round';
+      for (const p of streaks) {
+        if (!reduce) { p.t += .012 * p.v; if (p.t > 1) { p.t = 0; p.u = Math.random(); } }
+        const x = sx + (p.u - .5) * sw * .8, y = p.t * H;
+        ctx.strokeStyle = `rgba(255,190,110,${.55 * Math.sin(Math.PI * p.t)})`; ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + p.l); ctx.stroke();
+      }
+      // cold air drifting in from the right, turned back by the stream
+      for (const p of parts) {
+        if (!reduce) {
+          let X = p.x * W; const dx = X - sx;
+          const push = Math.abs(dx) < sw * .7 ? Math.sign(dx || 1) * 2.4 : 0;
+          X += -p.v * .6 + push; p.y += Math.sin(t * 2 + p.v * 10) * .0015;
+          p.x = X / W; if (p.x < -.02) { p.x = 1.02; p.y = Math.random(); }
+          if (p.x > 1.04) p.x = 1.02;
+        }
+        ctx.fillStyle = 'rgba(150,195,240,.45)'; ctx.beginPath(); ctx.arc(p.x * W, p.y * H, p.r, 0, 7); ctx.fill();
+      }
+      if (vis && !reduce) raf = requestAnimationFrame(frame);
+    };
+    new IntersectionObserver(e => { vis = e[0].isIntersecting; if (vis) { measure(); if (!raf) raf = requestAnimationFrame(frame); } }).observe(fd);
+    measure(); sx = W / 2; if (reduce) frame(performance.now());
+  }
+
   const faq = $('#faq');
   if (faq) {
     faq.innerHTML = TM.faq.map((f, k) => `<div class="qa rv d${k % 2}"><button aria-expanded="false" aria-controls="a${k}">${f.q}<span class="ic" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button><div class="ans" id="a${k}" role="region"><div><p>${f.a}</p></div></div></div>`).join('');
