@@ -51,6 +51,25 @@
         <div class="pd-f"><span>Цена по запросу</span><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a></div>
       </div></article>`;
   window.V2card = card;
+  /* catalog banner: 3D curtain with live air for curtains, product photo on a plinth for other categories */
+  const cb = $('#cbanner');
+  if (cb) {
+    const unit = $('#cbUnit'), flowC = $('#cbFlow'), img = $('#cbImg');
+    let c3b = null, afb = null;
+    const geoB = () => { const W = unit.clientWidth, H = unit.clientHeight, z = Math.min(1.25, W * .8 / (1.651 * .8 * H)); const w = 1.651 * .8 * z * H * .9, h = .256 * z * H; return { x: unit.offsetLeft + W / 2 - w / 2, w, y: unit.offsetTop + H / 2 + h * .46, z }; };
+    window.V2banner = (cat, n) => {
+      const cur = cat.id === 'curtains';
+      cb.dataset.c = cat.id;
+      $('#cbN').textContent = n; $('#cbNl').textContent = (n === 1 ? 'модель' : n < 5 ? 'модели' : 'моделей') + ' в разделе';
+      if (cur && !c3b && window.Curtain3D) {
+        c3b = Curtain3D(unit, { yaw: -.45, pitch: .14, heat: 1, light: 'studio', zoom: geoB().z, len: .8, pointerTarget: cb });
+        new ResizeObserver(() => c3b && c3b.set({ zoom: geoB().z })).observe(unit);
+        afb = window.Airflow2 && Airflow2(flowC, { source: () => geoB(), floor: () => flowC.clientHeight * .9, flow: 1, heat: 1, cold: true, snow: true, density: .9 });
+      }
+      if (!cur) { img.src = cat.img; img.alt = cat.name; }
+    };
+  }
+
   /* catalog tile: square card for the catalog grid */
   window.V2tile = p => {
     const title = p.series ? p.code : p.name;
