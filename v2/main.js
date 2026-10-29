@@ -342,10 +342,18 @@
           <h3>${lead ? t.name : first(t.name)}</h3>
           <span class="pass-role">${t.role}</span>
           ${lead ? `<p class="pass-zone"><small>Отвечает за</small>${zone[k]}</p>` : `<div class="pass-tags"><span>Подбор</span><span>Счёт</span><span>Доставка</span></div>`}
-          ${lead ? '' : `<a class="pass-wa" href="${TM.wa('Здравствуйте, ' + first(t.name) + '! Нужна консультация по тепловой завесе.')}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать ${first(t.name)}у</a>`}
         </div>
+        ${lead ? '' : `<a class="pass-wa" href="${TM.wa('Здравствуйте, ' + first(t.name) + '! Нужна консультация по тепловой завесе.')}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать ${first(t.name)}у</a>`}
       </article>`;
     }).join('');
+  }
+  const pd = $('#passDots'), ps = $('#passes');
+  if (pd && ps) {
+    const cards = [...ps.children];
+    pd.innerHTML = cards.map((_, i) => `<i data-i="${i}"></i>`).join('');
+    const dots = [...pd.children];
+    const upd = () => { const c = ps.scrollLeft + ps.clientWidth / 2; let k = 0, best = 1e9; cards.forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - ps.offsetLeft - c); if (d < best) { best = d; k = i; } }); dots.forEach((d, i) => d.classList.toggle('on', i === k)); };
+    ps.addEventListener('scroll', upd, { passive: true }); upd();
   }
   if ($('#marq')) {
     const T = TM.team, first = n => n.split(' ')[1] || n;
@@ -361,9 +369,27 @@
         <figcaption><i>${ini}</i><b>${nm}</b>${hit ? `<span class="rq2-thx"><img src="${T[hit[1]].img}" alt="">${first(T[hit[1]].name)}</span>` : ''}</figcaption></figure>`;
     };
     const R = TM.reviews, half = Math.ceil(R.length / 2);
-    const row = (list, dir) => `<div class="marq-row ${dir}"><div class="marq-track">${list.map(card).join('')}${list.map(card).join('')}</div></div>`;
-    $('#marq').innerHTML = row(R, 'l');
-    const more = $('#rvMore'); more && more.addEventListener('click', () => { const o = $('#marq').classList.toggle('all'); more.textContent = o ? 'Свернуть' : 'Показать все отзывы'; if (!o) $('#reviews').scrollIntoView({ behavior: 'smooth' }); });
+    // auto-scrolling carousel on native scroll: pauses on hover/touch, arrows scroll by one card, loops seamlessly
+    const mq = $('#marq');
+    mq.innerHTML = `<div class="rv-track" id="rvTrack">${R.map(card).join('')}${R.map(card).join('')}</div>`;
+    const tr = $('#rvTrack');
+    let paused = false, resume = 0, pos = 0, lastT = 0, inView = false;
+    const halfW = () => tr.scrollWidth / 2;
+    const hold = (ms = 4000) => { paused = true; clearTimeout(resume); resume = setTimeout(() => { paused = false; pos = tr.scrollLeft; }, ms); };
+    const loop = t => {
+      const dt = Math.min(50, t - (lastT || t)); lastT = t;
+      if (!paused && inView && !reduce) { pos += dt * .035; if (pos >= halfW()) pos -= halfW(); tr.scrollLeft = pos; }
+      requestAnimationFrame(loop);
+    };
+    tr.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { paused = true; clearTimeout(resume); } });
+    tr.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { paused = false; pos = tr.scrollLeft; } });
+    tr.addEventListener('touchstart', () => hold(5000), { passive: true });
+    tr.addEventListener('wheel', () => hold(4000), { passive: true });
+    tr.addEventListener('scroll', () => { if (paused) { if (tr.scrollLeft >= halfW()) tr.scrollLeft -= halfW(); if (tr.scrollLeft <= 0) tr.scrollLeft += halfW(); } }, { passive: true });
+    const step = d => { hold(5000); const w = tr.querySelector('.rq2').offsetWidth + 16; if (d < 0 && tr.scrollLeft < w) tr.scrollLeft += halfW(); tr.scrollBy({ left: d * w, behavior: 'smooth' }); };
+    $('#rvL').onclick = () => step(-1); $('#rvR').onclick = () => step(1);
+    new IntersectionObserver(e => { inView = e[0].isIntersecting; }).observe(tr);
+    requestAnimationFrame(loop);
   }
 
   /* FOOTER: the domain under an air curtain. A warm stream sweeps across (or follows the pointer):
@@ -373,7 +399,7 @@
   if (fd) {
     const word = 'teplomash-kazakhstan.kz';
     const tx = fd.querySelector('.fd-text'), cv = fd.querySelector('.fd-air'), ctx = cv.getContext('2d');
-    tx.innerHTML = [...word].map(ch => `<span>${ch}</span>`).join('');
+    tx.innerHTML = [...word].map(ch => `<span>${ch}</span>` + (ch === '-' ? '<br class="fd-br">' : '')).join('');
     const spans = [...tx.children];
     let W = 0, H = 0, dpr = 1, centers = [], heat = spans.map(() => 0), vis = false, raf = 0, px = null, sx = 0, t0 = performance.now(), last = t0;
     const spr = (rgb) => { const s = 64, c = document.createElement('canvas'); c.width = c.height = s; const x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, `rgba(${rgb},1)`); g.addColorStop(.4, `rgba(${rgb},.5)`); g.addColorStop(1, `rgba(${rgb},0)`); x.fillStyle = g; x.fillRect(0, 0, s, s); return c; };
@@ -384,6 +410,7 @@
       cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const fr = fd.getBoundingClientRect();
       centers = spans.map(s => { const r = s.getBoundingClientRect(); return r.left - fr.left + r.width / 2; });
+      if (W < 700) { /* two lines: map the second line onto the same horizontal sweep */ }
     };
     new ResizeObserver(measure).observe(fd);
     fd.addEventListener('pointermove', e => { const r = fd.getBoundingClientRect(); px = e.clientX - r.left; });
@@ -433,15 +460,25 @@
     measure(); sx = W / 2; if (reduce) frame(performance.now());
   }
 
-  const faq = $('#faq');
-  if (faq) {
+  const fq = $('#faqQs');
+  if (fq) {
     const ic = ['<path d="M7 4h7a4 4 0 0 1 0 8H7m0-8v16M5 12h9M5 16h8"/>', '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>', '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/>', '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/>', '<path d="M12 3 5 6v5c0 4.4 3 8.2 7 9.5 4-1.3 7-5.1 7-9.5V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>', '<path d="M8 12.5 10.5 15l5-5M4 8l4-4 4 3 4-3 4 4-8 12Z"/>'];
-    faq.innerHTML = TM.faq.map((f, k) => `<div class="qa2${k === 0 ? ' open' : ''}">
-        <button aria-expanded="${k === 0}" aria-controls="a${k}"><i class="qa2-ic"><svg viewBox="0 0 24 24">${ic[k] || ic[0]}</svg></i><span class="qa2-n">0${k + 1}</span><span class="qa2-q">${f.q}</span><span class="qa2-pm" aria-hidden="true"></span></button>
-        <div class="ans" id="a${k}" role="region"><div><p>${f.a}</p></div></div></div>`).join('');
-    faq.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const it = b.parentElement, o = !it.classList.contains('open'); $$('.qa2', faq).forEach(x => { x.classList.remove('open'); x.querySelector('button').setAttribute('aria-expanded', false); }); it.classList.toggle('open', o); b.setAttribute('aria-expanded', o); });
-    const qs = ['Сколько стоит доставка в мой город?', 'Есть ли модель в наличии?', 'Можно счёт на юрлицо?', 'Сколько займёт монтаж?'];
-    $('#askChips').innerHTML = qs.map(q => `<a href="${TM.wa('Здравствуйте, Малика! ' + q)}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>${q}</a>`).join('');
+    const F = TM.faq;
+    fq.innerHTML = F.map((f, k) => `<button role="tab" aria-selected="${k === 0}" data-k="${k}"><i><svg viewBox="0 0 24 24">${ic[k] || ic[0]}</svg></i><span>${f.q}</span></button>`).join('');
+    const ans = $('#faqAns');
+    const show = k => {
+      $$('button', fq).forEach((b, i) => b.setAttribute('aria-selected', i === k));
+      ans.classList.remove('in');
+      setTimeout(() => {
+        ans.innerHTML = `<span class="fa-n">Вопрос ${k + 1} из ${F.length}</span><h3>${F[k].q}</h3><p>${F[k].a}</p>
+          <div class="fa-f"><img src="/img/team/malika.jpg" alt=""><span>Остались вопросы? <b>Малика</b> ответит в WhatsApp</span><a class="btn btn-ink btn-sm" href="${TM.wa('Здравствуйте, Малика! Вопрос по завесам: ')}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Спросить</a></div>`;
+        ans.classList.add('in');
+      }, ans.innerHTML ? 160 : 0);
+      const b = fq.children[k]; if (fq.scrollWidth > fq.clientWidth + 4) fq.scrollTo({ left: b.offsetLeft - 16, behavior: 'smooth' });
+    };
+    fq.addEventListener('click', e => { const b = e.target.closest('button'); b && show(+b.dataset.k); });
+    fq.addEventListener('keydown', e => { if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return; e.preventDefault(); const cur = +fq.querySelector('[aria-selected=true]').dataset.k, n = (cur + (e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : -1) + F.length) % F.length; show(n); fq.children[n].focus(); });
+    show(0);
   }
 
   /* final form: product shelf + segmented "what we insulate" */

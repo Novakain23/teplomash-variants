@@ -192,6 +192,7 @@
         <div class="sk"><i><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg></i><div><b>Доставка и монтаж</b><span>привезём по РК и установим под ключ</span></div></div>
       </div>
       <div class="passes" id="passes"></div>
+      <div class="pass-dots" id="passDots" aria-hidden="true"></div>
     </div>
     <div class="revs2" id="reviews">
       <div class="wrap revs2-in">
@@ -199,27 +200,24 @@
           <span class="kick"><b>05</b>Отзывы</span>
           <h2 class="h2">Клиенты о нас в 2ГИС</h2>
           <div class="revs2-score"><span class="stars" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><span>Реальные отзывы, без правок</span></div>
-          <p class="revs2-note">Наведите на ленту, чтобы остановить и прочитать.</p>
+          <div class="rv-nav2"><button class="circ" id="rvL" aria-label="Предыдущие отзывы"><svg><use href="#i-left"/></svg></button><button class="circ" id="rvR" aria-label="Следующие отзывы"><svg><use href="#i-arrow"/></svg></button></div>
         </div>
         <div class="marq" id="marq" aria-label="Отзывы клиентов"></div>
-        <button class="rv-more" id="rvMore" type="button">Показать все отзывы</button>
       </div>
     </div>
   </section>
 
   <section class="sec" style="padding-top:0">
     <div class="wrap">
-      <div class="faq2 rv">
-        <div class="faq2-side">
-          <span class="kick"><b>06</b>Вопросы</span>
-          <h2 class="h2">Частые вопросы перед покупкой</h2>
-          <div class="ask">
-            <div class="ask-top"><img src="/img/team/malika.jpg" alt="Малика"><div><b>Не нашли ответ?</b><span>Малика, руководитель отдела продаж</span></div></div>
-            <p>Нажмите на вопрос, и откроется WhatsApp с готовым текстом.</p>
-            <div class="ask-chips" id="askChips"></div>
-          </div>
+      <div class="faq3 rv">
+        <div class="faq3-head">
+          <div><span class="kick"><b>06</b>Вопросы</span><h2 class="h2">Частые вопросы</h2></div>
+          <p class="faq3-hint">Выберите вопрос — ответ появится справа</p>
         </div>
-        <div class="faq2-list" id="faq"></div>
+        <div class="faq3-body">
+          <div class="faq3-qs" id="faqQs" role="tablist" aria-label="Частые вопросы"></div>
+          <div class="faq3-ans" id="faqAns" role="tabpanel" aria-live="polite"></div>
+        </div>
       </div>
     </div>
   </section>
