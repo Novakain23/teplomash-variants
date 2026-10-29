@@ -106,12 +106,23 @@
 
   <section class="sec" id="series">
     <div class="wrap">
-      <div class="sh center"><span class="kick"><b>02</b>Подбор</span><h2 class="h2 rv">Подбор за 3 ответа</h2><p class="lead rv d1">Ответьте на три вопроса, и завеса справа соберётся под ваш вход, а инженер получит готовые вводные.</p></div>
+      <div class="sh center"><span class="kick"><b>02</b>Подбор</span><h2 class="h2 rv">Подбор за 3 ответа</h2><p class="lead rv d1">Ответьте в чате на три вопроса — завеса справа соберётся под ваш вход, а менеджер сразу получит ваши ответы и контакты.</p></div>
       <div class="quiz rv" id="quiz">
-        <div class="qz-card">
-          <div class="qz-top"><span class="qz-step" id="qzStep">Вопрос 1 из 3</span><div class="qz-bar"><i id="qzBar"></i></div></div>
-          <div class="qz-body" id="qzBody"></div>
-          <div class="qz-nav"><button class="qz-back" id="qzBack" hidden><svg><use href="#i-left"/></svg>Назад</button></div>
+        <div class="wa" id="wa">
+          <div class="wa-head">
+            <span class="wa-ava"><img src="/img/logo.png" alt=""></span>
+            <div class="wa-who"><b>Jamal Group · подбор завесы</b><span id="waStatus">онлайн</span></div>
+            <button class="wa-restart" id="waRestart" type="button" hidden>Начать заново</button>
+          </div>
+          <div class="wa-body" id="waBody" aria-live="polite"></div>
+          <div class="wa-dock">
+            <div class="wa-replies" id="waReplies"></div>
+            <form class="wa-input" id="waForm" hidden novalidate>
+              <input id="waInput" autocomplete="off" aria-label="Ваш ответ">
+              <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+              <button type="submit" aria-label="Отправить"><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7-8-1Z" fill="currentColor"/></svg></button>
+            </form>
+          </div>
         </div>
         <div class="qz-live">
           <span class="qz-tag" id="qzTag">Ваша завеса</span>

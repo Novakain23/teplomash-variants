@@ -537,7 +537,7 @@ footer{padding-block:72px 44px}
   .qz-opts i{width:44px;height:44px;border-radius:14px}
   .qz-res h3{font-size:30px}
   .qz-form{flex-direction:column}
-  .qz-live{min-height:340px;order:-1;border-radius:26px}
+  .qz-live{min-height:320px;border-radius:26px}
   .qz-door{bottom:96px;top:50%}
   .qz-door span{display:none}
   .qz-sum dd{font-size:13px}
@@ -668,3 +668,49 @@ footer{padding-block:72px 44px}
 .feat-cta b{display:inline-flex;align-items:center;gap:8px;font-weight:500;white-space:nowrap}
 .feat-cta svg{width:18px;height:18px}
 @media (max-width:860px){.feat-cta{flex-direction:column;align-items:flex-start;gap:6px;padding:18px 20px}}
+
+/* ===== round 5: quiz as a WhatsApp chat ===== */
+.wa{--wa-green:#00A884;display:flex;flex-direction:column;height:560px;border-radius:32px;overflow:hidden;background:#EFEAE2;box-shadow:0 0 0 1px rgba(154,90,6,.12),0 40px 80px -50px rgba(120,72,10,.5)}
+.wa-head{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#075E54;color:#fff;flex:none}
+.wa-ava{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;overflow:hidden}
+.wa-ava img{width:34px;height:auto}
+.wa-who{display:grid;line-height:1.25;min-width:0}
+.wa-who b{font-weight:500;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-who span{font-size:13px;color:rgba(255,255,255,.75)}
+.wa-restart{margin-left:auto;font-size:13px;color:#fff;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);white-space:nowrap}
+.wa-restart:hover{background:rgba(255,255,255,.24)}
+.wa-body{flex:1;overflow-y:auto;padding:20px 18px;display:flex;flex-direction:column;gap:6px;background-color:#EFEAE2;background-image:radial-gradient(rgba(120,100,70,.07) 1px,transparent 1.2px);background-size:18px 18px;scrollbar-width:thin}
+.wb{position:relative;max-width:82%;padding:7px 10px 5px 12px;border-radius:12px;font-size:15.5px;line-height:1.4;color:#111B21;box-shadow:0 1px .5px rgba(11,20,26,.13);animation:wbIn .32s var(--ease) both}
+.wb p b{font-weight:600}
+.wb.them{align-self:flex-start;background:#fff;border-top-left-radius:3px}
+.wb.me{align-self:flex-end;background:#D9FDD3;border-top-right-radius:3px}
+.wb.them+.wb.them,.wb.me+.wb.me{border-radius:12px}
+.wt{display:flex;justify-content:flex-end;align-items:center;gap:3px;font-size:11px;color:#667781;margin-top:1px}
+.wt svg{width:16px;height:11px;color:#53BDEB}
+.wb.typing{display:flex;gap:4px;padding:13px 14px}
+.wb.typing i{width:7px;height:7px;border-radius:50%;background:#9AA5AC;animation:wbDot 1.2s infinite}
+.wb.typing i:nth-child(2){animation-delay:.15s}.wb.typing i:nth-child(3){animation-delay:.3s}
+@keyframes wbIn{from{opacity:0;transform:translateY(8px) scale(.98)}}
+@keyframes wbDot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.wa-dock{flex:none;background:#F0F2F5;padding:12px 14px;min-height:68px;display:flex;align-items:center}
+.wa-replies{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;width:100%}
+.wa-replies[hidden]{display:none}
+.wa-replies button{height:42px;padding:0 16px;border-radius:999px;background:#fff;color:#075E54;font-size:15px;font-weight:500;box-shadow:inset 0 0 0 1.5px rgba(0,168,132,.55);animation:wbIn .35s var(--ease) both;transition:background .2s,transform .2s var(--ease)}
+.wa-replies button:nth-child(2){animation-delay:.07s}.wa-replies button:nth-child(3){animation-delay:.14s}
+.wa-replies button:hover{background:#E7FCE3;transform:translateY(-1px)}
+.wa-replies button:active{transform:scale(.97)}
+.wa-input{display:flex;gap:8px;width:100%}
+.wa-input[hidden]{display:none}
+.wa-input input{flex:1;min-width:0;height:46px;border:0;border-radius:999px;background:#fff;padding:0 18px;font-size:16px;outline:none;box-shadow:inset 0 0 0 1.5px transparent;transition:box-shadow .2s}
+.wa-input input:focus{box-shadow:inset 0 0 0 1.5px var(--wa-green)}
+.wa-input input.bad{box-shadow:inset 0 0 0 1.5px #D9534F}
+.wa-input button{width:46px;height:46px;border-radius:50%;background:var(--wa-green);color:#fff;display:grid;place-items:center;flex:none;transition:background .2s}
+.wa-input button:hover{background:#008F6F}
+.wa-input button svg{width:20px;height:20px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.wa-go{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;border-radius:999px;background:#25D366;color:#0B3B2E;font-weight:500;animation:wbIn .35s var(--ease) both}
+.wa-go svg{width:20px;height:20px}
+.wa-go:hover{background:#2FE074}
+.tl-wa{margin-top:14px}
+@media (max-width:860px){.wa{height:500px;border-radius:26px}.wb{font-size:15px;max-width:88%}.wa-replies button{font-size:14px;padding:0 14px}}
+@media (prefers-reduced-motion:reduce){.wb,.wa-replies button,.wa-go{animation:none}}

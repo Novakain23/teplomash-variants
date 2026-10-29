@@ -56,8 +56,21 @@
       e.preventDefault();
       const tel = el.querySelector('input[type=tel]');
       if (tel.value.replace(/\D/g, '').length < 10) { el.classList.add('bad'); tel.focus(); return; }
-      el.classList.remove('bad'); el.classList.add('done');
-      // after the backend is connected, the selected pains, channel and phone go to the CRM here
+      el.classList.remove('bad');
+      const pains = [...el.querySelectorAll('input[name=p]:checked')].map(i => i.value);
+      const ch = el.querySelector('input[name=c]:checked').value;
+      const lead = { source: 'Тёплый талон (20 минут на сайте)', phone: tel.value.trim().slice(0, 24), answers: { 'Беспокоит': pains.join(', ') || 'не указано', 'Куда прислать подбор': ch }, page: location.href };
+      const btn = el.querySelector('.tl-form .btn'); btn.disabled = true;
+      Promise.resolve(window.TMlead ? window.TMlead(lead) : false).then(ok => {
+        btn.disabled = false; el.classList.add('done');
+        if (!ok && window.TM) {
+          const a = document.createElement('a'); a.className = 'btn btn-heat tl-wa'; a.target = '_blank'; a.rel = 'noopener';
+          a.href = TM.wa(`Здравствуйте! Мой номер ${lead.phone}. Беспокоит: ${lead.answers['Беспокоит']}. Пришлите, пожалуйста, подбор завесы (${ch}).`);
+          a.innerHTML = ic.wa + 'Отправить в WhatsApp';
+          el.querySelector('.tl-ok span').textContent = 'Отправьте талон менеджеру в WhatsApp — текст уже готов.';
+          el.querySelector('.tl-ok').appendChild(a);
+        }
+      });
     });
   };
   const open = () => {
