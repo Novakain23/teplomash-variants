@@ -1776,3 +1776,4 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
 .sheet .foot .btn{height:52px}
 .sheet .foot .btn svg{width:18px;height:18px}
 .menu-open .mbar{display:none!important}
+.show h1{margin-top:0}
