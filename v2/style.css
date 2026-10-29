@@ -1057,3 +1057,5 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .cb-vis img{mix-blend-mode:normal;width:auto;height:62%;max-width:70%;padding:22px;border-radius:28px;background:#fff;box-shadow:0 0 0 1px rgba(154,90,6,.1),0 30px 60px -30px rgba(58,38,20,.45);filter:none}
 .cb-plinth{bottom:7%}
 @media (max-width:860px){.cb-count{left:14px;right:auto}}
+/* chat on the left, copy on the right (desktop) */
+@media (min-width:1101px){.quiz{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}.quiz .wa{order:-1}}
