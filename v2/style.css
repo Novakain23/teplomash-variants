@@ -1429,3 +1429,10 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
 .fc-steps{flex-wrap:nowrap;gap:16px}
 .fc-steps li{white-space:nowrap}
 @media (max-width:1240px){.fc-steps{flex-wrap:wrap}}
+
+/* round 27: real-colour team photos (new 600×800 originals; subject sits right of centre) */
+.pass-ph img,.pass:hover .pass-ph img{filter:none}
+.pass-ph img{object-position:68% 42%}
+.pass.lead .pass-ph img{object-position:68% 40%}
+.pass-ph{background:#E6E9EE}
+.proof-team img,.fc-mgr img,.ask-top img,.rq2-thx img,.rv-thanks img{object-position:66% 45%}
