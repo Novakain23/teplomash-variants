@@ -1248,3 +1248,24 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .pass-ph{aspect-ratio:4/3.5}
 .pass.lead .pass-ph{aspect-ratio:4/2.9}
 .pass-top{padding:22px 14px 8px}
+
+/* round 20: compact reviews */
+.revs2{margin-top:72px;padding:48px 0}
+.revs2-in{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:center}
+.revs2-side .h2{font-size:clamp(28px,2.6vw,36px)}
+.revs2-side .revs2-score{margin-top:16px;display:inline-flex;flex-direction:column;align-items:flex-start;gap:4px;border-radius:16px;padding:10px 14px;font-size:13.5px}
+.revs2-note{margin-top:12px;font-size:13px;color:var(--ink-3)}
+.revs2-in .marq{margin-right:calc(-1*max(var(--gut),(100vw - var(--wrap))/2 + var(--gut)));-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 88%,transparent)}
+.marq-track{animation-duration:60s}
+.rq2{width:300px;padding:18px 18px 14px;gap:10px;border-radius:18px}
+.rq2 blockquote{font-size:14.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;min-height:calc(1.45em*4)}
+.rq2-src{font-size:11.5px}
+.rq2-top .stars svg{width:13px;height:13px}
+.rq2 figcaption{padding-top:10px}
+.rq2 figcaption i{width:28px;height:28px;font-size:11px}
+.rq2 figcaption b{font-size:13.5px}
+.rq2-thx{font-size:11.5px}.rq2-thx img{width:20px;height:20px}
+
+@media (max-width:1100px){.revs2-in{grid-template-columns:1fr;gap:20px}.revs2-in .marq{margin-right:calc(-1*var(--gut))}.revs2-note{display:none}}
+@media (max-width:860px){.revs2{margin-top:48px;padding:36px 0}.rq2{width:260px}}
+.rq2 blockquote{-webkit-line-clamp:5;min-height:calc(1.45em*4)}

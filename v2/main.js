@@ -337,7 +337,7 @@
     };
     const R = TM.reviews, half = Math.ceil(R.length / 2);
     const row = (list, dir) => `<div class="marq-row ${dir}"><div class="marq-track">${list.map(card).join('')}${list.map(card).join('')}</div></div>`;
-    $('#marq').innerHTML = row(R.slice(0, half), 'l') + row(R.slice(half), 'r');
+    $('#marq').innerHTML = row(R, 'l');
   }
 
   /* FOOTER: the domain under an air curtain — a warm vertical stream sweeps across the letters
