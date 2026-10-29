@@ -98,8 +98,8 @@
       setTimeout(() => { w.textContent = words[i]; w.classList.remove('out'); w.classList.add('in'); setTimeout(() => w.classList.remove('in'), 30); }, 380);
     }, 2600);
     fetch('https://api.open-meteo.com/v1/forecast?latitude=43.24&longitude=76.89&current=temperature_2m').then(r => r.json()).then(d => {
-      const t = Math.round(d.current.temperature_2m); $('#wxOut').textContent = (t > 0 ? '+' : t < 0 ? '−' : '') + Math.abs(t) + '°';
-      if (t > 15) $('#wx').classList.add('warm');
+      const t = Math.round(d.current.temperature_2m); const wo = $('#wxOut'); if (wo) wo.textContent = (t > 0 ? '+' : t < 0 ? '−' : '') + Math.abs(t) + '°';
+      
     }).catch(() => {});
   }
 
