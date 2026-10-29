@@ -1716,3 +1716,32 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
 .home-more{margin-top:20px}
 .home-more .btn{--h:46px}
 @media (max-width:860px){#catalog{padding-block:44px}.hc-stage{aspect-ratio:1/.8}}
+
+/* round 32: compact lead block */
+#lead{padding-bottom:56px}
+.fin{gap:32px;padding:32px 36px;border-radius:28px}
+.fin .kick{margin-bottom:10px}
+.fin .h2{font-size:clamp(28px,2.8vw,40px)}
+.fin .lead{font-size:16px;margin-top:10px}
+.fin-c{margin-top:16px;gap:8px}
+.fin-c a{height:38px;padding:0 14px;font-size:14px}
+.fin-c span{font-size:13px;margin-top:2px}
+.shelf2{margin-top:20px;padding-top:18px;gap:10px}
+.shelf2 button{padding:8px 8px 10px;border-radius:16px}
+.s2-img{height:56px;margin-bottom:6px;border-radius:11px}
+.shelf2 b{font-size:13.5px}
+.shelf2 small{font-size:12px}
+.shelf2 button::after{width:20px;height:20px;right:8px;top:8px}
+.fin-form{padding:20px;gap:10px;border-radius:24px}
+.ff-head{padding-bottom:10px}
+.ff-head>span:first-child{font-size:18px}
+.ff-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ff-f input{height:46px;border-radius:12px}
+.ff-seg button{height:36px}
+.fin-form .btn{height:50px}
+@media (max-width:860px){#lead{padding-bottom:40px}.fin{padding:20px 14px;gap:18px}.fin .h2{font-size:26px}.ff-row{grid-template-columns:1fr}.shelf2{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.s2-img{height:44px}.shelf2 b{font-size:12px}.shelf2 small{display:none}.shelf2 button{padding:6px 6px 8px;transform:none!important}}
+.fin>*{min-width:0}
+.ff-row>*{min-width:0}
+.ff-f input{width:100%;min-width:0}
+.ff-seg{min-width:0}.ff-seg button{min-width:0;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ff-head .ff-pick{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
