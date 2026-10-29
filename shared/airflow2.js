@@ -98,10 +98,7 @@
     }
 
     function draw() {
-      // fade the previous frame a little for soft motion trails
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = `rgba(0,0,0,${reduce ? 1 : .5})`; ctx.fillRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'source-over';
+      ctx.clearRect(0, 0, W, H);      // full clear: 8-bit alpha fading leaves a grey residue on real GPUs
       const src = o.source(), fl = floorY();
       // faint column of moving air under the outlet
       if (st.flow > .02) {
@@ -115,7 +112,7 @@
       const hq = Math.round(st.heat * 10) / 10;
       if (hq !== jetHeat) { jetHeat = hq; jetSprite = sprite((hq > .05 ? mix(S.warm, S.hot, hq * .6) : S.cool).join(',')); }
       for (const p of jet) {
-        const sp = Math.hypot(p.vx, p.vy), a = Math.min(1, p.life * 1.4) * (.10 + .08 * st.heat) * Math.min(1, st.flow * 1.6) * o.alpha;
+        const sp = Math.hypot(p.vx, p.vy), a = Math.min(1, p.life * 1.4) * (.13 + .1 * st.heat) * Math.min(1, st.flow * 1.6) * o.alpha;
         if (a < .01) continue;
         ctx.globalAlpha = a;
         ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.atan2(p.vy, p.vx) - Math.PI / 2);
@@ -124,7 +121,7 @@
         ctx.drawImage(jetSprite, -p.r, -len + p.r * .5, p.r * 2, len); ctx.restore();
       }
       for (const p of cold) {
-        const a = Math.min(1, p.life * 1.3) * .12 * o.alpha;
+        const a = Math.min(1, p.life * 1.3) * .15 * o.alpha;
         ctx.globalAlpha = a;
         ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.atan2(p.vy, p.vx));
         const len = p.r * (2 + Math.abs(p.vx) * 1.4);
