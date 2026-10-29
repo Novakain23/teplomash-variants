@@ -36,7 +36,7 @@
   <div class="wrap">
     <div class="pill">
       <a class="logo" href="/v2/" aria-label="Jamal Group — Тепломаш Казахстан"><img src="/img/logo.png" alt="Jamal Group" width="71" height="32"></a>
-      <nav aria-label="Основное меню"><a href="/v2/catalog.html">Каталог</a><a href="#inside">Устройство</a><a href="#series">Серии</a><a href="#people">Отзывы</a><a href="#lead">Контакты</a></nav>
+      <nav aria-label="Основное меню"><a href="/v2/catalog.html">Каталог</a><a href="#inside">Как работает</a><a href="#series">Серии</a><a href="#people">Отзывы</a><a href="#lead">Контакты</a></nav>
       <a class="tel" href="tel:+77473104846"><i><svg><use href="#i-phone"/></svg></i>+7 747 310 48 46</a>
       <a class="btn btn-ink btn-sm" href="#lead">Получить цену</a>
       <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
@@ -44,7 +44,7 @@
   </div>
 </header>
 <div class="sheet" id="sheet" aria-hidden="true">
-  <a class="big" href="/v2/catalog.html">Каталог</a><a class="big" href="#inside">Устройство</a><a class="big" href="#series">Серии</a><a class="big" href="#people">Отзывы</a><a class="big" href="#lead">Контакты</a>
+  <a class="big" href="/v2/catalog.html">Каталог</a><a class="big" href="#inside">Как работает</a><a class="big" href="#series">Серии</a><a class="big" href="#people">Отзывы</a><a class="big" href="#lead">Контакты</a>
   <div class="foot"><a class="btn btn-heat" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать в WhatsApp</a><a class="btn btn-ghost" href="tel:+77473104846">+7 747 310 48 46</a></div>
 </div>
 
@@ -90,16 +90,31 @@
 
   <section class="sec inside" id="inside">
     <div class="wrap">
-      <div class="dark-panel rv">
-      <div class="inside-head"><div><span class="kick"><b>01</b>Устройство</span><h2 class="h2">Как устроена завеса</h2></div><p class="lead">Два узла решают, будет ли у входа тепло. Нажмите на узел, и модель повернётся к нему.</p></div>
-      <div class="inside-grid">
-        <div class="feats" id="feats" role="tablist" aria-label="Устройство завесы">
-          <button class="feat on" role="tab" aria-selected="true" data-i="0"><small>01 · Корпус и панель</small><h3>Ровный поток по всей длине</h3><p>Воздух забирается через перфорированную панель, поэтому струя одинаковая от края до края двери, без «дыр» для холода.</p><span class="gain">Для бизнеса: у кассы и витрины не дует, покупатели не спешат уйти.</span></button>
-          <button class="feat" role="tab" aria-selected="false" data-i="1"><small>02 · Нагрев</small><h3>Электрический или водяной</h3><p>Электрические модели работают от сети, водяные подключаются к отоплению здания.</p><span class="gain">Для бизнеса: водяная завеса греет теплом от отопления здания и не нагружает электросеть.</span></button>
-          <a class="feat-cta" href="#series"><span>Не знаете, какая модель нужна?</span><b>Подбор за 3 ответа <svg><use href="#i-arrow"/></svg></b></a>
+      <div class="sell rv">
+        <div class="sell-copy">
+          <span class="kick"><b>01</b>Как работает</span>
+          <h2 class="h2">Дверь открыта — <em>тепло остаётся</em> внутри</h2>
+          <p class="lead">Завеса ставит над входом стену из тёплого воздуха. Покупатели проходят свободно, а холод с улицы разворачивается у порога.</p>
+          <ul class="sell-list">
+            <li><i><svg><use href="#i-check"/></svg></i><div><b>Нет сквозняка у кассы</b><span>Продавцы работают без курток, покупатели не спешат уйти.</span></div></li>
+            <li><i><svg><use href="#i-check"/></svg></i><div><b>Отопление греет зал, а не улицу</b><span>Тёплый воздух не уходит в открытую дверь.</span></div></li>
+            <li><i><svg><use href="#i-check"/></svg></i><div><b>Летом держит прохладу</b><span>В режиме вентиляции — без нагрева, против жары и пыли.</span></div></li>
+          </ul>
+          <div class="sell-cta"><a class="btn btn-ink" href="#series">Подобрать завесу <svg><use href="#i-arrow"/></svg></a><span>Попробуйте выключить завесу на схеме →</span></div>
         </div>
-        <div class="sticky"><canvas id="model2" aria-hidden="true"></canvas><span class="tag" id="tag">Перфорированная панель</span></div>
-      </div>
+        <div class="demo2" id="demo2">
+          <div class="d2-out"><small>Улица</small><b id="d2Out">−4°</b></div>
+          <div class="d2-in"><small>У входа</small><b id="d2In">+21°</b></div>
+          <div class="d2-wall" aria-hidden="true"></div>
+          <div class="d2-floor" aria-hidden="true"></div>
+          <canvas id="d2Flow" aria-hidden="true"></canvas>
+          <canvas id="d2Unit" aria-hidden="true"></canvas>
+          <span class="d2-lab l" aria-hidden="true">снаружи</span><span class="d2-lab r" aria-hidden="true">внутри</span>
+          <div class="d2-ui">
+            <button class="d2-sw" id="d2Sw" role="switch" aria-checked="true"><span class="tr"></span><span id="d2Lab">Завеса работает</span></button>
+            <span class="d2-note" id="d2Note">Холод разворачивается у порога</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -215,7 +230,7 @@
         <div class="ft2-soc"><a href="https://wa.me/77473104846" target="_blank" rel="noopener" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a><a href="https://www.instagram.com/volcano_kazakhstan/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></a><a href="mailto:info@best-air.kz" aria-label="Почта"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></a></div>
       </div>
       <div><h4>Каталог</h4><ul><li><a href="/v2/catalog.html?c=curtains">Тепловые завесы</a></li><li><a href="/v2/catalog.html?c=heaters">Тепловентиляторы</a></li><li><a href="/v2/catalog.html?c=fans">Вентиляторы</a></li><li><a href="/v2/catalog.html?c=automation">Автоматика</a></li><li><a href="/v2/catalog.html?c=fancoils">Фанкойлы</a></li></ul></div>
-      <div><h4>Компания</h4><ul><li><a href="/v2/#inside">Устройство завесы</a></li><li><a href="/v2/#series">Подбор за 3 ответа</a></li><li><a href="/v2/#people">Команда и отзывы</a></li><li><a href="/v2/#lead">Дилерам и монтажникам</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="/v2/#inside">Как работает завеса</a></li><li><a href="/v2/#series">Подбор за 3 ответа</a></li><li><a href="/v2/#people">Команда и отзывы</a></li><li><a href="/v2/#lead">Дилерам и монтажникам</a></li></ul></div>
       <div><h4>Пункты самовывоза</h4><ul class="ft2-addr"><li><b>Си Синхая, 17</b><span>ЖК «Union», н.п. 194, Алматы</span></li><li><b>Бекмаханова, 96/6</b><span>Алматы</span></li><li><a href="mailto:info@best-air.kz">info@best-air.kz</a></li></ul></div>
     </div>
     <div class="fdomain" id="fdomain" role="img" aria-label="teplomash-kazakhstan.kz">
@@ -230,7 +245,7 @@
 
 <script src="/shared/data.js"></script>
 <script src="/shared/curtain3d.js"></script>
-<script src="/shared/airflow.js"></script>
+<script src="/shared/airflow2.js"></script>
 <script src="/v2/main.js"></script>
 <script src="/v2/popup.js"></script>
 </body>

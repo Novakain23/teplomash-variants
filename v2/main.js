@@ -61,7 +61,7 @@
       const w = 1.651 * len * zoom * H * .9, h = .256 * zoom * H;
       return { x: W / 2 - w / 2, w, y: H / 2 + h * .46, depth: H / 2 - h * .4 };
     };
-    const af = window.Airflow && Airflow(flow, { source: () => geo(), depth: () => geo().depth, mode: 1, density: 1.15, streak: .8, lw: 1.5, glow: .26, cool: [90, 150, 215], warm: [232, 140, 40], snow: true, flakes: 46, wind: 1, flakeRGB: '86,140,200', snowRegion: () => ({ x0: 0, x1: flow.clientWidth * .55 }) });
+    const af = window.Airflow2 && Airflow2(flow, { source: () => geo(), floor: () => flow.clientHeight * .97, flow: 1, heat: 1, cold: true, snow: true, density: 1.1 });
     const door = $('#door');
     const placeDoor = () => { const g = geo(); Object.assign(door.style, { left: (g.x - 8) + 'px', width: (g.w + 16) + 'px', top: (g.y - 6) + 'px' }); };
     placeDoor(); new ResizeObserver(placeDoor).observe(model);
@@ -79,7 +79,7 @@
       knob.style.left = b.offsetLeft + 'px'; knob.style.width = b.offsetWidth + 'px';
       knob.style.backgroundColor = m === 0 ? '#3A2614' : m === 1 ? '#3D6F9C' : '#A85A08';
       const c = conf[m];
-      c3 && c3.target({ heat: c.heat }); af && af.mode(c.flow);
+      c3 && c3.target({ heat: c.heat }); af && af.set({ flow: c.flow, heat: c.heat });
       show.style.setProperty('--tint', c.tint); show.dataset.m = m; $('#doorT').textContent = c.t;
       const cap = $('#cap');
       if (first) cap.innerHTML = caps[m];
@@ -100,26 +100,29 @@
     model.addEventListener('pointerup', e => { if (!drag) return; drag = false; model.style.cursor = ''; by += (e.clientX - sx) / 260; bp = Math.max(-.5, Math.min(.6, bp + (e.clientY - sy) / 400)); });
   }
 
-  /* INSIDE: one screen, four tabs turn the unit */
-  const m2 = $('#model2');
-  if (m2) {
-    const views = [
-      { yaw: -.5, pitch: -.12, heat: 0, tag: 'Перфорированная панель' },
-      { yaw: -.2, pitch: .38, heat: 1, tag: 'Нагреватель за соплом' },
-      { yaw: .35, pitch: .3, heat: .45, tag: 'Сопло и направляющие' },
-      { yaw: -1.05, pitch: -.05, heat: .15, tag: 'Торец: подключение и монтаж' }
-    ];
-    const z2 = () => Math.min(1.15, m2.clientWidth * .78 / (1.651 * .8 * Math.max(1, m2.clientHeight)));
-    const c = window.Curtain3D && Curtain3D(m2, Object.assign({ light: 'dusk', zoom: z2(), sway: false, interactive: false }, views[0]));
-    new ResizeObserver(() => c && c.set({ zoom: z2() })).observe(m2);
-    const feats = $$('.feat');
-    let cur = 0, auto = null;
-    const pick = i => {
-      cur = i; feats.forEach((f, k) => { f.classList.toggle('on', k === i); f.setAttribute('aria-selected', k === i); });
-      const v = views[i]; c && c.target({ yaw: v.yaw, pitch: v.pitch, heat: v.heat }); $('#tag').textContent = v.tag;
-    };
-    feats.forEach((f, k) => f.addEventListener('click', () => { clearInterval(auto); auto = 'stop'; pick(k); }));
-    if (!reduce) new IntersectionObserver(es => { if (es[0].isIntersecting && auto === null) auto = setInterval(() => pick((cur + 1) % 2), 5000); }, { threshold: .5 }).observe(m2);
+  /* HOW IT WORKS: side view of a doorway — switch the curtain off and the cold walks in */
+  const d2 = $('#demo2');
+  if (d2) {
+    const unit = $('#d2Unit'), flowC = $('#d2Flow');
+    // the unit hangs on the inner side of the wall, right above the doorway
+    const geo2 = () => { const W = d2.clientWidth, H = d2.clientHeight; const wx = W * .47; return { x: wx + 8, w: Math.max(26, W * .06), y: H * .2 + H * .07, W, H, wx }; };
+    const placeU = () => { const g = geo2(); const uw = g.W * .3, uh = uw * .62; Object.assign(unit.style, { width: uw + 'px', height: uh + 'px', left: (g.x + g.w / 2 - uw / 2) + 'px', top: (g.H * .2 + g.H * .035 - uh / 2) + 'px' }); };
+    placeU(); new ResizeObserver(placeU).observe(d2);
+    let c3d = null, af2 = null, started = false;
+    new IntersectionObserver((e, o) => {
+      if (!e[0].isIntersecting || started) return; started = true; o.disconnect();
+      c3d = window.Curtain3D && Curtain3D(unit, { yaw: -1.28, pitch: .22, heat: 1, light: 'warm', zoom: 1.25, len: .8, sway: false, interactive: false });
+      af2 = window.Airflow2 && Airflow2(flowC, { source: () => { const g = geo2(); return { x: g.x, y: g.y, w: g.w }; }, floor: () => d2.clientHeight * .86, flow: 1, heat: 1, cold: true, snow: true, density: 1.4, scale: 1.1 });
+    }, { rootMargin: '150px' }).observe(d2);
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=43.24&longitude=76.89&current=temperature_2m').then(r => r.json()).then(d => { const t = Math.round(d.current.temperature_2m); if (t < 15) $('#d2Out').textContent = (t > 0 ? '+' : t < 0 ? '−' : '') + Math.abs(t) + '°'; }).catch(() => {});
+    let on = true, tIn = 21, anim = 0;
+    const tempTo = target => { cancelAnimationFrame(anim); const step = () => { tIn += (target - tIn) * .04; $('#d2In').textContent = '+' + Math.round(tIn) + '°'; if (Math.abs(target - tIn) > .3) anim = requestAnimationFrame(step); else $('#d2In').textContent = '+' + target + '°'; }; anim = requestAnimationFrame(step); };
+    $('#d2Sw').addEventListener('click', () => {
+      on = !on; $('#d2Sw').setAttribute('aria-checked', on); d2.classList.toggle('off', !on);
+      $('#d2Lab').textContent = on ? 'Завеса работает' : 'Завеса выключена';
+      $('#d2Note').textContent = on ? 'Холод разворачивается у порога' : 'Холод идёт по полу к кассе';
+      af2 && af2.set({ flow: on ? 1 : 0 }); c3d && c3d.target({ heat: on ? 1 : 0 }); tempTo(on ? 21 : 12);
+    });
   }
 
   /* QUIZ as a compact WhatsApp-style chat with big answer buttons */

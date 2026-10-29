@@ -21,14 +21,25 @@
   float smax(float a, float b, float k){ float h=max(k-abs(a-b),0.)/k; return max(a,b)+h*h*k*.25; }
 
   float L(){ return uLen; }
+  float profile(vec3 p, float inflate){            // white body cross-section: rounded box + convex front
+    float cyl = length(p.yz - vec2(-.08,-.2)) - (.39+inflate);
+    return cyl;
+  }
   float mapB(vec3 p){
     float len=L();
-    float body = sdRoundBox(p, vec3(len, .155, .19), .045);
-    float cyl  = length(p.yz - vec2(-.08,-.2)) - .39;         // convex front, rounder towards the top
-    float d = smax(body, cyl, .03);
-    float slot = sdBox(p - vec3(0.,-.158,.06), vec3(len-.075,.024,.085));
-    d = smax(d, -slot, .008);
-    return d;
+    float body = sdRoundBox(p, vec3(len-.03, .155, .19), .045);
+    float d = smax(body, profile(p,0.), .03);
+    // recessed perforated field on the curved front (inset by ~3 mm, crisp edges)
+    float field = sdBox(vec3(p.x, p.y-.004, 0.), vec3(len-.165, .116, 1.));
+    float shell = (.386) - length(p.yz - vec2(-.08,-.2));
+    d = smax(d, -max(field-.004, shell), .0035);
+    // outlet slot
+    float slot = sdBox(p - vec3(0.,-.158,.06), vec3(len-.085,.024,.085));
+    d = smax(d, -slot, .006);
+    // grey end caps, a touch proud of the body
+    vec3 q = p; q.x = abs(p.x) - (len-.024);
+    float cap = smax(sdRoundBox(q, vec3(.026,.163,.198), .03), profile(p,.007), .03);
+    return min(d, cap);
   }
   float map(vec3 p){ return mapB(p); }
 
@@ -50,43 +61,53 @@
     return length(dot(a,a)<dot(b,b)?a:b);
   }
 
+  vec3 env(vec3 r){                           // studio environment: floor, sky, two softboxes
+    vec3 col = mix(vec3(.42,.39,.36)*uFill, uSky, smoothstep(-.35,.45,r.y));
+    col += uKey*1.6*smoothstep(.86,.97,dot(r, normalize(vec3(-.45,.75,.5))));
+    col += uSky*.7*smoothstep(.9,.985,dot(r, normalize(vec3(.75,.35,.55))));
+    col += uSky*.35*smoothstep(.55,.9,r.y);
+    return col;
+  }
   vec3 shade(vec3 p, vec3 rd, out float glow){
     vec3 n = nor(p);
     float len=L();
-    vec3 alb = uBody; float gloss=.55; glow=0.;
-    bool inSlot = p.y < -.128 && abs(p.x) < len-.07 && p.z > -.03 && p.z < .15;
+    vec3 alb = uBody; float rough=.28, spec=.045; glow=0.;
+    bool cap = abs(p.x) > len-.051;
+    bool inSlot = !cap && p.y < -.128 && abs(p.x) < len-.08 && p.z > -.03 && p.z < .15;
+    bool inField = !cap && n.z > .15 && abs(p.x) < len-.161 && abs(p.y-.004) < .112;
     if(inSlot){
       float fz = abs(fract(p.z*40.)-.5);
       float fwz = fwidth(p.z*40.)*1.5;
-      float blades = smoothstep(.12-fwz,.12+fwz,fz);          // wide graphite louvers, thin gaps
-      alb = mix(vec3(.035,.038,.042), vec3(.20,.21,.22), blades);
-      gloss=.25;
+      float blades = smoothstep(.12-fwz,.12+fwz,fz);
+      alb = mix(vec3(.03,.032,.036), vec3(.24,.25,.26), blades);
+      rough=.5; spec=.03;
       float depth = smoothstep(-.1,.07,p.z)*smoothstep(.15,.03,p.z);
       glow = uHeat * (1.-blades) * (.25+.75*depth) * .9 + uHeat*.06*depth;
-    } else if(n.z > .3 && abs(p.x) < len-.17 && p.y > -.112 && p.y < .128){
-      // perforated grille, hex holes on the curved panel (arc-length coords)
-      float arc = atan(p.y+.08, p.z+.2)*.39;
-      vec2 uv = vec2(p.x, arc) / .0205;
+    } else if(inField){
+      float arc = atan(p.y+.08, p.z+.2)*.386;
+      vec2 uv = vec2(p.x, arc) / .0158;
       float d = hexDist(uv);
-      float fw = fwidth(d)*1.2;
-      float hole = 1.-smoothstep(.30-fw,.30+fw,d);
-      alb = mix(uBody*.94, vec3(.11,.12,.13), hole*.92);
-      gloss = mix(.5,.05,hole);
-      glow = uHeat*hole*.22*smoothstep(.06,-.1,p.y);
-      // soft margin where the grille meets the solid wings
-      float m = smoothstep(len-.17,len-.24,abs(p.x));
-      alb = mix(uBody, alb, m);
+      float fw = fwidth(d)*1.1;
+      float hole = 1.-smoothstep(.27-fw,.27+fw,d);
+      float rim  = smoothstep(.27+fw*2.5,.27,d) * (1.-hole);           // tiny bevel around each hole
+      vec3 inside = mix(vec3(.05,.052,.056), vec3(.16,.15,.14), uHeat*.25);
+      alb = mix(uBody*.985, inside, hole);
+      alb *= 1. - rim*.10;
+      rough = mix(.3,.9,hole); spec = mix(.045,.0,hole);
+      glow = uHeat*hole*.10*smoothstep(.05,-.11,p.y);
+    } else if(cap){
+      alb = vec3(.80,.815,.83)*uBody/vec3(.93);                      // satin grey side panels
+      rough=.45; spec=.04;
+      float seam = 1.-smoothstep(.0,.0035,abs(abs(p.x)-(len-.051)));
+      alb *= 1.-.45*seam;
     }
-    // end caps a hair cooler
-    if(abs(p.x) > len-.045) alb *= vec3(.965,.97,.98);
-    alb *= 1.-.35*(1.-smoothstep(.0,.004,abs(abs(p.x)-(len-.045))));   // end-cap seam
-    // Teplomash badge: small red/blue mark under the grille
-    vec2 bp = vec2(p.x, p.y+.133);
-    if(n.z>.5 && abs(bp.x)<.022 && abs(bp.y)<.011){
-      float s = step(0.,bp.x);
-      alb = mix(vec3(.80,.12,.16), vec3(.13,.2,.62), s);
-      gloss=.3;
-    }
+    // shallow groove along the top edge of the front panel
+    if(!cap && n.z>.1 && abs(p.y-.132)<.0022) alb*=.82;
+    // display window + Teplomash red/blue mark under the field
+    vec2 bp = vec2(p.x - (len-.27), p.y+.128);
+    if(!cap && n.z>.4 && abs(bp.x)<.05 && abs(bp.y)<.0085){ alb = vec3(.06,.07,.08); rough=.15; spec=.06; }
+    vec2 mp = vec2(p.x, p.y+.128);
+    if(!cap && n.z>.4 && abs(mp.x)<.02 && abs(mp.y)<.009){ alb = mix(vec3(.78,.1,.14), vec3(.12,.2,.6), step(0.,mp.x)); rough=.3; }
 
     vec3 Lk = normalize(vec3(-.55,.85,.65));
     vec3 Lf = normalize(vec3(.8,.15,.55));
@@ -94,21 +115,25 @@
     float df = clamp(dot(n,Lf),0.,1.);
     float sh = softShadow(p+n*.003, Lk);
     float oc = ao(p,n);
-    vec3 col = alb*(uKey*dk*sh*1.12 + uFill*df*.3 + uSky*(.5+.5*n.y)*.42*oc);
-    vec3 h = normalize(Lk - rd);
-    col += uKey*pow(clamp(dot(n,h),0.,1.), 70.)*gloss*.6*sh;
-    float fr = pow(1.-clamp(dot(n,-rd),0.,1.), 4.);
-    // studio softbox reflected along the curved front
+    // diffuse: key with soft shadow, cool fill, sky ambient with AO
+    vec3 col = alb*(uKey*dk*sh*1.05 + uFill*df*.28 + uSky*(.55+.45*n.y)*.45*oc);
+    // specular: GGX-ish key highlight + environment reflection with Schlick fresnel
+    vec3 v = -rd, h = normalize(Lk + v);
+    float a2 = rough*rough*rough*rough;
+    float nh = clamp(dot(n,h),0.,1.);
+    float D = a2 / (3.1416*pow(nh*nh*(a2-1.)+1., 2.));
+    float nv = clamp(dot(n,v),0.,1.);
+    float F = spec + (1.-spec)*pow(1.-nv, 5.);
+    col += uKey * D * F * dk * sh * .35;
     vec3 r = reflect(rd, n);
-    float band = smoothstep(.12,.32,r.y)*smoothstep(.78,.5,r.y);
-    col += uSky*band*gloss*(.16+.3*fr)*oc;
-    col += uRim*fr*.18;
-    // warm bounce from the heated stream below
-    col += vec3(1.,.5,.2)*uHeat*.08*clamp(-n.y,0.,1.);
+    col += env(r) * F * mix(1., .25, rough) * oc;
+    col += uRim * pow(1.-nv, 4.) * .12;
+    col += vec3(1.,.5,.2)*uHeat*.07*clamp(-n.y,0.,1.);
     col += mix(vec3(1.,.36,.06), vec3(1.,.7,.35), glow)*glow*1.15;
     return col;
   }
 
+  vec3 aces(vec3 x){ x*=1.05; return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),0.,1.); }
   bool boxHit(vec3 ro, vec3 rd, vec3 b, out float t0, out float t1){
     vec3 m=1./rd, n=m*ro, k=abs(m)*b, a=-n-k, c=-n+k;
     t0=max(max(a.x,a.y),a.z); t1=min(min(c.x,c.y),c.z);
@@ -134,13 +159,13 @@
     float glow;
     if(hit){
       vec3 col = shade(ro+rd*t, rd, glow);
-      col = col/(1.+col*.18);
+      col = aces(col);
       o = vec4(pow(col, vec3(1./2.2)), 1.);
     } else {
       float a = 1.-smoothstep(0., px*1.6, dmin);
       if(a<=0.){ o=vec4(0.); return; }
       vec3 col = shade(ro+rd*tmin, rd, glow);
-      col = col/(1.+col*.18);
+      col = aces(col);
       o = vec4(pow(col, vec3(1./2.2))*a, a);
     }
   }`;
