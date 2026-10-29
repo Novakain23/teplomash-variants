@@ -91,7 +91,7 @@
   /* HERO copy: rotating business type + live Almaty temperature */
   const rot = $('#rot');
   if (rot) {
-    const words = ['магазина', 'кафе', 'офиса', 'склада', 'автосервиса', 'любого бизнеса'];
+    const words = ['магазина', 'кафе', 'офиса', 'склада', 'автосервиса', 'бизнеса'];
     const w = rot.querySelector('.rot-w'); let i = 0;
     if (!reduce) setInterval(() => {
       i = (i + 1) % words.length; w.classList.add('out');
@@ -363,6 +363,7 @@
     const R = TM.reviews, half = Math.ceil(R.length / 2);
     const row = (list, dir) => `<div class="marq-row ${dir}"><div class="marq-track">${list.map(card).join('')}${list.map(card).join('')}</div></div>`;
     $('#marq').innerHTML = row(R, 'l');
+    const more = $('#rvMore'); more && more.addEventListener('click', () => { const o = $('#marq').classList.toggle('all'); more.textContent = o ? 'Свернуть' : 'Показать все отзывы'; if (!o) $('#reviews').scrollIntoView({ behavior: 'smooth' }); });
   }
 
   /* FOOTER: the domain under an air curtain. A warm stream sweeps across (or follows the pointer):
