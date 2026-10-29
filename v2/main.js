@@ -103,6 +103,18 @@
     }).catch(() => {});
   }
 
+  /* hero KPIs count up once */
+  const kp = $$('.kp b span[data-to]');
+  if (kp.length && !reduce) {
+    kp.forEach(e => e.textContent = '0');
+    new IntersectionObserver((es, o) => {
+      if (!es[0].isIntersecting) return; o.disconnect();
+      const t0 = performance.now();
+      const f = t => { const k = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - k, 3); kp.forEach(x => x.textContent = Math.round(+x.dataset.to * e)); if (k < 1) requestAnimationFrame(f); };
+      requestAnimationFrame(f);
+    }, { threshold: .6 }).observe($('.kpis'));
+  }
+
   /* HERO showroom */
   const model = $('#model'), flow = $('#flow');
   if (model) {
