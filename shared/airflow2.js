@@ -24,7 +24,7 @@
     o = Object.assign({ flow: 1, heat: 1, cold: true, side: 'left', snow: false, density: 1, scale: 1, alpha: 1 }, o);
     const ctx = canvas.getContext('2d');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const S = { cool: [120, 176, 228], warm: [236, 128, 40], hot: [214, 84, 22], cold: [92, 150, 214] };
+    const S = { cool: [120, 176, 228], warm: [236, 128, 40], hot: [214, 84, 22], cold: [74, 134, 204] };
     // jet sprites are re-tinted when the temperature changes noticeably
     let jetSprite = null, jetHeat = -1, coldSprite = sprite(S.cold.join(','));
     let W = 0, H = 0, dpr = 1, raf = 0, vis = true, last = 0;
@@ -63,7 +63,7 @@
       // emit
       const jetRate = jet.length > 240 * o.density ? 0 : st.flow * 2.4 * o.density * Math.min(1.4, src.w / 260 + .5);
       for (let i = 0; i < jetRate; i++) if (Math.random() < jetRate / Math.ceil(jetRate)) spawnJet(src);
-      if (o.cold && cold.length < 150 * o.density) { const cr = .5 * o.density; for (let i = 0; i < cr; i++) if (Math.random() < cr / Math.ceil(cr) * .9) spawnCold(src, fl); }
+      if (o.cold && cold.length < 150 * o.density) { const cr = .68 * o.density; for (let i = 0; i < cr; i++) if (Math.random() < cr / Math.ceil(cr) * .9) spawnCold(src, fl); }
       const t = performance.now() / 1000;
       // jet: slows down, wobbles, spreads along the floor
       for (let i = jet.length - 1; i >= 0; i--) {
@@ -121,7 +121,7 @@
         ctx.drawImage(jetSprite, -p.r, -len + p.r * .5, p.r * 2, len); ctx.restore();
       }
       for (const p of cold) {
-        const a = Math.min(1, p.life * 1.3) * .15 * o.alpha;
+        const a = Math.min(1, p.life * 1.3) * .22 * o.alpha;
         ctx.globalAlpha = a;
         ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.atan2(p.vy, p.vx));
         const len = p.r * (2 + Math.abs(p.vx) * 1.4);
