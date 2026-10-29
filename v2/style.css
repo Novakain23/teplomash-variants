@@ -1158,3 +1158,20 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
   .proof-t b{font-size:14px}.proof-t span{font-size:12px}
   .show .kpis{display:none}
 }
+
+/* round 16: certified badge */
+.eyebrow{position:relative;overflow:hidden;gap:12px;padding:6px 8px 6px 6px;border-radius:18px;background:linear-gradient(180deg,#fff,#FBF6EE);box-shadow:0 0 0 1px rgba(154,90,6,.16),0 12px 26px -20px rgba(120,72,10,.6)}
+.eyebrow::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(233,169,63,.28),transparent);transform:skewX(-20deg);animation:shine 7s ease-in-out 1s infinite}
+.seal{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:12px;background:radial-gradient(circle at 30% 25%,#F5C46B,#C9862A);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 12px -6px rgba(176,108,10,.8)}
+.seal svg{width:30px;height:30px}
+.seal-r{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1.4;transform-origin:20px 17px;animation:sealSpin 18s linear infinite}
+.seal-c{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:20;stroke-dashoffset:20;animation:sealCheck .8s var(--ease) .6s forwards}
+@keyframes sealSpin{to{transform:rotate(360deg)}}
+@keyframes sealCheck{to{stroke-dashoffset:0}}
+.eb-t{display:grid;line-height:1.2;padding-right:4px}
+.eb-t b{font-weight:500;font-size:14.5px;color:var(--ink)}
+.eb-t span{font-size:12.5px;color:var(--ink-3)}
+.eb-flag{display:flex;flex-direction:row;width:20px;height:12px;border-radius:3px;overflow:hidden;margin:0 6px 0 4px;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.eb-flag i{flex:1}
+.eb-flag i:first-child{background:#C8202A}.eb-flag i:last-child{background:#22338F}
+@media (prefers-reduced-motion:reduce){.eyebrow::after,.seal-r{animation:none}.seal-c{animation:none;stroke-dashoffset:0}}
