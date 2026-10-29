@@ -119,14 +119,15 @@
   const model = $('#model'), flow = $('#flow');
   if (model) {
     const len = .8;
-    const zf = () => Math.min(1.12, model.clientWidth * .84 / (1.651 * len * model.clientHeight));
+    const zf = () => Math.min(1.05, model.clientWidth * .74 / (1.651 * len * model.clientHeight));
     let zoom = zf();
     const c3 = window.Curtain3D && Curtain3D(model, { yaw: -.42, pitch: .1, heat: 1, light: 'studio', zoom, len, pointerTarget: $('#show') });
     new ResizeObserver(() => { zoom = zf(); c3 && c3.set({ zoom }); }).observe(model);
     const geo = () => {
       const H = model.clientHeight, W = model.clientWidth;
       const w = 1.651 * len * zoom * H * .9, h = .256 * zoom * H;
-      return { x: W / 2 - w / 2, w, y: H / 2 + h * .46, depth: H / 2 - h * .4 };
+      const oy = model.offsetTop;
+      return { x: W / 2 - w / 2, w, y: oy + H / 2 + h * .46, top: oy + H / 2 - h * .5, depth: H / 2 - h * .4 };
     };
     const af = window.Airflow2 && Airflow2(flow, { source: () => geo(), floor: () => flow.clientHeight * .97, flow: 1, heat: 1, cold: true, snow: true, density: 1.1 });
     const door = $('#door');

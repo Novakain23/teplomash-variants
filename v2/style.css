@@ -1392,3 +1392,6 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
 .fd-air{-webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 80%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 80%,transparent)}
 .wa-prog{background:var(--brown);padding:0 18px 12px}
 @media (max-width:860px){.wa-opts{grid-template-columns:1fr}.wa-opts button{height:50px}.wa-opts button i{width:34px;height:34px}}
+/* round 25: raise the hero unit */
+.show-card .stage #model{inset:auto;left:0;right:0;top:-9%;height:100%;width:100%}
+.show-card .stage{height:clamp(260px,24vw,340px)}
