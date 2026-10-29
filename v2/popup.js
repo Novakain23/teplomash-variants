@@ -64,7 +64,7 @@
     if (!built) build();
     S.set('tm_talon', 'shown');
     lastFocus = document.activeElement;
-    requestAnimationFrame(() => { el.classList.add('open'); document.body.style.overflow = 'hidden'; el.querySelector('input[type=tel]').focus({ preventScroll: true }); });
+    setTimeout(() => { el.classList.add('open'); document.body.style.overflow = 'hidden'; el.querySelector('input[type=tel]').focus({ preventScroll: true }); }, 30);
   };
 
   if (demo) { setTimeout(open, 2000); return; }
