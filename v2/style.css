@@ -1507,3 +1507,22 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
   .pass-star{white-space:nowrap;font-size:0;gap:0;padding:5px;border-radius:50%}
   .pass-star svg{width:12px;height:12px}
 }
+
+/* round 29: team header */
+#people{padding-top:72px}
+.team-top{align-items:center}
+.team-top .h2 .hl{font-style:normal;color:var(--heat);position:relative;white-space:nowrap}
+.team-top .h2 .hl::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.14em;border-radius:.1em;background:linear-gradient(90deg,var(--amber-2),rgba(233,169,63,.25));z-index:-1}
+.team-top .h2{position:relative;z-index:0}
+.team-note{justify-self:end;max-width:460px;padding:20px 22px;border-radius:24px;background:#fff;box-shadow:0 0 0 1px var(--line),0 24px 44px -36px rgba(58,38,20,.55);position:relative}
+.team-note::before{content:"“";position:absolute;right:18px;top:-8px;font-family:var(--fd);font-weight:700;font-size:84px;line-height:1;color:rgba(233,169,63,.35)}
+.tn-faces{display:flex;align-items:center}
+.tn-faces img,.tn-faces span{width:34px;height:34px;border-radius:50%;border:2.5px solid #fff;margin-left:-9px;object-fit:cover;object-position:66% 40%}
+.tn-faces img:first-child{margin-left:0}
+.tn-faces span{display:grid;place-items:center;background:var(--brown);color:var(--amber-2);font-size:12px;font-weight:500}
+.team-note p{margin-top:12px;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.team-note p b{font-weight:500;color:var(--ink)}
+.tn-tag{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:13.5px;font-weight:500;color:#1F8A4C;padding:6px 12px;border-radius:999px;background:#E9F8EE}
+.tn-tag svg{width:15px;height:15px}
+@media (max-width:1100px){.team-note{justify-self:start}}
+@media (max-width:860px){#people{padding-top:52px}.team-note{padding:16px}.team-note::before{font-size:64px}}
