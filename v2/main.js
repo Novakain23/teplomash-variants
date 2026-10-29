@@ -110,7 +110,7 @@
       const v = views[i]; c && c.target({ yaw: v.yaw, pitch: v.pitch, heat: v.heat }); $('#tag').textContent = v.tag;
     };
     feats.forEach((f, k) => f.addEventListener('click', () => { clearInterval(auto); auto = 'stop'; pick(k); }));
-    if (!reduce) new IntersectionObserver(es => { if (es[0].isIntersecting && auto === null) auto = setInterval(() => pick((cur + 1) % 4), 4200); }, { threshold: .5 }).observe(m2);
+    if (!reduce) new IntersectionObserver(es => { if (es[0].isIntersecting && auto === null) auto = setInterval(() => pick((cur + 1) % 2), 5000); }, { threshold: .5 }).observe(m2);
   }
 
   /* QUIZ: three answers assemble the curtain on the right */
@@ -192,17 +192,22 @@
   if (bento) bento.innerHTML = TM.scenes.map((s, i) => `<a class="bx rv d${i % 3}" href="${TM.wa('Здравствуйте! Нужна завеса: ' + s.name.toLowerCase() + '. Помогите подобрать.')}" target="_blank" rel="noopener">
       <img src="${s.img}" alt="${s.name}" loading="lazy"><div class="bx-in"><span class="pick">${s.pick}</span><h3>${s.name}</h3><p>${s.text}</p></div></a>`).join('');
 
-  /* rail */
-  const cats = $('#cats'), rail = $('#rail');
-  if (cats && rail) {
-    cats.innerHTML = TM.categories.map((c, i) => `<button role="tab" aria-selected="${i === 0}" data-c="${c.id}">${c.short}</button>`).join('');
-    const fill = id => { rail.innerHTML = TM.products.filter(p => p.cat === id).map(card).join(''); rail.scrollTo({ left: 0 }); watch(); };
+  /* catalog preview: the same tiles as the catalog page */
+  const cats = $('#cats'), ht = $('#homeTiles');
+  if (cats && ht) {
+    cats.innerHTML = TM.categories.slice(0, 4).map((c, i) => `<button role="tab" aria-selected="${i === 0}" data-c="${c.id}">${c.short}</button>`).join('');
+    const pick = { curtains: ['КЭВ-6П2011E', 'КЭВ-12П3041E', 'КЭВ-18П3091E', 'КЭВ-24П4042E'] };
+    const fill = id => {
+      const all = TM.products.filter(p => p.cat === id);
+      const list = pick[id] ? all.filter(p => pick[id].includes(p.id)) : all.slice(0, 4);
+      ht.innerHTML = list.map(window.V2tile).join('');
+      $('#homeMore').href = '/v2/catalog.html?c=' + id;
+      const n = all.length; $('#homeCount').textContent = n > list.length ? `ещё ${n - list.length} ${n - list.length < 5 ? 'модели' : 'моделей'} в каталоге` : '';
+    };
     cats.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('button', cats).forEach(x => x.setAttribute('aria-selected', x === b)); fill(b.dataset.c); });
+    ht.addEventListener('click', e => { if (e.target.closest('a,button')) return; const t = e.target.closest('.tile'); if (t) location.href = '/v2/catalog.html?c=' + TM.products.find(p => p.id === t.dataset.id).cat + '&open=' + encodeURIComponent(t.dataset.id); });
+    ht.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('tile')) e.target.click(); });
     fill('curtains');
-    const step = () => (rail.querySelector('.pd')?.offsetWidth || 300) + 18;
-    $('#nx').onclick = () => rail.scrollBy({ left: step(), behavior: 'smooth' });
-    $('#pv').onclick = () => rail.scrollBy({ left: -step(), behavior: 'smooth' });
-    rail.addEventListener('click', e => { if (e.target.closest('a')) return; const c = e.target.closest('.pd'); if (c) location.href = '/v2/catalog.html?c=' + TM.products.find(p => p.id === c.dataset.id).cat + '&open=' + encodeURIComponent(c.dataset.id); });
   }
 
   /* PEOPLE: review carousel linked to the team */

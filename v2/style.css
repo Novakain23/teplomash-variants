@@ -635,3 +635,25 @@ footer{padding-block:72px 44px}
 }
 
 .side-help .btn-heat,.rq .btn-heat{box-shadow:none}
+
+/* round 4: home catalog tiles + business gain */
+.feat .gain{display:block;font-size:14.5px;line-height:1.45;color:var(--amber-2);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s,margin .4s}
+.feat.on .gain{max-height:90px;opacity:1;margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.dark-panel .feats{align-content:start;gap:12px}
+.dark-panel .feat{padding:26px 28px}
+.dark-panel .feat h3{font-size:24px}
+.home-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:34px}
+.home-tiles .add{display:none}
+.home-tiles .tile{background:var(--bg)}
+.home-more{display:flex;align-items:center;gap:18px;margin-top:28px;flex-wrap:wrap}
+.home-more span{font-size:14px;color:var(--ink-3)}
+@media (max-width:1100px){.home-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){.home-tiles{gap:10px;margin-top:20px}.rail-head .cats{margin-top:16px}}
+.rail-head .cats{margin-top:0}
+.dark-panel .feats{display:flex;flex-direction:column}
+.feat-cta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 26px;border-radius:22px;background:var(--amber);color:var(--ink);transition:background .25s,transform .25s var(--ease)}
+.feat-cta:hover{background:var(--amber-2);transform:translateY(-2px)}
+.feat-cta span{font-size:15px}
+.feat-cta b{display:inline-flex;align-items:center;gap:8px;font-weight:500;white-space:nowrap}
+.feat-cta svg{width:18px;height:18px}
+@media (max-width:860px){.feat-cta{flex-direction:column;align-items:flex-start;gap:6px;padding:18px 20px}}

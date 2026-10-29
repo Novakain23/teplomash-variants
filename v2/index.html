@@ -90,13 +90,12 @@
   <section class="sec inside" id="inside">
     <div class="wrap">
       <div class="dark-panel rv">
-      <div class="inside-head"><div><span class="kick"><b>01</b>Устройство</span><h2 class="h2">Как устроена завеса</h2></div><p class="lead">Четыре узла, от которых зависит, будет ли у входа тепло. Нажмите на узел, и модель повернётся к нему.</p></div>
+      <div class="inside-head"><div><span class="kick"><b>01</b>Устройство</span><h2 class="h2">Как устроена завеса</h2></div><p class="lead">Два узла решают, будет ли у входа тепло. Нажмите на узел, и модель повернётся к нему.</p></div>
       <div class="inside-grid">
         <div class="feats" id="feats" role="tablist" aria-label="Устройство завесы">
-          <button class="feat on" role="tab" aria-selected="true" data-i="0"><small>01 · Корпус и панель</small><h3>Ровный поток по всей длине</h3><p>Воздух забирается через перфорированную панель, поэтому струя одинаковая от края до края двери, без «дыр» для холода.</p></button>
-          <button class="feat" role="tab" aria-selected="false" data-i="1"><small>02 · Нагрев</small><h3>Электрический или водяной</h3><p>Электрические модели работают от сети, водяные подключаются к отоплению здания и экономят на электричестве.</p></button>
-          <button class="feat" role="tab" aria-selected="false" data-i="2"><small>03 · Сопло</small><h3>Плотная струя сверху вниз</h3><p>Узкое сопло формирует воздушный барьер: до 3,5 м высоты для серий 200–300 и до 6,5 м для серии 400.</p></button>
-          <button class="feat" role="tab" aria-selected="false" data-i="3"><small>04 · Управление</small><h3>Пульт, таймер, термостат</h3><p>Режимы вентиляции и обогрева. Летом завеса работает без нагрева и держит прохладу кондиционера.</p></button>
+          <button class="feat on" role="tab" aria-selected="true" data-i="0"><small>01 · Корпус и панель</small><h3>Ровный поток по всей длине</h3><p>Воздух забирается через перфорированную панель, поэтому струя одинаковая от края до края двери, без «дыр» для холода.</p><span class="gain">Для бизнеса: у кассы и витрины не дует, покупатели не спешат уйти.</span></button>
+          <button class="feat" role="tab" aria-selected="false" data-i="1"><small>02 · Нагрев</small><h3>Электрический или водяной</h3><p>Электрические модели работают от сети, водяные подключаются к отоплению здания.</p><span class="gain">Для бизнеса: водяная завеса греет теплом от отопления здания и не нагружает электросеть.</span></button>
+          <a class="feat-cta" href="#series"><span>Не знаете, какая модель нужна?</span><b>Подбор за 3 ответа <svg><use href="#i-arrow"/></svg></b></a>
         </div>
         <div class="sticky"><canvas id="model2" aria-hidden="true"></canvas><span class="tag" id="tag">Перфорированная панель</span></div>
       </div>
@@ -126,11 +125,11 @@
   <section class="sec shelf" id="catalog">
     <div class="wrap">
       <div class="rail-head">
-        <div><span class="kick"><b>03</b>Каталог</span><h2 class="h2 rv">Каталог Тепломаш</h2><div class="cats" role="tablist" aria-label="Категории" id="cats"></div></div>
-        <div class="rail-nav"><button class="circ" id="pv" aria-label="Назад"><svg><use href="#i-left"/></svg></button><button class="circ" id="nx" aria-label="Вперёд"><svg><use href="#i-arrow"/></svg></button></div>
+        <div><span class="kick"><b>03</b>Каталог</span><h2 class="h2 rv">Каталог Тепломаш</h2></div>
+        <div class="cats" role="tablist" aria-label="Категории" id="cats"></div>
       </div>
-      <div class="rail" id="rail"></div>
-      <div style="margin-top:28px"><a class="btn btn-ghost" href="/v2/catalog.html">Открыть весь каталог <svg><use href="#i-arrow"/></svg></a></div>
+      <div class="home-tiles" id="homeTiles"></div>
+      <div class="home-more"><a class="btn btn-ink" href="/v2/catalog.html" id="homeMore">Весь каталог <svg><use href="#i-arrow"/></svg></a><span id="homeCount"></span></div>
     </div>
   </section>
 
