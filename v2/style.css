@@ -1699,3 +1699,20 @@ footer.ftr{color:var(--ink);background:linear-gradient(180deg,#F6EFE4 0%,#F2E1C2
 @media (max-width:860px){.pass:not(.lead) .pass-wa{margin:0 12px 12px}}
 @media (max-width:860px){.revs2-side .revs2-score{flex:1;min-width:0}.revs2-side .revs2-score span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 @media (min-width:861px){.pass.lead .pass-star{font-size:0;gap:0;padding:5px;border-radius:50%;left:6px;bottom:6px}}
+
+/* round 31: compact home catalog */
+#catalog{padding-block:64px}
+#catalog .kick{margin-bottom:10px}
+#catalog .h2{font-size:clamp(30px,3vw,44px)}
+.home-tiles{margin-top:22px;gap:14px}
+.hc-stage{aspect-ratio:1/.68;margin:6px;border-radius:16px}
+.hc-r{max-height:56%}
+.hc-b{padding:6px 14px 14px;gap:4px}
+.hc-b h3{font-size:18px}
+.hc-b>p{font-size:13.5px}
+.hc-bars{margin-top:6px;padding:9px 10px;gap:6px}
+.hc-f{padding-top:10px}
+.hc-f .btn{--h:42px;font-size:14px}
+.home-more{margin-top:20px}
+.home-more .btn{--h:46px}
+@media (max-width:860px){#catalog{padding-block:44px}.hc-stage{aspect-ratio:1/.8}}
