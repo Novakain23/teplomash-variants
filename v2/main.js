@@ -19,6 +19,14 @@
     } catch (e) { return false; }
   };
 
+  /* header: a white "key" slides under the hovered menu item */
+  const nav = document.querySelector('.pill nav');
+  if (nav) {
+    const at = a => { nav.style.setProperty('--hx', a.offsetLeft + 'px'); nav.style.setProperty('--hw', a.offsetWidth + 'px'); nav.style.setProperty('--ho', 1); };
+    nav.querySelectorAll('a').forEach(a => { a.addEventListener('mouseenter', () => !a.hasAttribute('aria-current') && at(a)); a.addEventListener('focus', () => at(a)); });
+    nav.addEventListener('mouseleave', () => nav.style.setProperty('--ho', 0));
+  }
+
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   const watch = () => $$('.rv:not(.in)').forEach(el => io.observe(el));
 

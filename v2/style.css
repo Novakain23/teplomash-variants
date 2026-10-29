@@ -895,3 +895,18 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .d2-lab{font-size:11px}
 @media (max-width:1100px){.sell{grid-template-columns:1fr;padding:32px}}
 @media (max-width:860px){.inside{padding-block:64px}.sell{padding:24px 18px}.demo2{aspect-ratio:1.05}}
+
+/* round 10: header — one inner padding everywhere, nav as a recessed track with a sliding "key" */
+.pill{height:72px;padding:0 12px 0 24px;gap:12px}
+.pill nav{position:relative;gap:2px;margin-left:16px;padding:4px;border-left:0;border-radius:999px;background:#F1EBE2;box-shadow:inset 0 1px 2px rgba(58,38,20,.12),inset 0 0 0 1px rgba(231,223,211,.9)}
+.pill nav::before{content:"";position:absolute;top:4px;bottom:4px;left:var(--hx,4px);width:var(--hw,0);border-radius:999px;background:#fff;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 0 rgba(58,38,20,.10),0 6px 14px -6px rgba(58,38,20,.35);opacity:var(--ho,0);transition:left .35s var(--ease),width .35s var(--ease),opacity .25s}
+.pill nav a{position:relative;z-index:1;height:40px;padding:0 16px;font-size:15px;background:transparent;box-shadow:none;color:var(--ink-2)}
+.pill nav a:hover{background:transparent;box-shadow:none;transform:none;color:var(--ink)}
+.pill nav a:active{transform:scale(.96)}
+.pill nav a[aria-current=page]{background:var(--brown);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18),0 6px 14px -6px rgba(58,38,20,.6)}
+.pill .tel{height:48px;padding:0 18px 0 6px;background:#fff}
+.pill .tel i{width:36px;height:36px}
+.pill .btn-sm{--h:48px;padding:0 24px;box-shadow:0 2px 0 rgba(0,0,0,.25),0 10px 20px -10px rgba(58,38,20,.7);transition:transform .2s var(--ease),box-shadow .2s,background .2s}
+.pill .btn-sm:hover{transform:translateY(-1px);box-shadow:0 3px 0 rgba(0,0,0,.25),0 14px 24px -10px rgba(58,38,20,.7)}
+.pill .btn-sm:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.25),0 6px 12px -8px rgba(58,38,20,.7)}
+.pill .tel:active{transform:scale(.97)}
