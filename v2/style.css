@@ -985,3 +985,40 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .mg-wa{width:42px;height:42px;padding:0;justify-content:center;border-radius:50%}
 .mg-wa span{display:none}
 .mg-wa svg{width:19px;height:19px}
+
+/* ===== round 12: header micro-interactions ===== */
+.hdr{transition:top .4s var(--ease)}
+.pill{transition:height .4s var(--ease),box-shadow .4s,background .4s}
+.pill nav a{gap:8px}
+.ni{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;color:var(--heat);transition:transform .45s cubic-bezier(.3,1.6,.5,1),color .2s}
+.pill nav a[aria-current=page] .ni{color:var(--amber-2)}
+.pill nav a:hover .ni{transform:translateY(-2px) rotate(-8deg) scale(1.12)}
+.pill nav a:nth-child(2):hover .ni{transform:translateX(3px)}
+.pill nav a:nth-child(4):hover .ni{transform:rotate(72deg) scale(1.15)}
+/* live phone */
+.pill .tel{padding:0 18px 0 5px;gap:10px}
+.pill .tel i{position:relative}
+.live{position:absolute;right:0;top:0;width:10px;height:10px;border-radius:50%;background:#2FBF5B;border:2px solid #fff}
+.live::after{content:"";position:absolute;inset:-2px;border-radius:50%;background:#2FBF5B;animation:livePulse 2.2s ease-out infinite;z-index:-1}
+@keyframes livePulse{from{transform:scale(1);opacity:.6}to{transform:scale(2.6);opacity:0}}
+.tel-t{display:grid;line-height:1.15}
+.tel-t small{font-size:11px;font-weight:400;color:#2C8A4A}
+.pill .tel:hover i svg{animation:ring .7s ease-in-out}
+@keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(-18deg)}30%{transform:rotate(16deg)}45%{transform:rotate(-12deg)}60%{transform:rotate(9deg)}75%{transform:rotate(-4deg)}}
+/* CTA: magnetic + shine */
+.cta-hd{position:relative;overflow:hidden;isolation:isolate;will-change:transform}
+.cta-hd span{position:relative;z-index:1}
+.cta-hd::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(233,169,63,.55),rgba(255,236,200,.7),rgba(233,169,63,.55),transparent);transform:skewX(-20deg);animation:shine 6s ease-in-out 2s infinite;z-index:0}
+@keyframes shine{0%,70%{left:-60%}88%,100%{left:130%}}
+.pill .btn-sm.cta-hd:hover{transform:translate(var(--mx,0),calc(var(--my,0px) - 1px))}
+.cta-hd{transform:translate(var(--mx,0),var(--my,0));transition:transform .25s var(--ease),box-shadow .2s,background .35s,color .35s}
+/* compact header after the first screen */
+.hdr.scrolled .pill{height:60px}
+.hdr.scrolled .pill nav a{height:36px}
+.hdr.scrolled .pill .tel{height:44px}
+.hdr.scrolled .pill .btn-sm{--h:44px}
+.hdr.scrolled .cta-hd{background:var(--amber);color:var(--ink);box-shadow:0 2px 0 rgba(120,72,10,.35),0 10px 22px -10px rgba(176,108,10,.8)}
+.hdr.scrolled .cta-hd::after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent)}
+@media (max-width:1240px){.ni{display:none}}
+@media (max-width:1180px){.tel-t small{display:none}}
+@media (prefers-reduced-motion:reduce){.cta-hd::after,.live::after{animation:none}.cta-hd{transform:none!important}}

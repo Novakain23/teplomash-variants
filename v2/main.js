@@ -19,6 +19,19 @@
     } catch (e) { return false; }
   };
 
+  /* header: compact after the first screen, magnetic CTA */
+  const hdrEl = document.querySelector('.hdr');
+  if (hdrEl) { const sc = () => hdrEl.classList.toggle('scrolled', scrollY > innerHeight * .6); addEventListener('scroll', sc, { passive: true }); sc(); }
+  const cta = document.querySelector('.cta-hd');
+  if (cta && !reduce && matchMedia('(pointer:fine)').matches) {
+    addEventListener('pointermove', e => {
+      const r = cta.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = e.clientX - cx, dy = e.clientY - cy, d = Math.hypot(dx, dy), R = 120;
+      const k = d < R ? (1 - d / R) : 0;
+      cta.style.setProperty('--mx', (dx * .18 * k).toFixed(1) + 'px'); cta.style.setProperty('--my', (dy * .25 * k).toFixed(1) + 'px');
+    }, { passive: true });
+  }
+
   /* header: a white "key" slides under the hovered menu item */
   const nav = document.querySelector('.pill nav');
   if (nav) {
