@@ -35,15 +35,15 @@
       const w = 1.651 * len * zoom * H * .9, h = .256 * zoom * H;
       return { x: W / 2 - w / 2, w, y: H / 2 + h * .46, depth: H / 2 - h * .4 };
     };
-    const af = window.Airflow && Airflow(flow, { source: () => geo(), depth: () => geo().depth, mode: 1, density: 1.15, streak: .8, lw: 1.5, glow: .26, cool: [90, 150, 215], warm: [236, 112, 40], snow: true, flakes: 46, wind: 1, flakeRGB: '86,140,200', snowRegion: () => ({ x0: 0, x1: flow.clientWidth * .55 }) });
+    const af = window.Airflow && Airflow(flow, { source: () => geo(), depth: () => geo().depth, mode: 1, density: 1.15, streak: .8, lw: 1.5, glow: .26, cool: [90, 150, 215], warm: [232, 140, 40], snow: true, flakes: 46, wind: 1, flakeRGB: '86,140,200', snowRegion: () => ({ x0: 0, x1: flow.clientWidth * .55 }) });
     const door = $('#door');
     const placeDoor = () => { const g = geo(); Object.assign(door.style, { left: (g.x - 8) + 'px', width: (g.w + 16) + 'px', top: (g.y - 6) + 'px' }); };
     placeDoor(); new ResizeObserver(placeDoor).observe(model);
     const caps = [
-      'Завеса выключена: при открытой двери холод свободно заходит внутрь.',
-      '<b>Вентиляция.</b> Летом держит прохладу кондиционера, пыль и насекомых снаружи.',
-      '<b>Обогрев 50%.</b> Экономичный режим для межсезонья и лёгкого мороза.',
-      '<b>Обогрев 100%.</b> Для зимы: тёплый барьер на всю высоту проёма.'
+      'Холод свободно проходит в открытую дверь.',
+      'Летом держит прохладу, пыль и насекомых снаружи.',
+      'Экономичный режим для межсезонья.',
+      'Тёплый барьер на всю высоту проёма.'
     ];
     const conf = [{ heat: 0, flow: 0, tint: 0, t: 'Холод проходит' }, { heat: 0, flow: .5, tint: -.9, t: 'Прохладный барьер' }, { heat: .45, flow: .78, tint: .55, t: 'Тёплый барьер' }, { heat: 1, flow: 1, tint: 1, t: 'Горячий барьер' }];
     const seg = $('#seg'), knob = $('#knob'), show = $('#show');
@@ -51,7 +51,7 @@
       $$('button', seg).forEach(b => b.setAttribute('aria-checked', +b.dataset.m === m));
       const b = seg.querySelector(`[data-m="${m}"]`);
       knob.style.left = b.offsetLeft + 'px'; knob.style.width = b.offsetWidth + 'px';
-      knob.style.backgroundColor = m === 0 ? '#121417' : m === 1 ? '#3D6F9C' : '#C94F0C';
+      knob.style.backgroundColor = m === 0 ? '#3A2614' : m === 1 ? '#3D6F9C' : '#A85A08';
       const c = conf[m];
       c3 && c3.target({ heat: c.heat }); af && af.mode(c.flow);
       show.style.setProperty('--tint', c.tint); show.dataset.m = m; $('#doorT').textContent = c.t;

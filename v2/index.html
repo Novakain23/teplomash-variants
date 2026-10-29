@@ -39,38 +39,40 @@
 
 <main>
   <section class="show" id="show">
-    <div class="wrap">
+    <div class="wrap show-grid">
       <div class="show-copy">
+        <span class="eyebrow rv"><i></i>Официальный дистрибьютор Тепломаш в Казахстане</span>
         <h1 class="rv">Тёплый вход для любого бизнеса</h1>
-        <p class="lead rv d1">Тепловые завесы Тепломаш от официального дистрибьютора в Казахстане. Подбор за 10 минут, склад в Алматы и бесплатная доставка по всей стране.</p>
+        <p class="lead rv d1">Тепловые завесы Тепломаш со склада в Алматы. Подберём модель за 10 минут и бесплатно доставим по всей стране.</p>
         <div class="show-cta rv d2">
           <a class="btn btn-heat" href="#lead">Подобрать завесу <svg><use href="#i-arrow"/></svg></a>
           <a class="btn btn-ghost" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a>
         </div>
+        <div class="kpis rv d3">
+          <div><b>24 мес.</b><span>гарантия завода</span></div>
+          <div><b>0 ₸</b><span>доставка по РК</span></div>
+          <div><b>15+ лет</b><span>опыт подбора</span></div>
+        </div>
       </div>
-    </div>
-    <div class="stage">
-      <div class="floor"></div>
-      <div class="door" id="door" aria-hidden="true"><i class="t" id="doorT"></i></div>
-      <canvas id="flow" aria-hidden="true"></canvas>
-      <canvas id="model" aria-label="3D-модель тепловой завесы Тепломаш" role="img"></canvas>
-    </div>
-    <div class="remote">
-      <div class="seg" role="radiogroup" aria-label="Режим работы завесы" id="seg">
-        <span class="knob" id="knob"></span>
-        <button role="radio" aria-checked="false" data-m="0">Выкл</button>
-        <button role="radio" aria-checked="false" data-m="1"><span class="dot"></span>Вентиляция</button>
-        <button role="radio" aria-checked="false" data-m="2"><span class="dot"></span><span class="lg">Обогрев </span>50%</button>
-        <button role="radio" aria-checked="true" data-m="3"><span class="dot"></span><span class="lg">Обогрев </span>100%</button>
-      </div>
-      <p class="mode-cap" id="cap" aria-live="polite"></p>
-    </div>
-    <div class="wrap">
-      <div class="kpis">
-        <div><b>24 мес.</b><span>гарантия завода</span></div>
-        <div><b>0 ₸</b><span>доставка по РК</span></div>
-        <div><b>15+ лет</b><span>опыт подбора</span></div>
-        <div><b>2</b><span>пункта самовывоза в Алматы</span></div>
+      <div class="show-card rv d1">
+        <span class="mode-chip" id="doorT" aria-hidden="true"></span>
+        <span class="drag-hint" aria-hidden="true">Поверните модель</span>
+        <div class="stage">
+          <div class="floor"></div>
+          <div class="door" id="door" aria-hidden="true"></div>
+          <canvas id="flow" aria-hidden="true"></canvas>
+          <canvas id="model" aria-label="3D-модель тепловой завесы Тепломаш" role="img"></canvas>
+        </div>
+        <div class="remote">
+          <div class="seg" role="radiogroup" aria-label="Режим работы завесы" id="seg">
+            <span class="knob" id="knob"></span>
+            <button role="radio" aria-checked="false" data-m="0">Выкл</button>
+            <button role="radio" aria-checked="false" data-m="1">Вентиляция</button>
+            <button role="radio" aria-checked="false" data-m="2"><span class="lg">Обогрев </span>50%</button>
+            <button role="radio" aria-checked="true" data-m="3"><span class="lg">Обогрев </span>100%</button>
+          </div>
+          <p class="mode-cap" id="cap" aria-live="polite"></p>
+        </div>
       </div>
     </div>
   </section>
@@ -147,7 +149,7 @@
     <div class="wrap">
       <div class="final rv">
         <div>
-          <h2 class="h2">Подбор и цена за 15 минут</h2>
+          <h2 class="h2">Подбор и цена <em>за 15 минут</em></h2>
           <p class="lead">Оставьте телефон — инженер уточнит размеры входа и пришлёт предложение. Расчёт бесплатный.</p>
           <div class="final-c">
             <a href="tel:+77473104846">+7 747 310 48 46</a>
