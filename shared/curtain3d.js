@@ -56,11 +56,13 @@
     vec3 alb = uBody; float gloss=.55; glow=0.;
     bool inSlot = p.y < -.128 && abs(p.x) < len-.07 && p.z > -.03 && p.z < .15;
     if(inSlot){
-      float blades = smoothstep(.35,.5,abs(fract(p.z*46.)-.5));
-      alb = mix(vec3(.05,.055,.06), vec3(.16,.17,.18), blades);
-      gloss=.15;
+      float fz = abs(fract(p.z*40.)-.5);
+      float fwz = fwidth(p.z*40.)*1.5;
+      float blades = smoothstep(.12-fwz,.12+fwz,fz);          // wide graphite louvers, thin gaps
+      alb = mix(vec3(.035,.038,.042), vec3(.20,.21,.22), blades);
+      gloss=.25;
       float depth = smoothstep(-.1,.07,p.z)*smoothstep(.15,.03,p.z);
-      glow = uHeat * (1.-blades*.7) * (.35+.65*depth);
+      glow = uHeat * (1.-blades) * (.25+.75*depth) * .9 + uHeat*.06*depth;
     } else if(n.z > .3 && abs(p.x) < len-.17 && p.y > -.112 && p.y < .128){
       // perforated grille, hex holes on the curved panel (arc-length coords)
       float arc = atan(p.y+.08, p.z+.2)*.39;

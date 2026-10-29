@@ -118,8 +118,8 @@
       const ox = (r.width - 1536 * s) / 2, oy = (r.height - 864 * s) / 2;
       const T = (975 - 600) * s * 1.06, Wc = T * 1.34, Hc = T * .52;
       const cx = ox + 787 * s, cy = oy + 150 * s;
-      Object.assign(unit.style, { left: (cx - Wc / 2) + 'px', top: (cy - Hc / 2) + 'px', width: Wc + 'px', height: Hc + 'px', filter: 'sepia(1) saturate(5) hue-rotate(-12deg) brightness(1.02)' });
-      if (!c3 && window.Curtain3D) c3 = Curtain3D(unit, { yaw: 0, pitch: .14, heat: 1, light: 'warm', zoom: 1 / (1.32 * .52), sway: false, interactive: false });
+      Object.assign(unit.style, { left: (cx - Wc / 2) + 'px', top: (cy - Hc / 2) + 'px', width: Wc + 'px', height: Hc + 'px', filter: 'sepia(.55) saturate(1.9) hue-rotate(-14deg) contrast(1.08)' });
+      if (!c3 && window.Curtain3D) c3 = Curtain3D(unit, { yaw: -.12, pitch: .18, heat: 1, light: 'dusk', zoom: 1 / (1.32 * .52), sway: false, interactive: false });
     };
     new ResizeObserver(() => photo.complete && placeUnit()).observe(cmp);
     // slider
@@ -134,11 +134,15 @@
     // a gentle hint the first time the slider comes into view
     const hint = new IntersectionObserver(es => {
       if (!es[0].isIntersecting || reduce) return; hint.disconnect();
-      let t0 = null; const run = ts => { t0 = t0 || ts; const k = (ts - t0) / 1600; if (k < 1 && !drag) { set(50 + Math.sin(k * Math.PI * 2) * 14); requestAnimationFrame(run); } else if (!drag) set(50); };
+      let t0 = null; const run = ts => { t0 = t0 || ts; const k = (ts - t0) / 1600; if (k < 1 && !drag) { set(33 + Math.sin(k * Math.PI * 2) * 12); requestAnimationFrame(run); } else if (!drag) set(33); };
       requestAnimationFrame(run);
     }, { threshold: .6 });
     hint.observe(cmp);
   }
+
+  /* steps warm up one by one */
+  const stE = $('#steps');
+  if (stE) new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { stE.classList.add('heat'); o.disconnect(); } }, { threshold: .45 }).observe(stE);
 
   /* scenarios */
   const scn = $('#scn');
@@ -181,7 +185,8 @@
 
   const star = '<svg><use href="#i-star"/></svg>';
   const revs = $('#revs');
-  if (revs) revs.innerHTML = TM.reviews.slice(0, 7).map((r, i) => `<figure class="rcard rv d${i % 3}"><div class="top"><span class="stars">${star.repeat(5)}</span><span class="src">2ГИС</span></div><p>${r.text}</p><figcaption class="who"><b>${r.name}</b>, ${r.date}</figcaption></figure>`).join('');
+  const best = ['Алексей Шевчук', 'Айзат Рахимжанова', 'Константин Оноприенко', 'Жанна Астанкова', 'Коныс Копшиликович'];
+  if (revs) revs.innerHTML = TM.reviews.filter(r => best.includes(r.name)).map((r, i) => `<figure class="rcard rv d${i % 3}"><div class="top"><span class="stars">${star.repeat(5)}</span><span class="src">2ГИС</span></div><p>${r.text}</p><figcaption class="who"><b>${r.name}</b>, ${r.date}</figcaption></figure>`).join('');
   const team = $('#team');
   if (team) team.innerHTML = TM.team.map(m => `<div class="tm"><img src="${m.img}" alt="${m.name}" loading="lazy"><b>${m.name}</b><span>${m.role}</span></div>`).join('');
 

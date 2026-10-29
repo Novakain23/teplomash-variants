@@ -42,8 +42,42 @@
     </div>
   </section>
   <div class="wrap"><h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Модели</h2><div class="cgrid" id="grid" aria-live="polite"></div></div>
+  <section class="sec" id="lead" style="padding-top:0">
+    <div class="wrap">
+      <div class="final rv">
+        <div>
+          <h2 class="h2">Подбор и цена за 15 минут</h2>
+          <p class="lead">Оставьте телефон — инженер уточнит размеры входа и пришлёт предложение. Расчёт бесплатный.</p>
+          <div class="final-c">
+            <a href="tel:+77473104846">+7 747 310 48 46</a>
+            <a href="mailto:info@best-air.kz">info@best-air.kz</a>
+            <span>Алматы: Си Синхая, 17 и Бекмаханова, 96/6</span>
+          </div>
+          <canvas id="model3" aria-hidden="true"></canvas>
+        </div>
+        <form class="form" id="form" novalidate>
+          <div><label for="fName">Имя</label><input id="fName" autocomplete="name" placeholder="Как к вам обращаться"></div>
+          <div><label for="fTel">Телефон</label><input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" required><p class="err" id="err">Укажите телефон, например +7 701 123 45 67</p></div>
+          <div><label for="fPl">Что утепляем</label><select id="fPl"><option>Входную дверь</option><option>Двойные двери, тамбур</option><option>Ворота склада или цеха</option><option>Несколько входов</option></select></div>
+          <button class="btn btn-heat" type="submit">Получить подбор</button>
+          <small>Перезваниваем в течение 15 минут в рабочее время</small>
+          <div class="ok" role="status"><b>Спасибо, заявка принята.</b><br>Перезвоним в течение 15 минут. Быстрее всего — в WhatsApp: +7 747 310 48 46.</div>
+        </form>
+      </div>
+    </div>
+  </section>
 </main>
-<footer><div class="wrap"><div class="fb" style="margin-top:0"><span>ТОО «Jamal Group» — официальный дистрибьютор АО «НПО Тепломаш» в РК</span><a href="tel:+77473104846">+7 747 310 48 46</a></div></div></footer>
+<footer>
+  <div class="wrap">
+    <div class="ft">
+      <div><img src="/img/logo.png" alt="Jamal Group" style="height:36px;width:auto"><p style="margin-top:14px;color:var(--ink-2);font-size:15px;max-width:34ch">Официальный дистрибьютор АО «НПО Тепломаш» в Республике Казахстан.</p></div>
+      <div><h4>Каталог</h4><ul><li><a href="/v2/catalog.html?c=curtains">Тепловые завесы</a></li><li><a href="/v2/catalog.html?c=heaters">Тепловентиляторы</a></li><li><a href="/v2/catalog.html?c=fans">Вентиляторы</a></li><li><a href="/v2/catalog.html?c=fancoils">Фанкойлы</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="/v2/#inside">Устройство завесы</a></li><li><a href="/v2/#where">Применение</a></li><li><a href="/v2/#lead">Дилерам</a></li><li><a href="/v2/#lead">Сертификаты</a></li></ul></div>
+      <div><h4>Связаться</h4><ul><li><a href="tel:+77473104846">+7 747 310 48 46</a></li><li><a href="https://wa.me/77473104846" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="https://www.instagram.com/volcano_kazakhstan/" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:info@best-air.kz">info@best-air.kz</a></li></ul></div>
+    </div>
+    <div class="fb"><span>ТОО «Jamal Group», БИН 190240012364</span><a href="#">Политика конфиденциальности</a></div>
+  </div>
+</footer>
 <div class="mbar"><a class="btn btn-ghost" href="tel:+77473104846">Позвонить</a><a class="btn btn-heat" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a></div>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mT">
@@ -62,6 +96,7 @@
 
 <script src="/shared/data.js"></script>
 <script src="/shared/curtain3d.js"></script>
+<script src="/shared/airflow.js"></script>
 <script src="/v2/main.js"></script>
 <script>
 (() => {
@@ -88,7 +123,7 @@
   const open = id => {
     const p = TM.products.find(x => x.id === id); if (!p) return;
     $('#mT').textContent = p.name; $('#mU').textContent = 'Подходит: ' + p.use.toLowerCase();
-    const rows = [['Мощность', p.kw ? p.kw + ' кВт' : 'по расчёту'], ['Нагрев', p.heat || '—'], ['Серия', p.series || '—'], ['Высота проёма', p.height || '—'], ['Гарантия', '24 месяца'], ['Доставка', 'бесплатно по РК']];
+    const rows = [['Мощность', p.kw ? p.kw + ' кВт' : 'по расчёту'], ['Нагрев', p.heat], ['Серия', p.series], ['Высота проёма', p.height], ['Гарантия', '24 месяца'], ['Доставка', 'бесплатно по РК']].filter(r => r[1]);
     $('#mS').innerHTML = rows.map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join('');
     $('#mWa').href = TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.');
     vis.querySelectorAll('img').forEach(x => x.remove());

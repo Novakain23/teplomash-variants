@@ -32,7 +32,7 @@
       <a href="/v1/catalog.html">Каталог</a>
       <a href="#solutions">Решения</a>
       <a href="#how">Как работает</a>
-      <a href="#why">О компании</a>
+      <a href="#calc">Подбор</a>
       <a href="#contacts">Контакты</a>
     </nav>
     <div class="hdr-cta">
@@ -46,7 +46,7 @@
   <a class="big" href="/v1/catalog.html">Каталог</a>
   <a class="big" href="#solutions">Решения</a>
   <a class="big" href="#how">Как работает</a>
-  <a class="big" href="#why">О компании</a>
+  <a class="big" href="#calc">Подбор</a>
   <a class="big" href="#contacts">Контакты</a>
   <div class="sheet-foot">
     <a class="btn btn-ink" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать в WhatsApp</a>
@@ -99,9 +99,12 @@
         </div>
       </div>
       <div class="demo rv d1" id="demo">
-        <canvas id="demoCv" aria-label="Схема: поток воздуха у открытой двери" role="img"></canvas>
+        <img src="/img/store-inside.jpg" alt="Открытая дверь магазина зимой, вид изнутри" loading="lazy" width="1536" height="864" id="demoImg">
+        <div class="demo-cold" aria-hidden="true"></div>
+        <canvas id="demoAir" aria-hidden="true"></canvas>
+        <canvas id="demoUnit" aria-hidden="true"></canvas>
         <div class="demo-lab out">Улица<b id="dOut">−4°</b></div>
-        <div class="demo-lab in">Помещение<b id="dIn">+21°</b></div>
+        <div class="demo-lab in">У входа<b id="dIn">+21°</b></div>
         <div class="demo-ui">
           <button class="switch" id="sw" role="switch" aria-checked="true"><span class="tr"></span><span id="swLab">Завеса работает</span></button>
           <span class="demo-note" id="dNote">Холод остаётся за порогом</span>
@@ -124,7 +127,7 @@
     <div class="wrap">
       <div class="sec-head">
         <h2 class="h2 rv">Оборудование Тепломаш со склада в Алматы</h2>
-        <p class="lead rv d1">Более 100 моделей завес, тепловентиляторов и вентиляторов по цене официального дистрибьютора.</p>
+        <p class="lead rv d1">Завесы, тепловентиляторы и вентиляторы по цене официального дистрибьютора.</p>
       </div>
       <div class="cat-tabs rv" role="tablist" aria-label="Категории" id="catTabs"></div>
       <div class="grid-p" id="catGrid"></div>
@@ -132,15 +135,29 @@
     </div>
   </section>
 
-  <section class="sec why" id="why">
-    <div class="wrap">
-      <h2 class="h2 rv">Покупаете у официального дистрибьютора, а не у перекупщика</h2>
-      <p class="lead rv d1" style="margin-top:20px">ТОО «Jamal Group» представляет АО «НПО Тепломаш» в Казахстане. Цены завода, сертифицированное оборудование и сервис после покупки.</p>
-      <div class="why-grid">
-        <div class="rv"><b>24</b><h3>месяца гарантии</h3><p>от завода-изготовителя на всё оборудование</p></div>
-        <div class="rv d1"><b>15+</b><h3>лет опыта инженеров</h3><p>считают мощность под ваш проём и помещение</p></div>
-        <div class="rv d2"><b>0 ₸</b><h3>за доставку</h3><p>до двери в любой город Казахстана</p></div>
-        <div class="rv d3"><b>2</b><h3>пункта самовывоза</h3><p>в Алматы: Си Синхая, 17 и Бекмаханова, 96/6</p></div>
+  <section class="sec calc" id="calc">
+    <div class="wrap calc-grid">
+      <div class="calc-l">
+        <h2 class="h2 rv">Ваш вход: прикинем завесу прямо здесь</h2>
+        <p class="lead rv d1" style="margin-top:20px">Укажите размеры проёма. Покажем, какая серия подходит по высоте и сколько завес нужно по ширине, а точную модель и мощность инженер подберёт под ваше помещение.</p>
+        <div class="calc-form rv d2">
+          <div class="rng"><label for="cW">Ширина проёма <output id="oW">1,8 м</output></label><input type="range" id="cW" min="0.8" max="4" step="0.1" value="1.8"></div>
+          <div class="rng"><label for="cH">Высота проёма <output id="oH">2,4 м</output></label><input type="range" id="cH" min="2" max="6.5" step="0.1" value="2.4"></div>
+          <div class="seg-p" role="radiogroup" aria-label="Тип помещения" id="cP">
+            <button role="radio" aria-checked="true" data-v="магазин">Магазин</button><button role="radio" aria-checked="false" data-v="кафе">Кафе</button><button role="radio" aria-checked="false" data-v="офис или ТЦ">Офис, ТЦ</button><button role="radio" aria-checked="false" data-v="склад или цех">Склад, цех</button>
+          </div>
+        </div>
+      </div>
+      <div class="calc-r rv d1">
+        <div class="door-vis" id="doorVis" aria-hidden="true">
+          <div class="door-wall"><div class="door-open" id="dOpen"><div class="door-units" id="dUnits"></div><svg class="door-man" viewBox="0 0 40 120"><circle cx="20" cy="11" r="9"/><path d="M8 28q12-6 24 0l3 44h-6l-3 46h-6l-1-40-1 40h-6l-3-46H5z"/></svg></div></div>
+          <span class="door-dim w" id="dimW">1,8 м</span><span class="door-dim h" id="dimH">2,4 м</span>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <div><small>Серия</small><b id="rS">300</b><span id="rSn">до 3,5 м высоты</span></div>
+          <div><small>Завес в ряд</small><b id="rN">1</b><span id="rNn">перекрывают 1,8 м</span></div>
+          <a class="btn btn-gold" id="cSend" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Получить расчёт</a>
+        </div>
       </div>
     </div>
   </section>
@@ -197,7 +214,7 @@
   <section class="final" id="lead">
     <div class="wrap">
       <div class="final-box rv" id="contacts">
-        <div class="final-ph"><img src="/img/shop-front.jpg" alt="Тёплый вход в магазин зимним вечером" loading="lazy"></div>
+        <div class="final-ph"><img src="/img/hero-wall.jpg" alt="Тёплый вход с завесой зимним вечером" loading="lazy"></div>
         <div class="final-in">
           <h2 class="h2">Пришлите размеры входа — подберём за 10 минут</h2>
           <p class="lead">Оставьте телефон: инженер перезвонит, уточнит помещение и пришлёт расчёт с ценой. Это бесплатно.</p>
@@ -228,7 +245,7 @@
         <p class="muted" style="margin-top:16px;max-width:34ch;font-size:15px">Официальный дистрибьютор АО «НПО Тепломаш» в Республике Казахстан.</p>
       </div>
       <div><h4>Каталог</h4><ul><li><a href="/v1/catalog.html?c=curtains">Тепловые завесы</a></li><li><a href="/v1/catalog.html?c=heaters">Тепловентиляторы</a></li><li><a href="/v1/catalog.html?c=fans">Вентиляторы</a></li><li><a href="/v1/catalog.html?c=automation">Автоматика</a></li></ul></div>
-      <div><h4>Компания</h4><ul><li><a href="#why">О компании</a></li><li><a href="#how">Как работает завеса</a></li><li><a href="#lead">Дилерам</a></li><li><a href="#lead">Сертификаты</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="#calc">Подбор</a></li><li><a href="#how">Как работает завеса</a></li><li><a href="#lead">Дилерам</a></li><li><a href="#lead">Сертификаты</a></li></ul></div>
       <div><h4>Контакты</h4><ul><li><a href="tel:+77473104846">+7 747 310 48 46</a></li><li><a href="https://wa.me/77473104846" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="https://www.instagram.com/volcano_kazakhstan/" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:info@best-air.kz">info@best-air.kz</a></li></ul></div>
     </div>
     <div class="ftr-bot"><span>ТОО «Jamal Group», БИН 190240012364. Алматы, Бостандыкский район, ул. Си Синхая, 17, н.п. 194</span><a href="#">Политика конфиденциальности</a></div>

@@ -54,9 +54,53 @@
       <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Модели</h2><div class="plist" id="plist" aria-live="polite"></div>
     </div>
   </div>
+  <section id="lead">
+    <div class="wrap">
+      <div class="lead-box rv">
+        <div>
+          <h2 class="h2">Рассчитаем завесу под ваш вход бесплатно</h2>
+          <p class="lead" style="margin-top:16px">Оставьте телефон. Инженер уточнит размеры и пришлёт подбор с ценой, обычно в течение 15 минут.</p>
+          <ul><li>Цена официального дистрибьютора</li><li>Бесплатная доставка по Казахстану</li><li>Монтаж и гарантия 24 месяца</li></ul>
+        </div>
+        <form class="form" id="form" novalidate>
+          <h3>Заявка на расчёт</h3>
+          <label for="fN">Имя<input id="fN" autocomplete="name" placeholder="Как к вам обращаться"></label>
+          <label for="fT">Телефон<input id="fT" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" required></label>
+          <p class="err">Укажите телефон, например +7 701 123 45 67</p>
+          <label for="fP">Что утепляем<select id="fP"><option>Входную дверь магазина</option><option>Вход кафе или офиса</option><option>Ворота склада</option><option>Цех или автосервис</option><option>Несколько входов</option></select></label>
+          <button class="btn btn-ink" type="submit">Получить расчёт</button>
+          <small>Или напишите в WhatsApp: +7 747 310 48 46</small>
+          <div class="ok" role="status"><b>Заявка принята.</b> Инженер перезвонит в течение 15 минут в рабочее время.</div>
+        </form>
+      </div>
+    </div>
+  </section>
 </main>
-<footer style="margin-top:80px"><div class="wrap"><div class="fb" style="margin-top:0;border:0;padding:0"><span>ТОО «Jamal Group» — официальный дистрибьютор АО «НПО Тепломаш» в РК</span><a href="tel:+77473104846">+7 747 310 48 46</a></div></div></footer>
+<footer>
+  <div class="wrap">
+    <div class="ft">
+      <div><span class="logo-w"><img src="/img/logo.png" alt="Jamal Group"></span><p style="margin-top:16px;font-size:15px;max-width:34ch;color:#93A0AE">Официальный дистрибьютор АО «НПО Тепломаш» в Республике Казахстан.</p></div>
+      <div><h4>Каталог</h4><ul><li><a href="/v3/catalog.html?c=curtains">Тепловые завесы</a></li><li><a href="/v3/catalog.html?c=heaters">Тепловентиляторы</a></li><li><a href="/v3/catalog.html?c=fans">Вентиляторы</a></li><li><a href="/v3/catalog.html?c=automation">Автоматика</a></li></ul></div>
+      <div><h4>Адреса</h4><ul><li>Алматы, ул. Си Синхая, 17, ЖК «Union», н.п. 194</li><li>Алматы, ул. Бекмаханова, 96/6</li></ul></div>
+      <div><h4>Связаться</h4><ul><li><a href="tel:+77473104846">+7 747 310 48 46</a></li><li><a href="https://wa.me/77473104846" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="https://www.instagram.com/volcano_kazakhstan/" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:info@best-air.kz">info@best-air.kz</a></li></ul></div>
+    </div>
+    <div class="fb"><span>ТОО «Jamal Group», БИН 190240012364</span><a href="#">Политика конфиденциальности</a></div>
+  </div>
+</footer>
 
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dT">
+  <div class="dlg-box">
+    <button class="dlg-x" id="dX" aria-label="Закрыть"><svg><use href="#i-x"/></svg></button>
+    <div class="dlg-img"><img id="dImg" src="/img/c300.png" alt=""><span class="kw" id="dKw"></span></div>
+    <div class="dlg-in">
+      <h3 id="dT"></h3>
+      <p class="use" id="dU"></p>
+      <ul class="dspec" id="dS"></ul>
+      <p class="dnote">Цена официального дистрибьютора и срок поставки — в ответ на запрос. Доставка по Казахстану бесплатная.</p>
+      <div class="dlg-act"><a class="btn btn-gold" id="dWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Узнать цену</a><button class="btn btn-line add-l" id="dAdd">Добавить в лист запроса</button></div>
+    </div>
+  </div>
+</div>
 <div class="rq" id="rq" aria-live="polite"><div><b id="rqN">0 моделей</b><br><span>в листе запроса</span></div><a class="btn btn-gold" id="rqSend" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Отправить в WhatsApp</a></div>
 <div class="mbar"><a class="btn btn-line" href="tel:+77473104846">Позвонить</a><a class="btn btn-gold" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a></div>
 
@@ -70,7 +114,7 @@
   const n = id => TM.products.filter(p => p.cat === id).length;
   $('#clist').innerHTML = TM.categories.map(c => `<button data-c="${c.id}" aria-pressed="false"><img src="${c.img}" alt="">${c.name}<em>${n(c.id)}</em></button>`).join('');
   $('#mcats').innerHTML = TM.categories.map(c => `<button class="chipb" data-c="${c.id}" aria-selected="false">${c.short}</button>`).join('');
-  const row = p => `<article class="row">
+  const row = p => `<article class="row" data-id="${p.id}" tabindex="0">
       <div class="ri"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
       <div><h3>${p.name}</h3>
         <div class="meta">${p.kw ? `<span>Мощность <b>${p.kw} кВт</b></span>` : ''}${p.series ? `<span>Серия <b>${p.series}</b></span>` : ''}${p.height ? `<span>Проём <b>${p.height}</b></span>` : ''}${p.heat ? `<span>Нагрев <b>${p.heat.toLowerCase()}</b></span>` : ''}</div>
@@ -94,6 +138,27 @@
   $('#mcats').addEventListener('click', e => { const b = e.target.closest('button'); b && setC(b.dataset.c); });
   $('#fH').addEventListener('click', e => { const b = e.target.closest('.chipb'); if (!b) return; st.h = st.h === b.dataset.v ? null : b.dataset.v; render(); });
   render();
+  // product dialog
+  const dlg = $('#dlg');
+  const openD = id => {
+    const p = TM.products.find(x => x.id === id); if (!p) return;
+    $('#dT').textContent = p.name; $('#dU').textContent = 'Подходит: ' + p.use.toLowerCase();
+    $('#dImg').src = p.photo || p.img; $('#dImg').alt = p.name; $('#dKw').textContent = p.kw ? p.kw + ' кВт' : ''; $('#dKw').hidden = !p.kw;
+    const rows = [['Серия', p.series], ['Высота проёма', p.height], ['Нагрев', p.heat], ['Гарантия', '24 месяца'], ['Доставка', 'бесплатно по РК']].filter(r => r[1]);
+    $('#dS').innerHTML = rows.map(([a, b]) => `<li>${a}<b>${b}</b></li>`).join('');
+    $('#dWa').href = TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.');
+    const add = $('#dAdd'); add.dataset.id = p.id; add.className = 'btn btn-line add-l';
+    const inList = () => document.querySelector(`.row .add[data-id="${CSS.escape(p.id)}"]`)?.getAttribute('aria-pressed') === 'true';
+    add.textContent = inList() ? 'Уже в листе запроса' : 'Добавить в лист запроса';
+    add.onclick = () => { document.querySelector(`.row .add[data-id="${CSS.escape(p.id)}"]`)?.click(); add.textContent = inList() ? 'Уже в листе запроса' : 'Добавить в лист запроса'; };
+    dlg.classList.add('open'); document.body.style.overflow = 'hidden'; $('#dX').focus();
+  };
+  const closeD = () => { dlg.classList.remove('open'); document.body.style.overflow = ''; };
+  $('#plist').addEventListener('click', e => { if (e.target.closest('a,button')) return; const r = e.target.closest('.row'); r && openD(r.dataset.id); });
+  $('#plist').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('row')) openD(e.target.dataset.id); });
+  $('#dX').addEventListener('click', closeD);
+  dlg.addEventListener('click', e => { if (e.target === dlg) closeD(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeD(); });
 })();
 </script>
 </body>

@@ -30,7 +30,7 @@
     const map = () => {
       const hr = hero.getBoundingClientRect(), r = img.getBoundingClientRect();
       const mobile = innerWidth <= 860;
-      const px = mobile ? .72 : .68, py = .5;
+      const px = mobile ? .9 : .68, py = .5;
       const s = Math.max(r.width / N.w, r.height / N.h);
       const ox = r.left - hr.left + (r.width - N.w * s) * px, oy = r.top - hr.top + (r.height - N.h * s) * py;
       return { s, X: x => ox + x * s, Y: y => oy + y * s };
@@ -55,74 +55,78 @@
     window.Airflow && Airflow(air, { source: () => ({ x: geo.x, y: geo.y, w: geo.w }), depth: () => geo.depth, mode: 1, snow: true, wind: -1, flakes: 70, density: .9, snowRegion: () => ({ x0: geo.snowX0, x1: air.clientWidth }) });
   }
 
-  /* HOW IT WORKS: side view of a doorway with and without the curtain */
-  const cv = $('#demoCv');
-  if (cv) {
-    const ctx = cv.getContext('2d');
-    let W, H, on = true, k = 1, parts = [], vis = true;
-    const size = () => { const d = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
-    size(); new ResizeObserver(size).observe(cv);
-    const spawn = (cold) => cold
-      ? { c: 1, x: Math.random() * W * .45, y: H * (.3 + Math.random() * .52), vx: .5 + Math.random() * .7, vy: 0, a: 0 }
-      : { c: 0, x: W * (.55 + Math.random() * .45), y: H * (.2 + Math.random() * .6), vx: -(.2 + Math.random() * .5), vy: (Math.random() - .5) * .2, a: 0 };
-    for (let i = 0; i < 90; i++) parts.push(spawn(i % 2 === 0));
-    const jet = Array.from({ length: 40 }, () => ({ t: Math.random(), u: Math.random() }));
-    function draw() {
-      k += ((on ? 1 : 0) - k) * .06;
-      ctx.clearRect(0, 0, W, H);
-      const dx = W * .5, top = H * .17, floor = H * .84;
-      // wall with doorway
-      ctx.fillStyle = '#CDBFAE'; ctx.fillRect(dx - 12, 0, 24, top);
-      ctx.fillStyle = '#B9A994'; ctx.fillRect(0, floor, W, H - floor);
-      // curtain unit
-      ctx.fillStyle = '#fff'; ctx.strokeStyle = 'rgba(29,24,20,.15)';
-      ctx.beginPath(); ctx.roundRect(dx + 12, top - 4, 46, 26, 8); ctx.fill(); ctx.stroke();
-      // jet
-      if (k > .02) {
-        const g = ctx.createLinearGradient(0, top + 22, 0, floor);
-        g.addColorStop(0, `rgba(231,132,58,${.32 * k})`); g.addColorStop(1, `rgba(231,132,58,0)`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(dx + 14, top + 22); ctx.lineTo(dx + 56, top + 22); ctx.lineTo(dx + 40, floor); ctx.lineTo(dx - 4, floor); ctx.fill();
-        ctx.strokeStyle = `rgba(231,132,58,${.55 * k})`; ctx.lineWidth = 1.4; ctx.lineCap = 'round';
-        for (const j of jet) { if (!reduce) j.t = (j.t + .012) % 1; const x = dx + 16 + j.u * 36 - j.t * 14, y = top + 24 + j.t * (floor - top - 24); ctx.globalAlpha = Math.sin(Math.PI * j.t); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 2, y + 16); ctx.stroke(); }
-        ctx.globalAlpha = 1;
-      }
-      // air particles
-      for (const p of parts) {
-        if (!reduce) {
-          p.a = Math.min(1, p.a + .02);
-          if (p.c) { // cold air drifts in along the floor
-            const band = p.x > dx - 6 && p.x < dx + 50 && p.y > top;
-            if (band && k > .5) { p.vx = -Math.abs(p.vx) * .8; p.vy = .35; }
-            p.x += p.vx; p.y += p.vy; p.vy *= .98;
-            if (!on && p.x > dx) p.y += (floor - 24 - p.y) * .01;
-          } else {   // warm air leaks out at the top when the curtain is off
-            if (!on && p.x < dx + 60) { p.y += (top + 30 - p.y) * .03; p.vx = -1.1; }
-            if (on && p.x < dx + 66) { p.vx = Math.abs(p.vx); }
-            p.x += p.vx; p.y += p.vy;
-          }
-          if (p.x < -8 || p.x > W + 8 || p.y > floor - 4 || p.y < 0) Object.assign(p, spawn(p.c));
-        }
-        ctx.fillStyle = p.c ? `rgba(91,125,153,${.55 * p.a})` : `rgba(214,128,60,${.5 * p.a})`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.c ? 2.4 : 2, 0, 7); ctx.fill();
-      }
-      if (!reduce && vis) requestAnimationFrame(draw);
-    }
-    new IntersectionObserver(e => { const was = vis; vis = e[0].isIntersecting; if (vis && !was) requestAnimationFrame(draw); }).observe(cv);
-    requestAnimationFrame(draw);
+  /* HOW IT WORKS: the same curtain mounted inside a real shop doorway; switch it off and the cold creeps in */
+  const demo = $('#demo');
+  if (demo) {
+    const dImg = $('#demoImg'), dUnit = $('#demoUnit'), dAir = $('#demoAir');
+    const D = { w: 1536, h: 864, L: 604, R: 972, T: 150, B: 572 };
+    let g = { x: 0, y: 0, w: 0, depth: 0 }, u3 = null;
+    const placeD = () => {
+      const r = demo.getBoundingClientRect(); if (!r.width) return;
+      const s = Math.max(r.width / D.w, r.height / D.h);
+      const ox = (r.width - D.w * s) * .5, oy = (r.height - D.h * s) * .5;
+      const X = x => ox + x * s, Y = y => oy + y * s;
+      const T = (D.R - D.L) * s * .96, W = T * 1.34, H = T * .52, objH = T * .2;
+      const cx = X((D.L + D.R) / 2), cy = Y(D.T) - objH / 2 + 2;
+      Object.assign(dUnit.style, { width: W + 'px', height: H + 'px', left: (cx - W / 2) + 'px', top: (cy - H / 2) + 'px' });
+      g = { x: X(D.L + 22), w: (D.R - D.L - 44) * s, y: cy + objH * .42, depth: Y(D.B) - (cy + objH * .42) };
+    };
+    placeD(); new ResizeObserver(placeD).observe(demo);
+    let started = false;
+    const start = () => {
+      if (started) return; started = true;
+      u3 = window.Curtain3D && Curtain3D(dUnit, { yaw: .12, pitch: .16, heat: .6, light: 'warm', zoom: 1 / (1.32 * .52), sway: false, len: .8 });
+      fl = window.Airflow && Airflow(dAir, { source: () => g, depth: () => g.depth, mode: 1, snow: false, density: .9, glow: .26, streak: .7, lw: 1.3 });
+    };
+    let fl = null;
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { start(); o.disconnect(); } }, { rootMargin: '200px' }).observe(demo);
+    let on = true;
     const sw = $('#sw');
     sw.addEventListener('click', () => {
-      on = !on; sw.setAttribute('aria-checked', on);
+      on = !on; sw.setAttribute('aria-checked', on); demo.classList.toggle('off', !on);
       $('#swLab').textContent = on ? 'Завеса работает' : 'Завеса выключена';
-      $('#dNote').textContent = on ? 'Холод остаётся за порогом' : 'Тепло уходит, холод идёт по полу';
-      const di = $('#dIn'); di.textContent = on ? '+21°' : 'Холодает'; di.style.color = on ? '' : '#456680';
-      if (reduce) requestAnimationFrame(draw);
+      $('#dNote').textContent = on ? 'Холод остаётся за порогом' : 'Холод идёт по полу к кассе';
+      $('#dIn').textContent = on ? '+21°' : '+12°';
+      fl && fl.mode(on ? 1 : 0); u3 && u3.target({ heat: on ? .6 : 0 });
     });
+  }
+
+  /* DOORWAY CALCULATOR */
+  const cW = $('#cW');
+  if (cW) {
+    const cH = $('#cH'), fmt = v => String(Math.round(v * 10) / 10).replace('.', ',') + ' м';
+    let place = 'магазин';
+    const upd = () => {
+      const w = +cW.value, h = +cH.value;
+      [cW, cH].forEach(i => i.style.setProperty('--v', ((i.value - i.min) / (i.max - i.min) * 100) + '%'));
+      $('#oW').textContent = $('#dimW').textContent = fmt(w);
+      $('#oH').textContent = $('#dimH').textContent = fmt(h);
+      const high = h > 3.5, n = Math.max(1, Math.ceil(w / 2));
+      $('#rS').textContent = high ? '400' : '300';
+      $('#rSn').textContent = high ? 'проёмы до 6,5 м' : (h <= 2.5 ? 'или 200 для малой двери' : 'проёмы до 3,5 м');
+      $('#rN').textContent = n;
+      $('#rNn').textContent = n === 1 ? 'перекрывает ' + fmt(w) : 'в ряд на ' + fmt(w);
+      // door drawing: scale so that 4 m x 6.5 m fills the box
+      const box = $('#doorVis').getBoundingClientRect(), maxW = box.width - 120, maxH = box.height - 96;
+      const k = Math.min(maxW / (w + .4), maxH / Math.max(h + .3, 3));
+      const op = $('#dOpen'); op.style.width = (w * k) + 'px'; op.style.height = (h * k) + 'px';
+      const dh = $('#dimH'); dh.style.left = Math.max(8, box.width / 2 + 8 - w * k / 2 - 62) + 'px'; dh.style.top = (box.height - 22 - h * k / 2 - 12) + 'px';
+      $('.door-man').style.height = (1.75 * k) + 'px';
+      const imgs = high ? '/img/c400.png' : '/img/c300.png';
+      const un = $('#dUnits'); if (un.children.length !== n || un.dataset.s !== imgs) { un.dataset.s = imgs; un.innerHTML = Array.from({ length: n }, () => `<img src="${imgs}" alt="">`).join(''); }
+      $('#cSend').href = TM.wa(`Здравствуйте! Нужна завеса: ${place}, проём ${fmt(w)} × ${fmt(h)}. Ориентир с сайта: серия ${high ? 400 : 300}, ${n} шт. Посчитайте, пожалуйста, модель и цену.`);
+    };
+    [cW, cH].forEach(i => i.addEventListener('input', upd));
+    $('#cP').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('#cP button').forEach(x => x.setAttribute('aria-checked', x === b)); place = b.dataset.v; upd(); });
+    new ResizeObserver(upd).observe($('#doorVis'));
+    upd();
   }
 
   /* SOLUTIONS accordion */
   const sol = $('#sol');
   if (sol) {
-    sol.innerHTML = TM.scenes.map((s, i) => `
+    const scenes = TM.scenes.map(x => x.id === 'shop' ? Object.assign({}, x, { img: '/img/shop-front.jpg' }) : x);
+    sol.innerHTML = scenes.map((s, i) => `
       <article class="sol-card${i === 0 ? ' on' : ''}" tabindex="0" aria-label="${s.name}">
         <img src="${s.img}" alt="${s.name}" loading="lazy">
         <div class="sol-body"><h3>${s.name}</h3>
@@ -137,9 +141,9 @@
 
   /* CATALOG preview */
   const card = p => {
-    const chips = [p.kw && p.kw + ' кВт', p.series && 'серия ' + p.series, p.height].filter(Boolean).map(c => `<span class="chip">${c}</span>`).join('');
+    const chips = [p.kw && p.kw + ' кВт', p.heat && p.heat.toLowerCase()].filter(Boolean).map(c => `<span class="chip">${c}</span>`).join('');
     return `<article class="pc rv">
-      <div class="pc-img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="pc-img${p.series ? ' s' + p.series : ''}">${p.series ? `<span class="pc-tag">Серия ${p.series}<i>${p.height}</i></span>` : ''}<img src="${p.img}" alt="${p.name}" loading="lazy">${p.photo ? `<img class="pc-ph" src="${p.photo}" alt="" loading="lazy">` : ''}</div>
       <div class="pc-body"><h3>${p.name}</h3><div class="chips">${chips}</div><p class="pc-use">${p.use}</p>
       <div class="pc-foot"><span class="pc-price">Цена по запросу</span><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a></div></div>
     </article>`;

@@ -51,6 +51,7 @@
     </div>
     <div class="stage">
       <div class="floor"></div>
+      <div class="door" id="door" aria-hidden="true"><i class="t" id="doorT"></i></div>
       <canvas id="flow" aria-hidden="true"></canvas>
       <canvas id="model" aria-label="3D-модель тепловой завесы Тепломаш" role="img"></canvas>
     </div>
@@ -69,35 +70,46 @@
         <div><b>24 мес.</b><span>гарантия завода</span></div>
         <div><b>0 ₸</b><span>доставка по РК</span></div>
         <div><b>15+ лет</b><span>опыт подбора</span></div>
-        <div><b>100+</b><span>моделей Тепломаш</span></div>
+        <div><b>2</b><span>пункта самовывоза в Алматы</span></div>
       </div>
     </div>
   </section>
 
   <section class="sec inside" id="inside">
     <div class="wrap">
+      <div class="inside-head"><h2 class="h2 rv">Что внутри завесы</h2><p class="lead rv d1">Четыре узла, от которых зависит, будет ли у входа тепло. Нажмите, чтобы рассмотреть.</p></div>
       <div class="inside-grid">
-        <div class="sticky"><canvas id="model2" aria-hidden="true"></canvas><span class="tag" id="tag">Перфорированная панель</span></div>
-        <div class="feats" id="feats"><h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Устройство тепловой завесы</h2>
-          <div class="feat on" data-i="0"><small>Корпус и панель</small><h3>Ровный поток по всей длине</h3><p>Воздух забирается через перфорированную панель, поэтому струя одинаковая от края до края двери, без «дыр», через которые проходит холод.</p></div>
-          <div class="feat" data-i="1"><small>Нагрев</small><h3>Электрический или водяной нагреватель</h3><p>Электрические модели работают от сети, водяные подключаются к отоплению здания и экономят на электричестве. Подберём под ваш объект.</p></div>
-          <div class="feat" data-i="2"><small>Сопло</small><h3>Направленная струя сверху вниз</h3><p>Узкое сопло формирует плотный воздушный барьер. Высота проёма — до 3,5 м для серий 200–300 и до 6,5 м для серии 400.</p></div>
-          <div class="feat" data-i="3"><small>Управление</small><h3>Пульт, таймер и термостат</h3><p>Режимы вентиляции и обогрева, таймер и термостат. Летом завеса работает без нагрева и держит прохладу кондиционера.</p></div>
+        <div class="feats" id="feats" role="tablist" aria-label="Устройство завесы">
+          <button class="feat on" role="tab" aria-selected="true" data-i="0"><small>01 · Корпус и панель</small><h3>Ровный поток по всей длине</h3><p>Воздух забирается через перфорированную панель, поэтому струя одинаковая от края до края двери, без «дыр» для холода.</p></button>
+          <button class="feat" role="tab" aria-selected="false" data-i="1"><small>02 · Нагрев</small><h3>Электрический или водяной</h3><p>Электрические модели работают от сети, водяные подключаются к отоплению здания и экономят на электричестве.</p></button>
+          <button class="feat" role="tab" aria-selected="false" data-i="2"><small>03 · Сопло</small><h3>Плотная струя сверху вниз</h3><p>Узкое сопло формирует воздушный барьер: до 3,5 м высоты для серий 200–300 и до 6,5 м для серии 400.</p></button>
+          <button class="feat" role="tab" aria-selected="false" data-i="3"><small>04 · Управление</small><h3>Пульт, таймер, термостат</h3><p>Режимы вентиляции и обогрева. Летом завеса работает без нагрева и держит прохладу кондиционера.</p></button>
         </div>
+        <div class="sticky"><canvas id="model2" aria-hidden="true"></canvas><span class="tag" id="tag">Перфорированная панель</span></div>
       </div>
     </div>
   </section>
 
   <section class="sec" id="series">
     <div class="wrap center">
-      <h2 class="h2 rv">Три серии под высоту вашего проёма</h2>
-      <p class="lead rv d1" style="margin-top:18px">Мощность и длину подбираем по ширине двери, но начинают всегда с высоты.</p>
+      <h2 class="h2 rv">Какой у вас вход?</h2>
+      <p class="lead rv d1" style="margin-top:18px">Серию выбирают по высоте и типу проёма, мощность — по ширине двери.</p>
+      <div class="pick-seg rv d2" role="radiogroup" aria-label="Тип входа" id="pickSeg">
+        <button role="radio" aria-checked="false" data-s="0">Небольшая дверь</button>
+        <button role="radio" aria-checked="true" data-s="1">Магазин или кафе</button>
+        <button role="radio" aria-checked="false" data-s="2">Ворота, высокий проём</button>
+      </div>
     </div>
     <div class="wrap">
-      <div class="series">
-        <article class="sr rv"><div class="sr-img"><img src="/img/c200.png" alt="Компактная тепловая завеса серии 200" loading="lazy"></div><h3>Серия 200</h3><dl><dt>Мощность</dt><dd>6–9 кВт</dd><dt>Высота</dt><dd>до 3,5 м</dd><dt>Для чего</dt><dd>Бутики, офисные двери</dd></dl><a class="btn btn-ghost btn-sm" href="/v2/catalog.html?c=curtains&h=low">Смотреть модели</a></article>
-        <article class="sr rv d1"><div class="sr-img"><img src="/img/c300.png" alt="Тепловая завеса серии 300" loading="lazy"></div><h3>Серия 300</h3><dl><dt>Мощность</dt><dd>9–24 кВт</dd><dt>Высота</dt><dd>до 3,5 м</dd><dt>Для чего</dt><dd>Магазины, кафе, банки</dd></dl><a class="btn btn-ink btn-sm" href="/v2/catalog.html?c=curtains&h=low">Смотреть модели</a></article>
-        <article class="sr rv d2"><div class="sr-img"><img src="/img/c400.png" alt="Промышленная тепловая завеса серии 400" loading="lazy"></div><h3>Серия 400</h3><dl><dt>Мощность</dt><dd>12–27 кВт</dd><dt>Высота</dt><dd>до 6,5 м</dd><dt>Для чего</dt><dd>Склады, ворота, цеха</dd></dl><a class="btn btn-ghost btn-sm" href="/v2/catalog.html?c=curtains&h=high">Смотреть модели</a></article>
+      <div class="picker rv">
+        <div class="pk-vis"><img id="pkImg" src="/img/c300.png" alt="Тепловая завеса серии 300"><span class="pk-h" id="pkH">до 3,5 м</span></div>
+        <div class="pk-in">
+          <small id="pkFor">Магазины, кафе, банки</small>
+          <h3 id="pkName">Серия 300</h3>
+          <dl><div><dt>Мощность</dt><dd id="pkKw">9–24 кВт</dd></div><div><dt>Высота проёма</dt><dd id="pkHt">до 3,5 м</dd></div><div><dt>Моделей в каталоге</dt><dd id="pkN">4</dd></div></dl>
+          <p id="pkTxt">Самая ходовая серия для торговых входов: ставится над стандартной дверью и держит тепло у кассы.</p>
+          <div class="pk-cta"><a class="btn btn-heat" id="pkWa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Подобрать мощность</a><a class="btn btn-ghost" id="pkCat" href="/v2/catalog.html?c=curtains&h=low">Модели серии</a></div>
+        </div>
       </div>
     </div>
   </section>
@@ -121,35 +133,13 @@
   </section>
 
   <section class="sec" style="padding-top:0">
-    <div class="wrap">
-      <div class="svc rv">
-        <div>
-          <h2 class="h2">Под ключ: от расчёта до гарантии</h2>
-          <p class="lead">ТОО «Jamal Group» — официальный дистрибьютор АО «НПО Тепломаш» в Казахстане. Отвечаем за оборудование до и после покупки.</p>
-          <div style="margin-top:30px"><a class="btn btn-heat" href="#lead">Получить расчёт</a></div>
-        </div>
-        <div class="svc-grid">
-          <div><b>10 мин</b><h3>на подбор модели</h3><p>по размерам проёма или фото входа</p></div>
-          <div><b>0 ₸</b><h3>доставка по Казахстану</h3><p>до двери, в любой город</p></div>
-          <div><b>24 мес</b><h3>гарантия завода</h3><p>сертификаты на каждую модель</p></div>
-          <div><b>Монтаж</b><h3>и сервис</h3><p>установка, настройка, обслуживание</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" style="padding-top:0">
     <div class="wrap people">
-      <div>
-        <h2 class="h2 rv">Вам ответят люди, а не бот</h2>
-        <p class="lead rv d1" style="margin-top:18px">Отдел продаж Jamal Group. Менеджеров по имени благодарят в отзывах в 2ГИС.</p>
+      <div class="people-head">
+        <div><h2 class="h2 rv">Вам ответят люди, а не бот</h2>
+        <p class="lead rv d1" style="margin-top:18px">Отдел продаж Jamal Group. Менеджеров по имени благодарят в отзывах в 2ГИС.</p></div>
         <div class="faces" id="faces"></div>
       </div>
-      <div class="quote rv d1">
-        <span class="stars" aria-label="5 из 5"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span>
-        <p class="q" id="q"></p>
-        <div class="who"><div><b id="qn"></b><span id="qd"></span></div><div class="dots" id="dots"></div></div>
-      </div>
+      <div class="revs" id="revs"></div>
     </div>
   </section>
 
