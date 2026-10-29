@@ -111,8 +111,10 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
 #demoAir{inset:0;width:100%;height:100%}
 #demoUnit{z-index:3}
 .demo::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,16,13,.45),transparent 26%,transparent 70%,rgba(20,16,13,.5));pointer-events:none}
-.demo-cold{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.4s var(--ease);background:radial-gradient(70% 38% at 51% 72%,rgba(150,190,230,.62),rgba(150,190,230,.18) 55%,transparent 75%),linear-gradient(0deg,rgba(120,165,210,.32),transparent 55%)}
+.demo-cold{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.4s var(--ease);background:radial-gradient(60% 34% at 51% 74%,rgba(140,190,240,.85),rgba(140,190,240,.3) 50%,transparent 75%),radial-gradient(40% 50% at 51% 40%,rgba(160,200,240,.35),transparent 70%),linear-gradient(0deg,rgba(110,160,215,.45),transparent 55%)}
 .demo.off .demo-cold{opacity:1}
+.demo-warm{position:absolute;inset:0;z-index:1;pointer-events:none;transition:opacity 1.2s var(--ease);background:radial-gradient(34% 22% at 51% 70%,rgba(255,170,90,.38),transparent 70%),radial-gradient(26% 40% at 51% 40%,rgba(255,170,90,.14),transparent 70%);mix-blend-mode:screen}
+.demo.off .demo-warm{opacity:0}
 .demo.off>img{filter:saturate(.55) brightness(.92) hue-rotate(-8deg)}
 .demo-ui{position:absolute;left:20px;right:20px;bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:4;flex-wrap:wrap}
 .switch{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-radius:999px;padding:6px 16px 6px 6px;font-size:15px;font-weight:500;box-shadow:0 8px 24px -16px rgba(0,0,0,.4);min-height:44px}
@@ -152,10 +154,13 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
 .door-dim{position:absolute;font-size:13px;font-weight:500;color:var(--ink-2);font-variant-numeric:tabular-nums;background:var(--paper);padding:3px 8px;border-radius:999px}
 .door-dim.w{bottom:0;left:50%;transform:translateX(-50%);background:none}
 .door-dim.h{transition:left .5s var(--ease),top .5s var(--ease)}
-.calc-out{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:center}
+.calc-out{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
 .calc-out small{display:block;font-size:13px;color:var(--ink-3)}
-.calc-out b{display:block;font-size:34px;font-weight:500;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.calc-out>div b{display:block;font-size:34px;font-weight:500;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
 .calc-out span{font-size:14px;color:var(--ink-2)}
+.calc-out .btn{grid-column:1/-1}
+.calc-model{grid-column:1/-1;font-size:15px;color:var(--ink-2);padding:12px 14px;border-radius:12px;background:var(--stone)}
+.calc-model b{color:var(--ink);font-weight:500}
 
 /* solutions accordion */
 .sol{display:flex;gap:14px;height:560px}
@@ -163,7 +168,7 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
 .sol-card.on{flex-grow:3.4}
 .sol-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease);z-index:-2}
 .sol-card:hover img{transform:scale(1.04)}
-.sol-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,16,13,0) 35%,rgba(20,16,13,.72));transition:opacity .5s}
+.sol-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,16,13,0) 30%,rgba(20,16,13,.55) 55%,rgba(20,16,13,.86));transition:opacity .5s}
 .sol-body{position:absolute;left:0;right:0;bottom:0;padding:28px}
 .sol-card h3{font-size:22px;line-height:1.2;white-space:nowrap}
 .sol-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease),opacity .4s;opacity:0}
@@ -207,7 +212,7 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
 
 /* team */
 .team{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px}
-.tm{display:grid;gap:12px}
+.tm{display:grid;gap:12px;grid-template-rows:auto 1fr;align-content:start}
 .tm-ph{aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;background:#D9DCE1}
 .tm-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transition:transform .8s var(--ease);filter:saturate(.92)}
 .tm:hover .tm-ph img{transform:scale(1.05)}
@@ -250,7 +255,7 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
 .final{padding-block:0 128px}
 .final-box{position:relative;border-radius:28px;overflow:hidden;background:var(--night);color:#F3ECE3;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);isolation:isolate}
 .final-ph{position:relative;min-height:560px}
-.final-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.final-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% 40%}
 .final-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 40%,var(--night))}
 .final-in{padding:64px 64px 56px 24px;display:flex;flex-direction:column;gap:22px}
 .final-in .h2{color:#fff}
@@ -378,17 +383,22 @@ h1,h2,h3{font-weight:500;letter-spacing:-.022em;text-wrap:balance}
   .sol-card,.sol-card.on{flex:none;height:340px}
   .sol-card:not(.on) h3{writing-mode:horizontal-tb;transform:none;position:static}
   .sol-more{grid-template-rows:1fr;opacity:1}
-  .calc-grid{grid-template-columns:1fr;gap:36px}
+  .calc-grid{grid-template-columns:1fr;gap:20px}
   .calc-form{margin-top:30px;gap:24px}
   .calc-r{padding:16px;border-radius:22px}
   .door-vis{height:260px;padding:30px 30px 0 52px}
-  .calc-out{grid-template-columns:1fr 1fr}
   .calc-out .btn{grid-column:1/-1}
+  .calc-l{display:contents}
+  .calc-r{order:1}
+  .calc-form{order:2;margin-top:0}
+  .door-vis{height:190px;padding:34px 24px 0 48px}
+  .calc-out>div b{font-size:26px}
   .steps{grid-template-columns:1fr;gap:28px}
   .steps::before,.steps::after{left:27px;right:auto;top:0;bottom:0;width:1px;height:auto}
   .steps::after{transform:scaleY(var(--p,0));transform-origin:top}
   .step{padding:0 0 0 76px;min-height:54px}
-  .team{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 calc(-1*var(--gut));padding:0 var(--gut) 6px;scrollbar-width:none}
+  .team .tm{flex:0 0 42%;scroll-snap-align:start}
   .faq-grid{grid-template-columns:1fr;gap:24px}
   .qa button{font-size:18px;padding:22px 0}
   .final-box{grid-template-columns:1fr}

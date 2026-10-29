@@ -76,7 +76,7 @@
     const start = () => {
       if (started) return; started = true;
       u3 = window.Curtain3D && Curtain3D(dUnit, { yaw: .12, pitch: .16, heat: .6, light: 'warm', zoom: 1 / (1.32 * .52), sway: false, len: .8 });
-      fl = window.Airflow && Airflow(dAir, { source: () => g, depth: () => g.depth, mode: 1, snow: false, density: .9, glow: .26, streak: .7, lw: 1.3 });
+      fl = window.Airflow && Airflow(dAir, { source: () => g, depth: () => g.depth, mode: 1, snow: false, density: 1, glow: .3, streak: .85, lw: 1.4 });
     };
     let fl = null;
     new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { start(); o.disconnect(); } }, { rootMargin: '200px' }).observe(demo);
@@ -86,7 +86,7 @@
       on = !on; sw.setAttribute('aria-checked', on); demo.classList.toggle('off', !on);
       $('#swLab').textContent = on ? 'Завеса работает' : 'Завеса выключена';
       $('#dNote').textContent = on ? 'Холод остаётся за порогом' : 'Холод идёт по полу к кассе';
-      $('#dIn').textContent = on ? '+21°' : '+12°';
+      $('#dIn').textContent = on ? '+21°' : '+12°'; $('#dIn').style.color = on ? '' : '#CFE2F5';
       fl && fl.mode(on ? 1 : 0); u3 && u3.target({ heat: on ? .6 : 0 });
     });
   }
@@ -101,20 +101,25 @@
       [cW, cH].forEach(i => i.style.setProperty('--v', ((i.value - i.min) / (i.max - i.min) * 100) + '%'));
       $('#oW').textContent = $('#dimW').textContent = fmt(w);
       $('#oH').textContent = $('#dimH').textContent = fmt(h);
-      const high = h > 3.5, n = Math.max(1, Math.ceil(w / 2));
-      $('#rS').textContent = high ? '400' : '300';
-      $('#rSn').textContent = high ? 'проёмы до 6,5 м' : (h <= 2.5 ? 'или 200 для малой двери' : 'проёмы до 3,5 м');
+      const store = place === 'склад или цех';
+      const ser = h > 3.5 || (store && h > 3) ? 400 : (w <= 1 && h <= 2.5 && (place === 'магазин' || place === 'офис или ТЦ')) ? 200 : 300;
+      const high = ser === 400, n = Math.max(1, Math.ceil(w / (ser === 200 ? 1 : 2))), uw = w / n;
+      const code = ser === 200 ? 'КЭВ-6П2011E' : ser === 300 ? (place === 'кафе' ? (uw <= 1.2 ? 'КЭВ-12П3091E' : 'КЭВ-18П3091E') : (uw <= 1.2 ? 'КЭВ-12П3041E' : 'КЭВ-18П3041E')) : (h <= 4.5 && uw <= 1.2 ? 'КЭВ-12П4050E' : 'КЭВ-24П4042E');
+      const prod = TM.products.find(p => p.id === code);
+      $('#rS').textContent = ser;
+      $('#rSn').textContent = high ? 'проёмы до 6,5 м' : ser === 200 ? 'одна стандартная дверь' : 'проёмы до 3,5 м';
+      $('#rM').innerHTML = `Ориентир: <b>${code}</b> · ${prod.kw} кВт${n > 1 ? ' × ' + n : ''}. Точную модель инженер подтвердит после расчёта.`;
       $('#rN').textContent = n;
       $('#rNn').textContent = n === 1 ? 'перекрывает ' + fmt(w) : 'в ряд на ' + fmt(w);
       // door drawing: scale so that 4 m x 6.5 m fills the box
-      const box = $('#doorVis').getBoundingClientRect(), maxW = box.width - 120, maxH = box.height - 96;
+      const box = $('#doorVis').getBoundingClientRect(), maxW = box.width - 120, maxH = box.height - (box.height < 260 ? 66 : 96);
       const k = Math.min(maxW / (w + .4), maxH / Math.max(h + .3, 3));
       const op = $('#dOpen'); op.style.width = (w * k) + 'px'; op.style.height = (h * k) + 'px';
       const dh = $('#dimH'); dh.style.left = Math.max(8, box.width / 2 + 8 - w * k / 2 - 62) + 'px'; dh.style.top = (box.height - 22 - h * k / 2 - 12) + 'px';
       $('.door-man').style.height = (1.75 * k) + 'px';
-      const imgs = high ? '/img/c400.png' : '/img/c300.png';
+      const imgs = '/img/c' + ser + '.png';
       const un = $('#dUnits'); if (un.children.length !== n || un.dataset.s !== imgs) { un.dataset.s = imgs; un.innerHTML = Array.from({ length: n }, () => `<img src="${imgs}" alt="">`).join(''); }
-      $('#cSend').href = TM.wa(`Здравствуйте! Нужна завеса: ${place}, проём ${fmt(w)} × ${fmt(h)}. Ориентир с сайта: серия ${high ? 400 : 300}, ${n} шт. Посчитайте, пожалуйста, модель и цену.`);
+      $('#cSend').href = TM.wa(`Здравствуйте! Нужна завеса: ${place}, проём ${fmt(w)} × ${fmt(h)}. Ориентир с сайта: ${code}, ${n} шт. Посчитайте, пожалуйста, модель и цену.`);
     };
     [cW, cH].forEach(i => i.addEventListener('input', upd));
     $('#cP').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('#cP button').forEach(x => x.setAttribute('aria-checked', x === b)); place = b.dataset.v; upd(); });
@@ -143,7 +148,7 @@
   const card = p => {
     const chips = [p.kw && p.kw + ' кВт', p.heat && p.heat.toLowerCase()].filter(Boolean).map(c => `<span class="chip">${c}</span>`).join('');
     return `<article class="pc rv">
-      <div class="pc-img${p.series ? ' s' + p.series : ''}">${p.series ? `<span class="pc-tag">Серия ${p.series}<i>${p.height}</i></span>` : ''}<img src="${p.img}" alt="${p.name}" loading="lazy">${p.photo ? `<img class="pc-ph" src="${p.photo}" alt="" loading="lazy">` : ''}</div>
+      <div class="pc-img${p.series ? ' s' + p.series : ''}">${p.series ? `<span class="pc-tag">Серия ${p.series}<i>${p.height}</i></span>` : ''}<img src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(30 + p.len * 55)}%"` : ''}>${p.photo ? `<img class="pc-ph" src="${p.photo}" alt="" loading="lazy">` : ''}</div>
       <div class="pc-body"><h3>${p.name}</h3><div class="chips">${chips}</div><p class="pc-use">${p.use}</p>
       <div class="pc-foot"><span class="pc-price">Цена по запросу</span><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a></div></div>
     </article>`;

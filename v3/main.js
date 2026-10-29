@@ -92,8 +92,13 @@
         if (inDoor) { const e = Math.min(sm(.39, .41, u), sm(.635, .615, u)); T = T * (1 - e) + (.26 + .34 * (1 - sm(.18, .34, v))) * e; }
         if (v > .6) { const w = .1 + (v - .6) * 1.05, d = Math.abs(u - cu) / w; T -= .46 * Math.exp(-d * d * 2.2) * (1 - Math.min(1, (v - .6) / .55)) * sm(.6, .67, v); }
       } else {
-        if (inDoor) { const e = Math.min(sm(.39, .41, u), sm(.635, .615, u)); const sheet = .84 - (v - .18) * .5; T = T * (1 - e * .8) + sheet * e * .8; }
-        if (v > .64) { const d = Math.abs(u - cu) / .16; T -= .08 * Math.exp(-d * d * 3) * (1 - sm(.66, .8, v)); }
+        if (inDoor) {   // the street stays cold; only a thin warm sheet falls from the unit along the doorway
+          const e = Math.min(sm(.39, .41, u), sm(.635, .615, u));
+          const street = .26 + .34 * (1 - sm(.18, .34, v));
+          const sheet = Math.exp(-(((v - .19) / .07) ** 2)) * .55 + Math.exp(-(((u - .512) / .3) ** 2)) * .12 * (1 - sm(.2, .6, v));
+          T = T * (1 - e) + Math.min(.92, street + sheet) * e;
+        }
+        if (v > .6) { const d = Math.abs(u - cu) / .2; T += .06 * Math.exp(-d * d * 2) * sm(.62, .7, v) * (1 - sm(.7, .9, v)); }   // warm floor at the threshold
       }
       return T;
     };
@@ -134,7 +139,7 @@
     // a gentle hint the first time the slider comes into view
     const hint = new IntersectionObserver(es => {
       if (!es[0].isIntersecting || reduce) return; hint.disconnect();
-      let t0 = null; const run = ts => { t0 = t0 || ts; const k = (ts - t0) / 1600; if (k < 1 && !drag) { set(33 + Math.sin(k * Math.PI * 2) * 12); requestAnimationFrame(run); } else if (!drag) set(33); };
+      let t0 = null; const run = ts => { t0 = t0 || ts; const k = (ts - t0) / 1600; if (k < 1 && !drag) { set(50 + Math.sin(k * Math.PI * 2) * 12); requestAnimationFrame(run); } else if (!drag) set(50); };
       requestAnimationFrame(run);
     }, { threshold: .6 });
     hint.observe(cmp);
@@ -167,7 +172,7 @@
   window.V3sync = sync;
 
   const card = p => `<article class="pc rv">
-      <div class="pc-img">${p.kw ? `<span class="kw">${p.kw} кВт</span>` : ''}<img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="pc-img">${p.kw ? `<span class="kw">${p.kw} кВт</span>` : ''}<img src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(30 + p.len * 55)}%"` : ''}></div>
       <h3>${p.name}</h3>
       <ul>${p.series ? `<li>Серия<b>${p.series}</b></li>` : ''}${p.height ? `<li>Высота проёма<b>${p.height}</b></li>` : ''}${p.heat ? `<li>Нагрев<b>${p.heat}</b></li>` : ''}<li>Подходит<b>${p.use}</b></li></ul>
       <div class="pc-f"><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a><button class="add" data-id="${p.id}" aria-pressed="false" aria-label="Добавить в лист запроса"><svg><use href="#i-plus"/></svg></button></div>

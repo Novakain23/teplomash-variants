@@ -115,7 +115,7 @@
   $('#clist').innerHTML = TM.categories.map(c => `<button data-c="${c.id}" aria-pressed="false"><img src="${c.img}" alt="">${c.name}<em>${n(c.id)}</em></button>`).join('');
   $('#mcats').innerHTML = TM.categories.map(c => `<button class="chipb" data-c="${c.id}" aria-selected="false">${c.short}</button>`).join('');
   const row = p => `<article class="row" data-id="${p.id}" tabindex="0">
-      <div class="ri"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="ri"><img src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(30 + p.len * 55)}%"` : ''}></div>
       <div><h3>${p.name}</h3>
         <div class="meta">${p.kw ? `<span>Мощность <b>${p.kw} кВт</b></span>` : ''}${p.series ? `<span>Серия <b>${p.series}</b></span>` : ''}${p.height ? `<span>Проём <b>${p.height}</b></span>` : ''}${p.heat ? `<span>Нагрев <b>${p.heat.toLowerCase()}</b></span>` : ''}</div>
         <p class="use">${p.use}</p></div>
@@ -143,7 +143,7 @@
   const openD = id => {
     const p = TM.products.find(x => x.id === id); if (!p) return;
     $('#dT').textContent = p.name; $('#dU').textContent = 'Подходит: ' + p.use.toLowerCase();
-    $('#dImg').src = p.photo || p.img; $('#dImg').alt = p.name; $('#dKw').textContent = p.kw ? p.kw + ' кВт' : ''; $('#dKw').hidden = !p.kw;
+    $('#dImg').src = p.img; $('#dImg').alt = p.name; $('#dKw').textContent = p.kw ? p.kw + ' кВт' : ''; $('#dKw').hidden = !p.kw;
     const rows = [['Серия', p.series], ['Высота проёма', p.height], ['Нагрев', p.heat], ['Гарантия', '24 месяца'], ['Доставка', 'бесплатно по РК']].filter(r => r[1]);
     $('#dS').innerHTML = rows.map(([a, b]) => `<li>${a}<b>${b}</b></li>`).join('');
     $('#dWa').href = TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.');

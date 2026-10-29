@@ -148,7 +148,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:700;letter-spacing:-.025em;text-wrap:
 .cats{display:inline-flex;gap:4px;padding:5px;border-radius:999px;background:var(--bg-2);margin-top:34px;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .cats button{height:42px;padding:0 18px;border-radius:999px;font-size:15px;font-weight:500;color:var(--ink-2);white-space:nowrap;transition:background .25s,color .25s,box-shadow .25s}
 .cats button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 4px 14px -8px rgba(18,20,23,.4)}
-.rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:34px var(--gut) 10px;margin:0 calc(-1*var(--gut));scrollbar-width:none}
+.rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:34px 0 10px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
 .rail::-webkit-scrollbar{display:none}
 .rail-nav{display:flex;gap:8px}
 .circ{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px -16px rgba(18,20,23,.5);transition:background .2s,color .2s}
@@ -272,11 +272,16 @@ footer{padding-block:72px 44px}
   .pill{height:58px;padding:0 6px 0 16px}
   .pill .tel,.pill .btn{display:none}
   .burger{display:flex;margin-left:auto}
-  .show{padding-top:118px}
+  .show{padding-top:100px}
+  .show-cta{margin-top:20px}
+  .remote{padding-bottom:40px}
+  .mode-cap{font-size:14px;padding:0 12px}
   .show h1{font-size:44px}
   .show .lead{font-size:17px}
-  .show-cta .btn{flex:1 1 100%}
-  .stage{height:220px}
+  .show-cta{flex-wrap:nowrap;gap:8px}
+  .show-cta .btn{flex:1 1 0;padding:0 14px;font-size:15px}
+  .show-cta .btn svg{display:none}
+  .stage{height:190px}
   .seg{max-width:100%;overflow-x:auto;scrollbar-width:none}
   .seg button{padding:0 14px;font-size:14px;height:42px}
   .seg .dot,.seg .lg{display:none}

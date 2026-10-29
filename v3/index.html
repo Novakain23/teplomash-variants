@@ -76,14 +76,14 @@
         <h2 class="h2 rv">Посмотрите на вход глазами тепловизора</h2>
         <p class="lead rv d1">Потяните ползунок. Слева дверь без завесы: холод идёт по полу, тепло уходит в проём. Справа та же дверь с завесой Тепломаш.</p>
       </div>
-      <div class="cmp rv" id="cmp" style="--x:33%">
+      <div class="cmp rv" id="cmp" style="--x:50%">
         <div class="before"><canvas id="thA" aria-hidden="true"></canvas>
           <span class="note" style="left:9%;bottom:12%"><i style="background:#6DA2F0"></i>Холод идёт по полу</span>
-          <span class="note" style="left:20%;top:16%"><i style="background:#F58A1B"></i>Тепло уходит в проём</span>
+          <span class="note" style="left:4%;top:42%"><i style="background:#F58A1B"></i>Тепло уходит в проём</span>
         </div>
         <div class="after" id="after"><canvas id="thB" aria-hidden="true"></canvas><canvas class="u" id="cmpUnit" aria-hidden="true"></canvas>
           <span class="note" style="right:8%;bottom:12%"><i style="background:#FCC43A"></i>Тепло остаётся у входа</span>
-          <span class="note" style="right:12%;top:16%"><i style="background:#FFF3BF"></i>Воздушный барьер</span>
+          <span class="note" style="right:4%;top:42%"><i style="background:#FFF3BF"></i>Воздушный барьер у порога</span>
         </div>
         <span class="lab l">Без завесы</span><span class="lab r">С завесой Тепломаш</span>
         <div class="handle" id="handle"><button class="knob" id="knob" aria-label="Сравнить: перетащите влево или вправо" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg><use href="#i-drag"/></svg></button></div>
@@ -92,10 +92,18 @@
     </div>
   </section>
 
+  <section class="sec" id="reviews" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="h2 rv">Клиенты пишут о нас в 2ГИС</h2>
+      <div class="revs" id="revs"></div>
+      <div class="team-h"><h3>Команда, которая отвечает на заявки</h3></div><div class="team" id="team" aria-label="Команда Jamal Group"></div>
+    </div>
+  </section>
+
   <section class="sec" id="where" style="padding-top:0">
     <div class="wrap">
       <h2 class="h2 rv" style="max-width:20ch">Где тепло уходит быстрее всего</h2>
-      <p class="lead rv d1" style="margin-top:16px">Наведите на фото — увидите, где теряется тепло. Под каждым случаем указана серия, которую ставят чаще всего.</p>
+      <p class="lead rv d1" style="margin-top:16px">Под каждым случаем указана серия, которую ставят чаще всего. Нажмите, чтобы получить подбор в WhatsApp.</p>
       <div class="scn" id="scn"></div>
     </div>
   </section>
@@ -115,21 +123,14 @@
     <div class="wrap">
       <h2 class="h2 rv">Четыре шага до тёплого входа</h2>
       <div class="steps" id="steps">
-        <div class="stp rv"><span class="n">1</span><h3>Присылаете размеры</h3><p>Ширину и высоту проёма или просто фото входа в WhatsApp.</p></div>
-        <div class="stp rv d1"><span class="n">2</span><h3>Получаете расчёт</h3><p>Инженер подбирает модель и мощность, присылает цену и сроки.</p></div>
-        <div class="stp rv d2"><span class="n">3</span><h3>Доставляем</h3><p>Со склада в Алматы, по Казахстану бесплатно до двери.</p></div>
-        <div class="stp rv d3"><span class="n">4</span><h3>Устанавливаем</h3><p>Монтаж, подключение, гарантия 24 месяца и сервис.</p></div>
+        <div class="stp rv"><span class="n">1</span><span class="tmp">Холодно</span><h3>Присылаете размеры</h3><p>Ширину и высоту проёма или просто фото входа в WhatsApp.</p></div>
+        <div class="stp rv d1"><span class="n">2</span><span class="tmp">Теплее</span><h3>Получаете расчёт</h3><p>Инженер подбирает модель и мощность, присылает цену и сроки.</p></div>
+        <div class="stp rv d2"><span class="n">3</span><span class="tmp">Ещё теплее</span><h3>Доставляем</h3><p>Со склада в Алматы, по Казахстану бесплатно до двери.</p></div>
+        <div class="stp rv d3"><span class="n">4</span><span class="tmp">Тепло у входа</span><h3>Устанавливаем</h3><p>Монтаж, подключение, гарантия 24 месяца и сервис.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="reviews" style="padding-top:0">
-    <div class="wrap">
-      <h2 class="h2 rv">Клиенты пишут о нас в 2ГИС</h2>
-      <div class="revs" id="revs"></div>
-      <div class="team-h"><h3>Команда, которая отвечает на заявки</h3></div><div class="team" id="team" aria-label="Команда Jamal Group"></div>
-    </div>
-  </section>
 
   <section class="sec" style="padding-top:0">
     <div class="wrap faqw">

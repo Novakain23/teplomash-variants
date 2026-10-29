@@ -100,7 +100,7 @@
       </div>
       <div class="demo rv d1" id="demo">
         <img src="/img/store-inside.jpg" alt="Открытая дверь магазина зимой, вид изнутри" loading="lazy" width="1536" height="864" id="demoImg">
-        <div class="demo-cold" aria-hidden="true"></div>
+        <div class="demo-cold" aria-hidden="true"></div><div class="demo-warm" aria-hidden="true"></div>
         <canvas id="demoAir" aria-hidden="true"></canvas>
         <canvas id="demoUnit" aria-hidden="true"></canvas>
         <div class="demo-lab out">Улица<b id="dOut">−4°</b></div>
@@ -110,28 +110,6 @@
           <span class="demo-note" id="dNote">Холод остаётся за порогом</span>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="sec" id="solutions">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="h2 rv">Под любой вход: от бутика до ворот склада</h2>
-        <p class="lead rv d1">Выберите свой случай — покажем, какую серию обычно ставят и сколько мощности нужно.</p>
-      </div>
-      <div class="sol rv d1" id="sol"></div>
-    </div>
-  </section>
-
-  <section class="sec" style="padding-top:0" id="catalog">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="h2 rv">Оборудование Тепломаш со склада в Алматы</h2>
-        <p class="lead rv d1">Завесы, тепловентиляторы и вентиляторы по цене официального дистрибьютора.</p>
-      </div>
-      <div class="cat-tabs rv" role="tablist" aria-label="Категории" id="catTabs"></div>
-      <div class="grid-p" id="catGrid"></div>
-      <div class="cat-more"><a class="btn btn-line" href="/v1/catalog.html">Весь каталог <svg><use href="#i-arrow"/></svg></a></div>
     </div>
   </section>
 
@@ -156,9 +134,32 @@
         <div class="calc-out" aria-live="polite">
           <div><small>Серия</small><b id="rS">300</b><span id="rSn">до 3,5 м высоты</span></div>
           <div><small>Завес в ряд</small><b id="rN">1</b><span id="rNn">перекрывают 1,8 м</span></div>
+          <p class="calc-model" id="rM"></p>
           <a class="btn btn-gold" id="cSend" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Получить расчёт</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="sec" id="solutions">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="h2 rv">Под любой вход: от бутика до ворот склада</h2>
+        <p class="lead rv d1">Выберите свой случай — покажем, какую серию обычно ставят и сколько мощности нужно.</p>
+      </div>
+      <div class="sol rv d1" id="sol"></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0" id="catalog">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="h2 rv">Оборудование Тепломаш со склада в Алматы</h2>
+        <p class="lead rv d1">Завесы, тепловентиляторы и вентиляторы по цене официального дистрибьютора.</p>
+      </div>
+      <div class="cat-tabs rv" role="tablist" aria-label="Категории" id="catTabs"></div>
+      <div class="grid-p" id="catGrid"></div>
+      <div class="cat-more"><a class="btn btn-line" href="/v1/catalog.html">Весь каталог <svg><use href="#i-arrow"/></svg></a></div>
     </div>
   </section>
 

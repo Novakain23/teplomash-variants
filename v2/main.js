@@ -15,7 +15,7 @@
 
   /* product card used on the home rail and the catalog */
   const card = p => `<article class="pd rv" data-id="${p.id}" tabindex="0">
-      <div class="pd-img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="pd-img"><img src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(30 + p.len * 55)}%"` : ''}></div>
       <div class="pd-b"><h3>${p.name}</h3>
         <div class="specs">${p.kw ? `<div><b>${p.kw} кВт</b>мощность</div>` : ''}${p.height ? `<div><b>${p.height}</b>высота</div>` : ''}${!p.kw && !p.height ? `<div><b>${p.code}</b>${p.use}</div>` : ''}</div>
         <div class="pd-f"><span>Цена по запросу</span><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a></div>
@@ -35,7 +35,7 @@
       const w = 1.651 * len * zoom * H * .9, h = .256 * zoom * H;
       return { x: W / 2 - w / 2, w, y: H / 2 + h * .46, depth: H / 2 - h * .4 };
     };
-    const af = window.Airflow && Airflow(flow, { source: () => geo(), depth: () => geo().depth, mode: 1, snow: false, density: 1.15, streak: .8, lw: 1.5, glow: .26, cool: [120, 175, 225], warm: [236, 112, 40] });
+    const af = window.Airflow && Airflow(flow, { source: () => geo(), depth: () => geo().depth, mode: 1, density: 1.15, streak: .8, lw: 1.5, glow: .26, cool: [90, 150, 215], warm: [236, 112, 40], snow: true, flakes: 46, wind: 1, flakeRGB: '86,140,200', snowRegion: () => ({ x0: 0, x1: flow.clientWidth * .55 }) });
     const door = $('#door');
     const placeDoor = () => { const g = geo(); Object.assign(door.style, { left: (g.x - 8) + 'px', width: (g.w + 16) + 'px', top: (g.y - 6) + 'px' }); };
     placeDoor(); new ResizeObserver(placeDoor).observe(model);
@@ -81,7 +81,7 @@
       { yaw: -.5, pitch: -.12, heat: 0, tag: 'Перфорированная панель' },
       { yaw: -.2, pitch: .38, heat: 1, tag: 'Нагреватель за соплом' },
       { yaw: .35, pitch: .3, heat: .45, tag: 'Сопло и направляющие' },
-      { yaw: -1.05, pitch: -.05, heat: .15, tag: 'Управление и монтаж' }
+      { yaw: -1.05, pitch: -.05, heat: .15, tag: 'Торец: подключение и монтаж' }
     ];
     const z2 = () => Math.min(1.15, m2.clientWidth * .78 / (1.651 * .8 * Math.max(1, m2.clientHeight)));
     const c = window.Curtain3D && Curtain3D(m2, Object.assign({ light: 'studio', zoom: z2(), sway: false, interactive: false }, views[0]));
