@@ -21,6 +21,23 @@
         <div class="pd-f"><span>Цена по запросу</span><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a></div>
       </div></article>`;
   window.V2card = card;
+  /* catalog tile: square card for the catalog grid */
+  window.V2tile = p => {
+    const title = p.series ? p.code : p.name;
+    const type = p.series ? 'Тепловая завеса' : TM.categories.find(c => c.id === p.cat).name.replace(/ы$/, '');
+    return `<article class="tile" data-id="${p.id}" tabindex="0">
+      <div class="tile-img${p.series ? ' s' + p.series : ''}">
+        ${p.series ? `<span class="tile-tag"><i></i>Серия ${p.series}</span>` : ''}${p.kw ? `<span class="tile-kw">${p.kw} кВт</span>` : ''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(34 + p.len * 50)}%"` : ''}>
+      </div>
+      <div class="tile-b">
+        <small>${type}${p.heat ? ' · ' + p.heat.toLowerCase() : ''}</small>
+        <h3>${title}</h3>
+        <p>${p.use}${p.height ? ` · проём ${p.height}` : ''}</p>
+        <div class="tile-f"><a class="btn btn-ink btn-sm" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a><button class="add" data-id="${p.id}" aria-pressed="false" aria-label="Добавить в список запроса"><svg class="pl"><use href="#i-plus"/></svg><svg class="ck"><use href="#i-check"/></svg></button></div>
+      </div>
+    </article>`;
+  };
 
   /* HERO showroom */
   const model = $('#model'), flow = $('#flow');
@@ -84,7 +101,7 @@
       { yaw: -1.05, pitch: -.05, heat: .15, tag: 'Торец: подключение и монтаж' }
     ];
     const z2 = () => Math.min(1.15, m2.clientWidth * .78 / (1.651 * .8 * Math.max(1, m2.clientHeight)));
-    const c = window.Curtain3D && Curtain3D(m2, Object.assign({ light: 'studio', zoom: z2(), sway: false, interactive: false }, views[0]));
+    const c = window.Curtain3D && Curtain3D(m2, Object.assign({ light: 'dusk', zoom: z2(), sway: false, interactive: false }, views[0]));
     new ResizeObserver(() => c && c.set({ zoom: z2() })).observe(m2);
     const feats = $$('.feat');
     let cur = 0, auto = null;
@@ -96,29 +113,74 @@
     if (!reduce) new IntersectionObserver(es => { if (es[0].isIntersecting && auto === null) auto = setInterval(() => pick((cur + 1) % 4), 4200); }, { threshold: .5 }).observe(m2);
   }
 
-  /* SERIES picker by type of entrance */
-  const ps = $('#pickSeg');
-  if (ps) {
-    const n = s => TM.products.filter(p => p.series === s).length;
-    const S = [
-      { s: 200, img: '/img/c200.png', for: 'Бутики, офисные двери', kw: '6–9 кВт', h: 'до 3,5 м', hk: 'low', txt: 'Компактная завеса для одной стандартной двери: небольшой бутик, офис, служебный вход.' },
-      { s: 300, img: '/img/c300.png', for: 'Магазины, кафе, банки', kw: '9–24 кВт', h: 'до 3,5 м', hk: 'low', txt: 'Самая ходовая серия для торговых входов: ставится над стандартной дверью и держит тепло у кассы.' },
-      { s: 400, img: '/img/c400.png', for: 'Склады, ворота, цеха', kw: '12–27 кВт', h: 'до 6,5 м', hk: 'high', txt: 'Для ворот и высоких проёмов. На широкие ворота ставят несколько завес в ряд.' }
+  /* QUIZ: three answers assemble the curtain on the right */
+  const qz = $('#quiz');
+  if (qz) {
+    const Q = [
+      { q: 'Какой вход утепляем?', k: 'a', o: [
+        { v: 'door', i: 'door', t: 'Одна дверь', s: 'Магазин, офис, кафе' },
+        { v: 'double', i: 'doors', t: 'Двойные двери', s: 'Тамбур, ТЦ, банк' },
+        { v: 'gate', i: 'gate', t: 'Ворота', s: 'Склад, цех, автосервис' } ] },
+      { q: 'Какая высота проёма?', k: 'b', o: [
+        { v: 1, i: 'h1', t: 'До 2,5 м', s: 'Обычная дверь' },
+        { v: 2, i: 'h2', t: '2,5–3,5 м', s: 'Высокий вход, витрина' },
+        { v: 3, i: 'h3', t: 'Выше 3,5 м', s: 'Ворота, ангар' } ] },
+      { q: 'Как завеса будет греть?', k: 'c', o: [
+        { v: 'e', i: 'bolt', t: 'От электросети', s: 'Проще всего подключить' },
+        { v: 'w', i: 'drop', t: 'От отопления здания', s: 'Водяная, экономит электричество' },
+        { v: 'n', i: 'fan', t: 'Без нагрева', s: 'Барьер от пыли и жары летом' } ] }
     ];
-    const img = $('#pkImg');
-    const set = i => {
-      const d = S[i];
-      $$('button', ps).forEach((b, k) => b.setAttribute('aria-checked', k === i));
-      img.classList.add('out');
-      setTimeout(() => { img.src = d.img; img.alt = 'Тепловая завеса серии ' + d.s; img.classList.remove('out'); }, 220);
-      $('#pkFor').textContent = d.for; $('#pkName').textContent = 'Серия ' + d.s; $('#pkKw').textContent = d.kw;
-      $('#pkHt').textContent = $('#pkH').textContent = d.h; $('#pkN').textContent = n(d.s); $('#pkTxt').textContent = d.txt;
-      $('#pkWa').href = TM.wa('Здравствуйте! Смотрю завесы серии ' + d.s + ' (' + d.for.toLowerCase() + '). Помогите подобрать мощность под мой вход.');
-      $('#pkCat').href = '/v2/catalog.html?c=curtains&h=' + d.hk;
-      $('.picker').dataset.s = i;
+    const L = { door: 'Одна дверь', double: 'Двойные двери', gate: 'Ворота', 1: 'до 2,5 м', 2: '2,5–3,5 м', 3: 'выше 3,5 м', e: 'электрический', w: 'водяной', n: 'без нагрева' };
+    const ans = {}; let step = 0;
+    const qm = $('#qzModel');
+    const c3q = window.Curtain3D && Curtain3D(qm, { yaw: -.45, pitch: .14, heat: 0, light: 'studio', zoom: .9, len: .62, sway: false });
+    const zq = len => Math.min(1.3, qm.clientWidth * .8 / (1.651 * len * Math.max(1, qm.clientHeight)));
+    const live = () => {
+      const len = ans.a === 'gate' ? 1.05 : ans.a === 'double' ? .8 : .62;
+      c3q && c3q.target({ len, zoom: zq(len), heat: ans.c === 'e' ? 1 : ans.c === 'w' ? .65 : 0 });
+      $('#sA').textContent = ans.a ? L[ans.a] : '—'; $('#sB').textContent = ans.b ? L[ans.b] : '—'; $('#sC').textContent = ans.c ? L[ans.c] : '—';
+      const door = $('#qzDoor'); door.style.setProperty('--h', ans.b ? (ans.b * 28 + 18) + '%' : '30%'); door.style.setProperty('--w', len * 62 + '%'); $('#qzH').textContent = ans.b ? 'проём ' + L[ans.b] : 'высота?';
+      qz.dataset.heat = ans.c || '';
     };
-    ps.addEventListener('click', e => { const b = e.target.closest('button'); b && set(+b.dataset.s); });
-    set(1);
+    const result = () => {
+      const ser = ans.b === 3 || ans.a === 'gate' ? 400 : (ans.a === 'door' && ans.b === 1) ? 200 : 300;
+      const code = ser === 200 ? 'КЭВ-6П2011E' : ser === 300 ? (ans.a === 'double' ? 'КЭВ-18П3041E' : 'КЭВ-12П3041E') : (ans.b === 3 ? 'КЭВ-24П4042E' : 'КЭВ-12П4050E');
+      const p = TM.products.find(x => x.id === code);
+      const water = ans.c === 'w';
+      const msg = `Здравствуйте! Подбор за 3 ответа: ${L[ans.a].toLowerCase()}, высота ${L[ans.b]}, нагрев ${L[ans.c]}. Ориентир с сайта: серия ${ser}${water ? ' (водяная)' : ', ' + code}. Посчитайте, пожалуйста, цену.`;
+      return { ser, code, p, water, msg };
+    };
+    const render = () => {
+      const body = $('#qzBody');
+      $('#qzBack').hidden = step === 0;
+      $('#qzBar').style.width = (Math.min(step, 3) / 3 * 100) + '%';
+      if (step < 3) {
+        const q = Q[step];
+        $('#qzStep').textContent = `Вопрос ${step + 1} из 3`;
+        body.innerHTML = `<h3>${q.q}</h3><div class="qz-opts" role="radiogroup" aria-label="${q.q}">${q.o.map(o => `<button role="radio" aria-checked="${ans[q.k] === o.v}" data-v="${o.v}"><i><svg><use href="#i-${o.i}"/></svg></i><b>${o.t}</b><span>${o.s}</span></button>`).join('')}</div>`;
+      } else {
+        const r = result();
+        $('#qzStep').textContent = 'Готово';
+        body.innerHTML = `<div class="qz-res"><small>Подходит серия</small><h3>Серия ${r.ser}${r.water ? ' · водяная' : ''}</h3>
+          <p>${r.water ? 'Водяную модель подберём под параметры вашего отопления.' : `Ориентир: <b>${r.code}</b> · ${r.p.kw} кВт.`} Точную модель и цену инженер пришлёт после короткого звонка.</p>
+          <form class="qz-form" id="qzForm" novalidate><input type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" aria-label="Телефон" id="qzTel"><button class="btn btn-heat" type="submit">Получить расчёт</button></form>
+          <p class="qz-err" id="qzErr">Укажите телефон, например +7 701 123 45 67</p>
+          <a class="qz-wa" href="${TM.wa(r.msg)}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Или отправить ответы в WhatsApp</a>
+          <div class="qz-ok" role="status"><b>Заявка принята.</b> Инженер перезвонит в течение 15 минут в рабочее время.</div></div>`;
+        $('#qzForm').addEventListener('submit', e => { e.preventDefault(); const ok = $('#qzTel').value.replace(/\D/g, '').length >= 10; qz.classList.toggle('bad', !ok); if (ok) qz.classList.add('done'); else $('#qzTel').focus(); });
+      }
+      body.classList.remove('in'); requestAnimationFrame(() => body.classList.add('in'));
+      live();
+    };
+    $('#qzBody').addEventListener('click', e => {
+      const b = e.target.closest('.qz-opts button'); if (!b) return;
+      const q = Q[step]; const v = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v;
+      ans[q.k] = v; $$('.qz-opts button').forEach(x => x.setAttribute('aria-checked', x === b)); live();
+      setTimeout(() => { step++; render(); }, 260);
+    });
+    $('#qzBack').addEventListener('click', () => { step = Math.max(0, step - 1); qz.classList.remove('done', 'bad'); render(); });
+    new ResizeObserver(live).observe(qm);
+    render();
   }
 
   /* decorative unit in the final CTA */
@@ -143,14 +205,32 @@
     rail.addEventListener('click', e => { if (e.target.closest('a')) return; const c = e.target.closest('.pd'); if (c) location.href = '/v2/catalog.html?c=' + TM.products.find(p => p.id === c.dataset.id).cat + '&open=' + encodeURIComponent(c.dataset.id); });
   }
 
-  /* people + quotes */
-  const faces = $('#faces');
-  if (faces) faces.innerHTML = TM.team.map((m, i) => `<div class="face rv d${i % 4}"><img src="${m.img}" alt="${m.name}" loading="lazy"><b>${m.name.split(' ')[1] || m.name}</b><span>${m.role}</span></div>`).join('');
-  const revs = $('#revs');
-  if (revs) {
-    const R = TM.reviews.filter(r => r.text.length < 260).slice(0, 3);
-    const star = '<svg><use href="#i-star"/></svg>';
-    revs.innerHTML = R.map((r, k) => `<figure class="rc rv d${k}"><span class="stars">${star.repeat(5)}</span><blockquote>«${r.text}»</blockquote><figcaption><b>${r.name}</b><span>${r.date}, отзыв в 2ГИС</span></figcaption></figure>`).join('');
+  /* PEOPLE: review carousel linked to the team */
+  const crew = $('#crew');
+  if (crew) {
+    const keys = ['Марлен', 'Бекжан', 'Малик', 'Сұлтан|Султан', 'Елжас', 'Дамир', 'Мадияр'];
+    crew.innerHTML = TM.team.map((t, k) => `<figure class="mate rv d${k % 4}" data-k="${k}"><div class="mate-ph"><img src="${t.img}" alt="${t.name}" loading="lazy"></div><figcaption><b>${t.name.split(' ')[1] || t.name}</b><span>${t.role}</span></figcaption><em class="mate-flag">В этом отзыве</em></figure>`).join('');
+    const R = TM.reviews.filter(r => r.text.length < 300);
+    let i = 0, t;
+    const mates = $$('.mate', crew);
+    const show = (k, first) => {
+      i = (k + R.length) % R.length; const r = R[i];
+      const put = () => {
+        $('#rvText').textContent = r.text; $('#rvName').textContent = r.name; $('#rvDate').textContent = r.date;
+        $('#rvIni').textContent = r.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        $('#rvCount').textContent = (i + 1) + ' / ' + R.length;
+        const hit = keys.findIndex(kk => new RegExp(kk).test(r.text));
+        mates.forEach((mm, n) => mm.classList.toggle('hit', n === hit));
+        if (hit >= 0 && crew.scrollWidth > crew.clientWidth + 4) crew.scrollTo({ left: mates[hit].offsetLeft - crew.offsetLeft - 18, behavior: first ? 'auto' : 'smooth' });
+        const th = $('#rvThanks'); th.hidden = hit < 0;
+        if (hit >= 0) { $('#rvThImg').src = TM.team[hit].img; $('#rvThName').textContent = TM.team[hit].name.split(' ')[1] + ', ' + TM.team[hit].role.toLowerCase(); }
+        $('.rv-stage').classList.remove('out');
+      };
+      if (first) put(); else { $('.rv-stage').classList.add('out'); setTimeout(put, 260); }
+      clearTimeout(t); if (!reduce) t = setTimeout(() => show(i + 1), 8000);
+    };
+    $('#rvNext').onclick = () => show(i + 1); $('#rvPrev').onclick = () => show(i - 1);
+    show(0, true);
   }
 
   const faq = $('#faq');
