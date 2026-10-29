@@ -148,6 +148,8 @@
             <div class="wa-who"><b>Jamal Group</b><span id="waStatus">онлайн · отвечает сразу</span></div>
             <span class="wa-step" id="waStep">Вопрос 1 из 3</span>
           </div>
+          <div class="wa-prog" aria-hidden="true"><i></i><i></i><i></i>
+          </div>
           <div class="wa-body" id="waBody" aria-live="polite"></div>
           <form class="wa-input" id="waForm" hidden novalidate>
             <input id="waInput" autocomplete="off" aria-label="Ваш ответ">
@@ -199,9 +201,17 @@
 
   <section class="sec" style="padding-top:0">
     <div class="wrap">
-      <div class="faq-panel rv">
-        <div class="faq-side"><span class="kick"><b>06</b>Вопросы</span><h2 class="h2">Отвечаем на частые вопросы</h2><p class="lead">Не нашли ответ? Менеджер ответит в WhatsApp в рабочее время.</p><a class="btn btn-ink" href="https://wa.me/77473104846" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Спросить в WhatsApp</a></div>
-        <div class="faq" id="faq"></div>
+      <div class="faq2 rv">
+        <div class="faq2-side">
+          <span class="kick"><b>06</b>Вопросы</span>
+          <h2 class="h2">Частые вопросы перед покупкой</h2>
+          <div class="ask">
+            <div class="ask-top"><img src="/img/team/malika.jpg" alt="Малика"><div><b>Не нашли ответ?</b><span>Малика, руководитель отдела продаж</span></div></div>
+            <p>Нажмите на вопрос — откроется WhatsApp с готовым текстом.</p>
+            <div class="ask-chips" id="askChips"></div>
+          </div>
+        </div>
+        <div class="faq2-list" id="faq"></div>
       </div>
     </div>
   </section>

@@ -198,9 +198,9 @@
     const body = $('#waBody'), form = $('#waForm'), input = $('#waInput'), stepEl = $('#waStep');
     const L = { door: 'Одна дверь', double: 'Двойные двери', gate: 'Ворота', 1: 'до 2,5 м', 2: '2,5–3,5 м', 3: 'выше 3,5 м', e: 'электрический', w: 'водяной', n: 'без нагрева' };
     const Q = [
-      { k: 'a', q: 'Здравствуйте! Подберём тепловую завесу за 3 ответа. Какой вход утепляем?', o: [['door', 'Одна дверь'], ['double', 'Двойные двери'], ['gate', 'Ворота склада'], ['many', 'Несколько входов']] },
-      { k: 'b', q: 'Какая высота проёма?', o: [[1, 'До 2,5 м'], [2, '2,5–3,5 м'], [3, 'Выше 3,5 м'], [0, 'Не знаю точно']] },
-      { k: 'c', q: 'И последнее: как завеса будет греть?', o: [['e', 'От электросети'], ['w', 'От отопления'], ['n', 'Без нагрева'], ['x', 'Посоветуйте']] }
+      { k: 'a', q: 'Здравствуйте! Подберём тепловую завесу за 3 ответа. Какой вход утепляем?', o: [['door', 'Одна дверь', 'door'], ['double', 'Двойные двери', 'doors'], ['gate', 'Ворота склада', 'gate'], ['many', 'Несколько входов', 'doors']] },
+      { k: 'b', q: 'Какая высота проёма?', o: [[1, 'До 2,5 м', 'h1'], [2, '2,5–3,5 м', 'h2'], [3, 'Выше 3,5 м', 'h3'], [0, 'Не знаю точно', 'h2']] },
+      { k: 'c', q: 'И последнее: как завеса будет греть?', o: [['e', 'От электросети', 'bolt'], ['w', 'От отопления', 'drop'], ['n', 'Без нагрева', 'fan'], ['x', 'Посоветуйте', 'check']] }
     ];
     Object.assign(L, { many: 'Несколько входов', 0: 'не знаю точно', x: 'нужна консультация' });
     let ans = {}, step = 0, busy = false, started = false;
@@ -222,7 +222,8 @@
     };
     const choices = (list, hint) => {
       const box = document.createElement('div'); box.className = 'wa-choices';
-      box.innerHTML = (hint ? '<p class="wa-hint"><span aria-hidden="true">👇</span>Нажмите на ответ — чат работает по-настоящему</p>' : '') + `<div class="wa-opts">${list.map(([v, t]) => `<button type="button" data-v="${v}">${t}</button>`).join('')}</div>`;
+      box.innerHTML = (hint ? '<p class="wa-hint"><span class="wa-tap" aria-hidden="true"></span>Выберите ответ — это займёт меньше минуты</p>' : '') + `<div class="wa-opts">${list.map(([v, t, ic]) => `<button type="button" data-v="${v}"><i><svg><use href="#i-${ic}"/></svg></i><span>${t}</span></button>`).join('')}</div>`;
+      if (hint && !reduce) { const hand = document.createElement('span'); hand.className = 'wa-hand'; hand.setAttribute('aria-hidden', 'true'); hand.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-1.5a1.5 1.5 0 0 1 3 0V11m0-1a1.5 1.5 0 0 1 3 0v4.5c0 3.6-2.5 6.5-6 6.5h-.5c-2 0-3.4-.8-4.6-2.4L4.6 15a1.5 1.5 0 0 1 2.3-1.9L9 15"/></svg>'; box.querySelector('.wa-opts button').appendChild(hand); }
       body.appendChild(box); scroll();
     };
     const ask = (ph, type) => { form.hidden = false; input.value = ''; input.placeholder = ph; input.type = type; input.inputMode = type === 'tel' ? 'tel' : 'text'; input.autocomplete = type === 'tel' ? 'tel' : 'name'; setTimeout(() => input.focus({ preventScroll: true }), 50); };
@@ -233,6 +234,7 @@
       return { ser, code, p: TM.products.find(x => x.id === code), water: ans.c === 'w' };
     };
     const next = async () => {
+      wa.style.setProperty('--prog', Math.min(step, 3) / 3); wa.dataset.step = step;
       if (step < 3) { stepEl.textContent = `Вопрос ${step + 1} из 3`; await say([Q[step].q]); choices(Q[step].o, step === 0); return; }
       if (step === 3) {
         const r = result(); stepEl.textContent = 'Почти готово';
@@ -270,7 +272,7 @@
       }
       form.hidden = true; bubble(esc(v), true); step++; next();
     });
-    const start = () => { if (started) return; started = true; next(); };
+    const start = () => { if (started) return; started = true; next(); setTimeout(() => { if (step === 0 && !reduce) { const o = body.querySelector('.wa-opts'); o && o.classList.add('nudge'); } }, 7000); };
     new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { start(); o.disconnect(); } }, { threshold: .3 }).observe(wa);
   }
 
@@ -283,6 +285,27 @@
   if (bento) bento.innerHTML = TM.scenes.map((s, i) => `<a class="bx rv d${i % 3}" href="${TM.wa('Здравствуйте! Нужна завеса: ' + s.name.toLowerCase() + '. Помогите подобрать.')}" target="_blank" rel="noopener">
       <img src="${s.img}" alt="${s.name}" loading="lazy"><div class="bx-in"><span class="pick">${s.pick}</span><h3>${s.name}</h3><p>${s.text}</p></div></a>`).join('');
 
+  /* home catalog card: product on a warm stage, real photo on hover, spec bars, two actions */
+  const homeCard = p => {
+    const cat = TM.categories.find(c => c.id === p.cat);
+    const kw = p.kw ? Math.min(1, p.kw / 25) : 0, hgt = p.height ? (p.hKey === 'high' ? 1 : .54) : 0;
+    const title = p.series ? p.code : p.name;
+    return `<article class="hc" data-id="${p.id}" tabindex="0">
+      <div class="hc-stage${p.series ? ' s' + p.series : ''}">
+        ${p.series ? `<span class="hc-ser"><i></i>Серия ${p.series}</span>` : `<span class="hc-ser">${cat.short}</span>`}
+        <img class="hc-r" src="${p.img}" alt="${p.name}" loading="lazy"${p.len ? ` style="width:${Math.round(40 + p.len * 46)}%"` : ''}>
+        ${p.photo ? `<img class="hc-p" src="${p.photo}" alt="" loading="lazy"><span class="hc-ph">Фото товара</span>` : ''}
+        <span class="hc-3d">${p.series ? 'Открыть 3D' : 'Подробнее'}</span>
+      </div>
+      <div class="hc-b">
+        <h3>${title}</h3>
+        <p>${p.use}</p>
+        ${p.kw || p.height ? `<div class="hc-bars">${p.kw ? `<div><span>Мощность</span><b>${p.kw} кВт</b><i style="--v:${kw}"></i></div>` : ''}${p.height ? `<div><span>Проём</span><b>${p.height}</b><i style="--v:${hgt}"></i></div>` : ''}</div>` : ''}
+        <div class="hc-f"><a class="btn btn-ink" href="${TM.wa('Здравствуйте! Интересует ' + p.name + '. Подскажите цену и наличие.')}" target="_blank" rel="noopener">Узнать цену</a><span class="hc-price">Цена<br>по запросу</span></div>
+      </div>
+    </article>`;
+  };
+
   /* catalog preview: the same tiles as the catalog page */
   const cats = $('#cats'), ht = $('#homeTiles');
   if (cats && ht) {
@@ -291,14 +314,15 @@
     const fill = id => {
       const all = TM.products.filter(p => p.cat === id);
       const list = pick[id] ? all.filter(p => pick[id].includes(p.id)) : all.slice(0, 4);
-      ht.innerHTML = list.map(window.V2tile).join('');
+      ht.innerHTML = list.map(homeCard).join('');
       $('#homeMore').href = '/v2/catalog.html?c=' + id;
       const n = all.length; $('#homeCount').textContent = n > list.length ? `ещё ${n - list.length} ${n - list.length < 5 ? 'модели' : 'моделей'} в каталоге` : '';
     };
     cats.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('button', cats).forEach(x => x.setAttribute('aria-selected', x === b)); fill(b.dataset.c); });
-    ht.addEventListener('click', e => { if (e.target.closest('a,button')) return; const t = e.target.closest('.tile'); if (t) location.href = '/v2/catalog.html?c=' + TM.products.find(p => p.id === t.dataset.id).cat + '&open=' + encodeURIComponent(t.dataset.id); });
-    ht.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('tile')) e.target.click(); });
+    ht.addEventListener('click', e => { if (e.target.closest('a,button')) return; const t = e.target.closest('.hc'); if (t) location.href = '/v2/catalog.html?c=' + TM.products.find(p => p.id === t.dataset.id).cat + '&open=' + encodeURIComponent(t.dataset.id); });
+    ht.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('hc')) e.target.click(); });
     fill('curtains');
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { ht.classList.add('in-view'); o.disconnect(); } }, { threshold: .35 }).observe(ht);
   }
 
   /* PEOPLE: leaders with their area of responsibility, managers with a direct "write" button,
@@ -340,17 +364,19 @@
     $('#marq').innerHTML = row(R, 'l');
   }
 
-  /* FOOTER: the domain under an air curtain — a warm vertical stream sweeps across the letters
-     (or follows the pointer), lifts them, warms their colour and pushes cold particles aside */
+  /* FOOTER: the domain under an air curtain. A warm stream sweeps across (or follows the pointer):
+     letters under it heat up — lift, glow and turn cream-white — while cold air and snow drift in
+     from the right and are turned back by the stream. Letters away from the stream cool to frost. */
   const fd = $('#fdomain');
   if (fd) {
     const word = 'teplomash-kazakhstan.kz';
     const tx = fd.querySelector('.fd-text'), cv = fd.querySelector('.fd-air'), ctx = cv.getContext('2d');
     tx.innerHTML = [...word].map(ch => `<span>${ch}</span>`).join('');
     const spans = [...tx.children];
-    let W = 0, H = 0, dpr = 1, centers = [], vis = false, raf = 0, px = null, sx = 0, t0 = performance.now();
-    const parts = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), v: .4 + Math.random() * .8, r: .8 + Math.random() * 1.6 }));
-    const streaks = Array.from({ length: 46 }, () => ({ u: Math.random(), t: Math.random(), v: .6 + Math.random() * .8, l: 14 + Math.random() * 26 }));
+    let W = 0, H = 0, dpr = 1, centers = [], heat = spans.map(() => 0), vis = false, raf = 0, px = null, sx = 0, t0 = performance.now(), last = t0;
+    const spr = (rgb) => { const s = 64, c = document.createElement('canvas'); c.width = c.height = s; const x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, `rgba(${rgb},1)`); g.addColorStop(.4, `rgba(${rgb},.5)`); g.addColorStop(1, `rgba(${rgb},0)`); x.fillStyle = g; x.fillRect(0, 0, s, s); return c; };
+    const warmS = spr('255,236,200'), coldS = spr('205,228,250');
+    const jet = [], cold = [], flakes = Array.from({ length: 46 }, () => ({ x: Math.random(), y: Math.random(), v: .2 + Math.random() * .5, r: .8 + Math.random() * 1.6, ph: Math.random() * 6 }));
     const measure = () => {
       dpr = Math.min(2, devicePixelRatio || 1); W = fd.clientWidth; H = fd.clientHeight;
       cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -362,51 +388,58 @@
     fd.addEventListener('pointerleave', () => { px = null; });
     const frame = now => {
       raf = 0;
+      const dt = Math.min(.05, (now - last) / 1000); last = now;
       const t = (now - t0) / 1000;
-      const target = px != null ? px : W * (.5 + .46 * Math.sin(t * .45));
-      sx += (target - sx) * (reduce ? 1 : .08);
-      const sig = Math.max(60, W * .07);
+      const target = px != null ? px : W * (.5 + .44 * Math.sin(t * .38));
+      sx += (target - sx) * (reduce ? 1 : Math.min(1, dt * 5));
+      const sw = Math.max(70, W * .085);
+      // letters: heat accumulates under the stream and fades slowly (thermal inertia)
       spans.forEach((s, i) => {
-        const d = (centers[i] - sx) / sig, k = Math.exp(-d * d);
-        const lift = k * 0.16, skew = Math.max(-1, Math.min(1, d)) * k * -8;
-        s.style.transform = `translateY(${-lift}em) skewX(${skew}deg)`;
-        s.style.setProperty('--k', k.toFixed(3));
+        const d = (centers[i] - sx) / sw, k = Math.exp(-d * d * 1.4);
+        heat[i] += (k - heat[i]) * Math.min(1, dt * (k > heat[i] ? 8 : 2.2));
+        const h = heat[i];
+        const wob = Math.sin(t * 9 + i) * h * .6;
+        s.style.transform = `translateY(${(-h * .12).toFixed(3)}em) skewX(${(Math.max(-1, Math.min(1, d)) * k * -7 + wob).toFixed(2)}deg)`;
+        s.style.setProperty('--k', h.toFixed(3));
       });
       ctx.clearRect(0, 0, W, H);
-      // warm stream falling from the top edge at sx
-      const sw = sig * 1.6;
-      ctx.save(); ctx.translate(sx, 0); ctx.scale(sw / 2, H * 1.1);
+      // soft heat column: elliptical glow that fades top and bottom
+      ctx.save(); ctx.translate(sx, H * .35); ctx.scale(sw, H * .9);
       const rg = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
-      rg.addColorStop(0, 'rgba(233,169,63,.34)'); rg.addColorStop(.55, 'rgba(233,169,63,.12)'); rg.addColorStop(1, 'rgba(233,169,63,0)');
-      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI); ctx.fill(); ctx.restore();
-      ctx.lineCap = 'round';
-      for (const p of streaks) {
-        if (!reduce) { p.t += .012 * p.v; if (p.t > 1) { p.t = 0; p.u = Math.random(); } }
-        const x = sx + (p.u - .5) * sw * .8, y = p.t * H;
-        ctx.strokeStyle = `rgba(255,190,110,${.55 * Math.sin(Math.PI * p.t)})`; ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + p.l); ctx.stroke();
+      rg.addColorStop(0, 'rgba(255,244,222,.38)'); rg.addColorStop(.5, 'rgba(255,236,200,.14)'); rg.addColorStop(1, 'rgba(255,236,200,0)');
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(0, 0, 1, 0, 7); ctx.fill(); ctx.restore();
+      if (!reduce) {
+        for (let n = 0; n < 3; n++) jet.push({ x: sx + (Math.random() - .5) * sw * .9, y: -6, vy: 3 + Math.random() * 2.2, life: 1, r: 4 + Math.random() * 5 });
+        if (Math.random() < .55) cold.push({ x: W + 10, y: H * (.25 + Math.random() * .75), vx: -(1 + Math.random() * 1.2), vy: (Math.random() - .5) * .3, life: 1, r: 7 + Math.random() * 9 });
       }
-      // cold air drifting in from the right, turned back by the stream
-      for (const p of parts) {
-        if (!reduce) {
-          let X = p.x * W; const dx = X - sx;
-          const push = Math.abs(dx) < sw * .7 ? Math.sign(dx || 1) * 2.4 : 0;
-          X += -p.v * .6 + push; p.y += Math.sin(t * 2 + p.v * 10) * .0015;
-          p.x = X / W; if (p.x < -.02) { p.x = 1.02; p.y = Math.random(); }
-          if (p.x > 1.04) p.x = 1.02;
-        }
-        ctx.fillStyle = 'rgba(150,195,240,.45)'; ctx.beginPath(); ctx.arc(p.x * W, p.y * H, p.r, 0, 7); ctx.fill();
+      for (let i = jet.length - 1; i >= 0; i--) { const p = jet[i]; p.y += p.vy; p.vy *= .995; p.x += Math.sin(t * 4 + p.y * .05) * .3; if (p.y > H * .82) { p.x += (p.x - sx) * .03; p.life -= .05; } p.life -= .006;
+        if (p.life <= 0 || p.y > H + 10) { jet.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.min(1, p.life) * .3; const len = p.r * (2 + p.vy * .9); ctx.drawImage(warmS, p.x - p.r, p.y - len, p.r * 2, len); }
+      for (let i = cold.length - 1; i >= 0; i--) { const p = cold[i]; const dx = p.x - sx;
+        if (Math.abs(dx) < sw * 1.1 && dx > 0) { p.vx += .22; p.vy += (Math.random() - .5) * .25; p.turned = true; }
+        p.x += p.vx; p.y += p.vy; p.vx *= .995; p.life -= p.turned ? .012 : .002;
+        if (p.life <= 0 || p.x < -30 || p.x > W + 40) { cold.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.min(1, p.life) * .32; const len = p.r * (2 + Math.abs(p.vx)); ctx.drawImage(coldS, p.x - len / 2, p.y - p.r * .5, len, p.r); }
+      ctx.globalAlpha = 1;
+      for (const f of flakes) {
+        if (!reduce) { f.y += f.v / H * 2.2; f.x -= .0006 + Math.sin(t + f.ph) * .0004; const X = f.x * W; if (Math.abs(X - sx) < sw * .8) { f.x += (X > sx ? 1 : -1) * .004; f.y += .004; } if (f.y > 1.05 || f.x < -.02) { f.y = -.05; f.x = Math.random() * .6 + .4; } }
+        ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.beginPath(); ctx.arc(f.x * W, f.y * H, f.r, 0, 7); ctx.fill();
       }
       if (vis && !reduce) raf = requestAnimationFrame(frame);
     };
-    new IntersectionObserver(e => { vis = e[0].isIntersecting; if (vis) { measure(); if (!raf) raf = requestAnimationFrame(frame); } }).observe(fd);
+    new IntersectionObserver(e => { vis = e[0].isIntersecting; if (vis) { measure(); last = performance.now(); if (!raf) raf = requestAnimationFrame(frame); } }).observe(fd);
     measure(); sx = W / 2; if (reduce) frame(performance.now());
   }
 
   const faq = $('#faq');
   if (faq) {
-    faq.innerHTML = TM.faq.map((f, k) => `<div class="qa rv d${k % 2}"><button aria-expanded="false" aria-controls="a${k}">${f.q}<span class="ic" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></button><div class="ans" id="a${k}" role="region"><div><p>${f.a}</p></div></div></div>`).join('');
-    faq.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const it = b.parentElement, o = !it.classList.contains('open'); it.classList.toggle('open', o); b.setAttribute('aria-expanded', o); });
+    const ic = ['<path d="M7 4h7a4 4 0 0 1 0 8H7m0-8v16M5 12h9M5 16h8"/>', '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>', '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/>', '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/>', '<path d="M12 3 5 6v5c0 4.4 3 8.2 7 9.5 4-1.3 7-5.1 7-9.5V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>', '<path d="M8 12.5 10.5 15l5-5M4 8l4-4 4 3 4-3 4 4-8 12Z"/>'];
+    faq.innerHTML = TM.faq.map((f, k) => `<div class="qa2${k === 0 ? ' open' : ''}">
+        <button aria-expanded="${k === 0}" aria-controls="a${k}"><i class="qa2-ic"><svg viewBox="0 0 24 24">${ic[k] || ic[0]}</svg></i><span class="qa2-n">0${k + 1}</span><span class="qa2-q">${f.q}</span><span class="qa2-pm" aria-hidden="true"></span></button>
+        <div class="ans" id="a${k}" role="region"><div><p>${f.a}</p></div></div></div>`).join('');
+    faq.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const it = b.parentElement, o = !it.classList.contains('open'); $$('.qa2', faq).forEach(x => { x.classList.remove('open'); x.querySelector('button').setAttribute('aria-expanded', false); }); it.classList.toggle('open', o); b.setAttribute('aria-expanded', o); });
+    const qs = ['Сколько стоит доставка в мой город?', 'Есть ли модель в наличии?', 'Можно счёт на юрлицо?', 'Сколько займёт монтаж?'];
+    $('#askChips').innerHTML = qs.map(q => `<a href="${TM.wa('Здравствуйте, Малика! ' + q)}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>${q}</a>`).join('');
   }
 
   /* final form: product shelf + segmented "what we insulate" */
