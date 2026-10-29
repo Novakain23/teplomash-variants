@@ -1192,3 +1192,19 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .show .kpis .kp b span{font:inherit;color:inherit;letter-spacing:inherit}
 .eb-flag{width:auto;height:auto;gap:2px;box-shadow:none;border-radius:0;overflow:visible}
 .eb-flag i{width:9px;height:9px;flex:none;border-radius:2px}
+
+/* round 18: tighter «how it works» */
+.inside{padding-block:64px}
+.sell{gap:32px;padding:30px 30px 30px 40px;border-radius:26px}
+.sell .kick{margin-bottom:10px}
+.sell .h2{font-size:clamp(28px,2.6vw,36px)}
+.sell .lead{font-size:16px;margin-top:10px}
+.sell-list{gap:6px;margin-top:16px}
+.sell-list li{grid-template-columns:24px 1fr;gap:10px}
+.sell-list i{width:24px;height:24px;border-radius:7px}
+.sell-list i svg{width:13px;height:13px}
+.sell-list b{font-size:15px}
+.sell-cta{margin-top:18px}
+.sell-cta .btn{--h:46px;padding:0 20px;font-size:15px}
+.demo2{aspect-ratio:1.55;border-radius:18px}
+@media (max-width:860px){.inside{padding-block:48px}.sell{padding:22px 16px}.demo2{aspect-ratio:1.15}}
