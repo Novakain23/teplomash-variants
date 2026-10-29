@@ -303,20 +303,27 @@
 
   /* PEOPLE: leaders with their area of responsibility, managers with a direct "write" button,
      reviews as a slow two-row marquee; a review that thanks someone by name shows that person */
-  const leads = $('#leads');
-  if (leads) {
+  const passes = $('#passes');
+  if (passes) {
     const T = TM.team, first = n => n.split(' ')[1] || n;
-    const focus = { 0: 'Условия для дилеров и крупных объектов', 1: 'Склад, логистика и доставка по РК', 2: 'Подбор под объект и расчёт стоимости' };
-    const praised = { 2: 'Малика', 5: 'Дамир' };
-    leads.innerHTML = T.slice(0, 3).map((t, k) => `<article class="ld rv d${k}">
-        <div class="ld-ph"><img src="${t.img}" alt="${t.name}" loading="lazy"></div>
-        <div class="ld-b"><span class="ld-role">${t.role}</span><h3>${t.name}</h3><p>${focus[k]}</p>${praised[k] ? '<span class="ld-pr"><svg><use href="#i-star"/></svg>Благодарят в отзывах</span>' : ''}</div>
-      </article>`).join('');
-    $('#mgrs').innerHTML = T.slice(3).map((t, k) => `<article class="mg rv d${k}">
-        <img src="${t.img}" alt="${t.name}" loading="lazy">
-        <div><b>${first(t.name)}</b><span>Подбор · счёт · доставка</span>${praised[k + 3] ? '<em><svg><use href="#i-star"/></svg>в отзывах</em>' : ''}</div>
-        <a class="mg-wa" href="${TM.wa('Здравствуйте, ' + first(t.name) + '! Нужна консультация по тепловой завесе.')}" target="_blank" rel="noopener" aria-label="Написать ${first(t.name)} в WhatsApp"><svg><use href="#i-wa"/></svg><span>Написать</span></a>
-      </article>`).join('');
+    const zone = ['Условия для дилеров и крупных объектов', 'Склад, логистика и доставка по РК', 'Подбор под объект и расчёт стоимости'];
+    const praised = { 2: 1, 5: 1 };
+    passes.innerHTML = T.map((t, k) => {
+      const lead = k < 3;
+      return `<article class="pass${lead ? ' lead' : ''} rv d${k % 4}">
+        <div class="pass-top"><img class="pass-logo" src="/img/logo.png" alt=""><span>${lead ? 'Руководство' : 'Отдел продаж'}</span></div>
+        <div class="pass-ph"><img src="${t.img}" alt="${t.name}" loading="lazy">${praised[k] ? '<em class="pass-star"><svg><use href="#i-star"/></svg>Хвалят в 2ГИС</em>' : ''}</div>
+        <div class="pass-b">
+          <h3>${lead ? t.name : first(t.name)}</h3>
+          <span class="pass-role">${t.role}</span>
+          ${lead ? `<p class="pass-zone"><small>Отвечает за</small>${zone[k]}</p>` : `<div class="pass-tags"><span>Подбор</span><span>Счёт</span><span>Доставка</span></div>`}
+          ${lead ? '' : `<a class="pass-wa" href="${TM.wa('Здравствуйте, ' + first(t.name) + '! Нужна консультация по тепловой завесе.')}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Написать ${first(t.name)}у</a>`}
+        </div>
+      </article>`;
+    }).join('');
+  }
+  if ($('#marq')) {
+    const T = TM.team, first = n => n.split(' ')[1] || n;
     const keys = [['Малик', 2], ['Дамир', 5]];
     const star = '<svg><use href="#i-star"/></svg>';
     const card = r => {

@@ -1208,3 +1208,43 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
 .sell-cta .btn{--h:46px;padding:0 20px;font-size:15px}
 .demo2{aspect-ratio:1.55;border-radius:18px}
 @media (max-width:860px){.inside{padding-block:48px}.sell{padding:22px 16px}.demo2{aspect-ratio:1.15}}
+
+/* round 19: team as staff passes */
+.skills{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.skills li{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;border-radius:999px;background:#fff;font-size:14.5px;font-weight:500;box-shadow:0 0 0 1px var(--line)}
+.skills svg{width:16px;height:16px;color:var(--heat)}
+.passes{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;margin-top:28px}
+.pass{grid-column:span 3;position:relative;display:flex;flex-direction:column;border-radius:24px;background:#fff;box-shadow:0 0 0 1px var(--line),0 20px 40px -34px rgba(58,38,20,.55);overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s}
+.pass.lead{grid-column:span 4}
+.pass:hover{transform:translateY(-5px) rotate(-.4deg);box-shadow:0 0 0 1.5px var(--amber),0 30px 60px -36px rgba(120,72,10,.6)}
+.pass::before{content:"";position:absolute;top:10px;left:50%;width:46px;height:7px;margin-left:-23px;border-radius:999px;background:var(--bg-2);box-shadow:inset 0 1px 2px rgba(58,38,20,.25);z-index:2}
+.pass-top{display:flex;justify-content:space-between;align-items:center;padding:24px 16px 10px}
+.pass-logo{height:22px;width:auto}
+.pass-top span{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--heat);padding:4px 8px;border-radius:999px;background:#FBF1DF}
+.pass-ph{position:relative;margin:0 12px;border-radius:16px;overflow:hidden;aspect-ratio:1/1;background:#E9DFD1}
+.pass.lead .pass-ph{aspect-ratio:4/3.4}
+.pass-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;filter:grayscale(.9) sepia(.28) contrast(1.05) brightness(1.03);transition:filter .6s,transform .8s var(--ease)}
+.pass:hover .pass-ph img{filter:none;transform:scale(1.03)}
+.pass-star{position:absolute;left:8px;bottom:8px;display:inline-flex;align-items:center;gap:5px;font-style:normal;font-size:12px;font-weight:500;padding:5px 10px;border-radius:999px;background:var(--amber);color:var(--ink)}
+.pass-star svg{width:12px;height:12px}
+.pass-b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.pass-b h3{font-size:19px;line-height:1.15}
+.pass.lead .pass-b h3{font-size:21px}
+.pass-role{font-size:13px;color:var(--ink-3)}
+.pass-zone{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--bg);font-size:14px;line-height:1.4;color:var(--ink)}
+.pass-zone small{display:block;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--heat);margin-bottom:2px}
+.pass-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pass-tags span{font-size:12px;font-weight:500;padding:4px 9px;border-radius:999px;background:var(--bg);color:var(--ink-2)}
+.pass-wa{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;height:42px;margin-top:14px;border-radius:12px;background:var(--brown);color:#fff;font-size:14px;font-weight:500;transition:background .2s}
+.pass-wa svg{width:17px;height:17px}
+.pass-wa:hover{background:#1F9D55}
+@media (max-width:1100px){.pass,.pass.lead{grid-column:span 6}}
+@media (max-width:860px){
+  .passes{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px calc(-1*var(--gut)) 0;padding:6px var(--gut) 10px;scrollbar-width:none}
+  .passes::-webkit-scrollbar{display:none}
+  .pass,.pass.lead{flex:0 0 72%;scroll-snap-align:start}
+  .skills li{font-size:13px;height:36px}
+}
+.pass-ph{aspect-ratio:4/3.5}
+.pass.lead .pass-ph{aspect-ratio:4/2.9}
+.pass-top{padding:22px 14px 8px}
