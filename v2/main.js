@@ -375,13 +375,21 @@
     faq.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const it = b.parentElement, o = !it.classList.contains('open'); it.classList.toggle('open', o); b.setAttribute('aria-expanded', o); });
   }
 
+  /* final form: product shelf + segmented "what we insulate" */
+  const shelf = $('#shelf2');
+  if (shelf) {
+    const upd = () => { const v = [...shelf.querySelectorAll('[aria-pressed=true]')].map(b => b.querySelector('b').textContent.replace(/\u00AD/g, '').toLowerCase()); $('#ffPick').textContent = v.length ? 'Интересует: ' + v.join(', ') : 'Отметьте товар слева'; };
+    shelf.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); upd(); });
+    $('#fPlSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('#fPlSeg button').forEach(x => x.setAttribute('aria-checked', x === b)); $('#fPl').value = b.textContent; });
+    upd();
+  }
   const form = $('#form');
   form && form.addEventListener('submit', e => {
     e.preventDefault();
     const d = $('#fTel').value.replace(/\D/g, '');
     if (d.length < 10) { form.classList.add('bad'); $('#fTel').focus(); return; }
     form.classList.remove('bad'); form.classList.add('done');
-    window.TMlead({ source: 'Форма «Подбор и цена за 15 минут»', name: $('#fName').value.trim().slice(0, 60), phone: $('#fTel').value.trim().slice(0, 24), answers: { 'Что утепляем': $('#fPl').value }, page: location.href });
+    window.TMlead({ source: 'Форма «Подбор и цена за 15 минут»', name: $('#fName').value.trim().slice(0, 60), phone: $('#fTel').value.trim().slice(0, 24), answers: { 'Что утепляем': $('#fPl').value, 'Интересует': [...document.querySelectorAll('#shelf2 [aria-pressed=true]')].map(b => b.dataset.v).join(', ') || 'не выбрано' }, page: location.href });
   });
 
   watch();
