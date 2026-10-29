@@ -755,3 +755,58 @@ footer.ftr{padding:0 0 28px;background:radial-gradient(60% 50% at 85% 0%,rgba(21
   .fd-hint{display:none}
   .fdomain{padding:18px 0 12px}
 }
+
+/* ===== round 7: compact chat quiz (brand colours) ===== */
+#series{padding-block:112px}
+.quiz{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.qz-intro .h2{margin-top:0}
+.qz-intro .lead{margin-top:16px}
+.qz-points{list-style:none;display:grid;gap:12px;margin-top:28px}
+.qz-points li{display:flex;align-items:center;gap:12px;font-size:16px}
+.qz-points i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--brown);color:var(--amber-2);flex:none}
+.qz-points svg{width:15px;height:15px}
+.wa{height:auto;border-radius:28px;background:#F1EADF;box-shadow:0 0 0 1px rgba(154,90,6,.14),0 40px 80px -50px rgba(120,72,10,.55)}
+.wa-head{background:var(--brown);padding:16px 18px;gap:14px}
+.wa-ava{position:relative;width:48px;height:48px;overflow:visible}
+.wa-ava img{width:38px}
+.wa-ava i{position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:#3BD16F;border:3px solid var(--brown)}
+.wa-who b{font-family:var(--fd);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.wa-who span{color:#D9C7AE}
+.wa-step{margin-left:auto;font-size:14px;font-weight:500;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;white-space:nowrap}
+.wa-body{min-height:300px;max-height:440px;padding:22px 20px 20px;gap:8px;background-color:#F1EADF;background-image:radial-gradient(rgba(120,90,50,.08) 1px,transparent 1.2px)}
+.wb{font-size:16px;padding:10px 14px 6px;border-radius:16px}
+.wb.them{border-top-left-radius:4px}
+.wb.me{background:#FBE7C2;border-top-right-radius:4px}
+.wt svg{color:#C9862A}
+.wa-choices{display:grid;gap:12px;margin-top:6px;animation:wbIn .35s var(--ease) both}
+.wa-hint{display:flex;justify-content:center;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:#5E4630}
+.wa-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wa-opts button{height:56px;border-radius:16px;background:#fff;color:var(--brown);font-family:var(--fd);font-weight:700;font-size:16.5px;box-shadow:inset 0 0 0 2px var(--brown),0 4px 0 rgba(58,38,20,.12);transition:background .2s,color .2s,transform .15s var(--ease),box-shadow .2s}
+.wa-opts button:hover{background:var(--amber);color:var(--ink);box-shadow:inset 0 0 0 2px var(--amber),0 4px 0 rgba(120,72,10,.25);transform:translateY(-1px)}
+.wa-opts button:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px var(--amber),0 1px 0 rgba(120,72,10,.25)}
+.wa-choices:has(.wa-hint) .wa-opts button:first-child{animation:optPulse 2.2s ease-in-out 1s 2}
+@keyframes optPulse{50%{box-shadow:inset 0 0 0 2px var(--brown),0 0 0 6px rgba(216,144,30,.25)}}
+.wa-opts.one{grid-template-columns:1fr auto;align-items:center}
+.wa-go{justify-content:center;height:56px;border-radius:16px;font-family:var(--fd);font-weight:700}
+.wa-again{height:56px;padding:0 18px;border-radius:16px;color:var(--ink-2);font-size:15px}
+.wa-again:hover{color:var(--ink)}
+.wa-input{padding:12px 14px;background:#E9E0D2;width:auto}
+.wa-input button{background:var(--brown)}
+.wa-input button:hover{background:#523720}
+.wa-input input:focus{box-shadow:inset 0 0 0 1.5px var(--amber)}
+@media (max-width:1100px){.quiz{grid-template-columns:1fr;gap:32px}}
+@media (max-width:860px){
+  #series{padding-block:72px}
+  .wa{border-radius:22px}
+  .wa-head{padding:12px 14px;gap:10px}
+  .wa-ava{width:42px;height:42px}.wa-ava img{width:32px}
+  .wa-who b{font-size:16px}
+  .wa-who span{font-size:12px}
+  .wa-step{font-size:12.5px;padding:6px 10px}
+  .wa-body{padding:16px 12px;max-height:420px;min-height:260px}
+  .wa-opts{gap:8px}
+  .wa-opts button{height:52px;font-size:15px;border-radius:14px}
+  .wa-opts.one{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.wa-choices,.wa-opts button{animation:none!important}}
+@media (max-width:860px){.wa-hint{font-size:13px}}

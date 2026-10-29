@@ -106,29 +106,29 @@
 
   <section class="sec" id="series">
     <div class="wrap">
-      <div class="sh center"><span class="kick"><b>02</b>Подбор</span><h2 class="h2 rv">Подбор за 3 ответа</h2><p class="lead rv d1">Ответьте в чате на три вопроса — завеса справа соберётся под ваш вход, а менеджер сразу получит ваши ответы и контакты.</p></div>
-      <div class="quiz rv" id="quiz">
-        <div class="wa" id="wa">
+      <div class="quiz" id="quiz">
+        <div class="qz-intro">
+          <span class="kick"><b>02</b>Подбор</span>
+          <h2 class="h2 rv">Подбор за 3 ответа</h2>
+          <p class="lead rv d1">Ответьте на три вопроса прямо в чате — подскажем серию и модель, а менеджер получит ваши ответы и перезвонит с ценой.</p>
+          <ul class="qz-points rv d2">
+            <li><i><svg><use href="#i-check"/></svg></i>Меньше минуты, без лишних полей</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Сразу видно, какая серия подойдёт</li>
+            <li><i><svg><use href="#i-check"/></svg></i>Расчёт бесплатный и ни к чему не обязывает</li>
+          </ul>
+        </div>
+        <div class="wa rv d1" id="wa">
           <div class="wa-head">
-            <span class="wa-ava"><img src="/img/logo.png" alt=""></span>
-            <div class="wa-who"><b>Jamal Group · подбор завесы</b><span id="waStatus">онлайн</span></div>
-            <button class="wa-restart" id="waRestart" type="button" hidden>Начать заново</button>
+            <span class="wa-ava"><img src="/img/logo.png" alt=""><i></i></span>
+            <div class="wa-who"><b>Jamal Group</b><span id="waStatus">онлайн · отвечает сразу</span></div>
+            <span class="wa-step" id="waStep">Вопрос 1 из 3</span>
           </div>
           <div class="wa-body" id="waBody" aria-live="polite"></div>
-          <div class="wa-dock">
-            <div class="wa-replies" id="waReplies"></div>
-            <form class="wa-input" id="waForm" hidden novalidate>
-              <input id="waInput" autocomplete="off" aria-label="Ваш ответ">
-              <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
-              <button type="submit" aria-label="Отправить"><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7-8-1Z" fill="currentColor"/></svg></button>
-            </form>
-          </div>
-        </div>
-        <div class="qz-live">
-          <span class="qz-tag" id="qzTag">Ваша завеса</span>
-          <canvas id="qzModel" aria-hidden="true"></canvas>
-          <div class="qz-door" id="qzDoor" aria-hidden="true"><span id="qzH">?</span></div>
-          <dl class="qz-sum" id="qzSum"><div><dt>Вход</dt><dd id="sA">—</dd></div><div><dt>Высота</dt><dd id="sB">—</dd></div><div><dt>Нагрев</dt><dd id="sC">—</dd></div></dl>
+          <form class="wa-input" id="waForm" hidden novalidate>
+            <input id="waInput" autocomplete="off" aria-label="Ваш ответ">
+            <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+            <button type="submit" aria-label="Отправить"><svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-7-8-1Z" fill="currentColor"/></svg></button>
+          </form>
         </div>
       </div>
     </div>

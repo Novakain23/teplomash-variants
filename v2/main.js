@@ -122,92 +122,86 @@
     if (!reduce) new IntersectionObserver(es => { if (es[0].isIntersecting && auto === null) auto = setInterval(() => pick((cur + 1) % 2), 5000); }, { threshold: .5 }).observe(m2);
   }
 
-  /* QUIZ as a WhatsApp-style chat; the curtain on the right assembles as the client answers */
+  /* QUIZ as a compact WhatsApp-style chat with big answer buttons */
   const wa = $('#wa');
   if (wa) {
-    const qz = $('#quiz'), body = $('#waBody'), replies = $('#waReplies'), form = $('#waForm'), input = $('#waInput');
+    const body = $('#waBody'), form = $('#waForm'), input = $('#waInput'), stepEl = $('#waStep');
     const L = { door: 'Одна дверь', double: 'Двойные двери', gate: 'Ворота', 1: 'до 2,5 м', 2: '2,5–3,5 м', 3: 'выше 3,5 м', e: 'электрический', w: 'водяной', n: 'без нагрева' };
     const Q = [
-      { k: 'a', q: 'Какой вход утепляем?', o: [['door', 'Одна дверь'], ['double', 'Двойные двери'], ['gate', 'Ворота склада или цеха']] },
-      { k: 'b', q: 'Какая высота проёма?', o: [[1, 'До 2,5 м'], [2, '2,5–3,5 м'], [3, 'Выше 3,5 м']] },
-      { k: 'c', q: 'Как завеса будет греть?', o: [['e', 'От электросети'], ['w', 'От отопления здания'], ['n', 'Без нагрева, только барьер']] }
+      { k: 'a', q: 'Здравствуйте! Подберём тепловую завесу за 3 ответа. Какой вход утепляем?', o: [['door', 'Одна дверь'], ['double', 'Двойные двери'], ['gate', 'Ворота склада'], ['many', 'Несколько входов']] },
+      { k: 'b', q: 'Какая высота проёма?', o: [[1, 'До 2,5 м'], [2, '2,5–3,5 м'], [3, 'Выше 3,5 м'], [0, 'Не знаю точно']] },
+      { k: 'c', q: 'И последнее: как завеса будет греть?', o: [['e', 'От электросети'], ['w', 'От отопления'], ['n', 'Без нагрева'], ['x', 'Посоветуйте']] }
     ];
+    Object.assign(L, { many: 'Несколько входов', 0: 'не знаю точно', x: 'нужна консультация' });
     let ans = {}, step = 0, busy = false, started = false;
-    const qm = $('#qzModel');
-    const c3q = window.Curtain3D && Curtain3D(qm, { yaw: -.45, pitch: .14, heat: 0, light: 'studio', zoom: .9, len: .62, sway: false });
-    const zq = len => Math.min(1.3, qm.clientWidth * .8 / (1.651 * len * Math.max(1, qm.clientHeight)));
-    const live = () => {
-      const len = ans.a === 'gate' ? 1.05 : ans.a === 'double' ? .8 : .62;
-      c3q && c3q.target({ len, zoom: zq(len), heat: ans.c === 'e' ? 1 : ans.c === 'w' ? .65 : 0 });
-      $('#sA').textContent = ans.a ? L[ans.a] : '—'; $('#sB').textContent = ans.b ? L[ans.b] : '—'; $('#sC').textContent = ans.c ? L[ans.c] : '—';
-      $('#qzDoor').style.setProperty('--w', len * 62 + '%'); $('#qzH').textContent = ans.b ? 'проём ' + L[ans.b] : 'высота?';
-      qz.dataset.heat = ans.c || '';
-    };
-    new ResizeObserver(live).observe(qm);
     const time = () => new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const scroll = () => body.scrollTo({ top: body.scrollHeight, behavior: reduce ? 'auto' : 'smooth' });
-    const bubble = (html, me) => { const d = document.createElement('div'); d.className = 'wb ' + (me ? 'me' : 'them'); d.innerHTML = `<p>${html}</p><span class="wt">${time()}${me ? '<svg viewBox="0 0 18 12"><path d="M1 6.5 4.5 10 11 2M7 10l1 0L16 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' : ''}</span>`; body.appendChild(d); scroll(); return d; };
-    const say = async (lines) => {
+    const tick = '<svg viewBox="0 0 18 12"><path d="M1 6.5 4.5 10 11 2M7 10l1 0L16 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+    const bubble = (html, me) => { const d = document.createElement('div'); d.className = 'wb ' + (me ? 'me' : 'them'); d.innerHTML = `<p>${html}</p><span class="wt">${time()}${me ? tick : ''}</span>`; body.appendChild(d); scroll(); };
+    const say = async lines => {
       busy = true;
       for (const l of lines) {
         $('#waStatus').textContent = 'печатает…';
         const t = document.createElement('div'); t.className = 'wb them typing'; t.innerHTML = '<i></i><i></i><i></i>'; body.appendChild(t); scroll();
-        await new Promise(r => setTimeout(r, reduce ? 50 : Math.min(1300, 450 + l.length * 12)));
+        await new Promise(r => setTimeout(r, reduce ? 50 : Math.min(1100, 420 + l.length * 9)));
         t.remove(); bubble(l);
-        $('#waStatus').textContent = 'онлайн';
       }
+      $('#waStatus').textContent = 'онлайн · отвечает сразу';
       busy = false;
     };
-    const chips = list => { replies.innerHTML = list.map(([v, t]) => `<button type="button" data-v="${v}">${t}</button>`).join(''); replies.hidden = false; form.hidden = true; };
-    const ask = (ph, type) => { replies.hidden = true; form.hidden = false; input.value = ''; input.placeholder = ph; input.type = type; input.inputMode = type === 'tel' ? 'tel' : 'text'; input.autocomplete = type === 'tel' ? 'tel' : 'name'; setTimeout(() => input.focus({ preventScroll: true }), 50); };
+    const choices = (list, hint) => {
+      const box = document.createElement('div'); box.className = 'wa-choices';
+      box.innerHTML = (hint ? '<p class="wa-hint"><span aria-hidden="true">👇</span>Нажмите на ответ — чат работает по-настоящему</p>' : '') + `<div class="wa-opts">${list.map(([v, t]) => `<button type="button" data-v="${v}">${t}</button>`).join('')}</div>`;
+      body.appendChild(box); scroll();
+    };
+    const ask = (ph, type) => { form.hidden = false; input.value = ''; input.placeholder = ph; input.type = type; input.inputMode = type === 'tel' ? 'tel' : 'text'; input.autocomplete = type === 'tel' ? 'tel' : 'name'; setTimeout(() => input.focus({ preventScroll: true }), 50); };
     const result = () => {
-      const ser = ans.b === 3 || ans.a === 'gate' ? 400 : (ans.a === 'door' && ans.b === 1) ? 200 : 300;
+      const high = ans.b === 3 || ans.a === 'gate';
+      const ser = high ? 400 : (ans.a === 'door' && ans.b === 1) ? 200 : 300;
       const code = ser === 200 ? 'КЭВ-6П2011E' : ser === 300 ? (ans.a === 'double' ? 'КЭВ-18П3041E' : 'КЭВ-12П3041E') : (ans.b === 3 ? 'КЭВ-24П4042E' : 'КЭВ-12П4050E');
       return { ser, code, p: TM.products.find(x => x.id === code), water: ans.c === 'w' };
     };
     const next = async () => {
-      if (step < 3) { await say([Q[step].q]); chips(Q[step].o); return; }
+      if (step < 3) { stepEl.textContent = `Вопрос ${step + 1} из 3`; await say([Q[step].q]); choices(Q[step].o, step === 0); return; }
       if (step === 3) {
-        const r = result();
-        await say([`Отлично! Вам подойдёт <b>серия ${r.ser}</b>${r.water ? ' в водяном исполнении' : `, ориентир — <b>${r.code}</b>, ${r.p.kw} кВт`}.`, 'Как к вам обращаться?']);
+        const r = result(); stepEl.textContent = 'Почти готово';
+        const vague = ans.a === 'many' || ans.b === 0;
+        await say([vague ? 'Понял! Тут лучше посчитать вместе с инженером — он уточнит размеры и подберёт комплект. Как к вам обращаться?' : `Вам подойдёт <b>серия ${r.ser}</b>${r.water ? ' в водяном исполнении' : ` — например, <b>${r.code}</b>, ${r.p.kw} кВт`}. Куда прислать точный подбор и цену? Напишите ваше имя.`]);
         ask('Ваше имя', 'text'); return;
       }
-      if (step === 4) { await say([`Приятно познакомиться, ${esc(ans.name)}! Оставьте номер — инженер пришлёт точную модель и цену.`]); ask('+7 ___ ___ __ __', 'tel'); return; }
+      if (step === 4) { await say([`Спасибо, ${esc(ans.name)}! И номер телефона — менеджер свяжется в WhatsApp или позвонит.`]); ask('+7 ___ ___ __ __', 'tel'); return; }
       if (step === 5) {
-        replies.hidden = true; form.hidden = true;
+        form.hidden = true;
         const r = result();
-        const lead = { source: 'Подбор за 3 ответа (главная)', name: ans.name, phone: ans.phone, answers: { 'Вход': L[ans.a], 'Высота проёма': L[ans.b], 'Нагрев': L[ans.c] }, result: `Серия ${r.ser}${r.water ? ' (водяная)' : ', ' + r.code}`, page: location.href };
+        const lead = { source: 'Подбор за 3 ответа (главная)', name: ans.name, phone: ans.phone, answers: { 'Вход': L[ans.a], 'Высота проёма': L[ans.b], 'Нагрев': L[ans.c] }, result: (ans.a === 'many' || ans.b === 0) ? 'нужен расчёт инженера' : `Серия ${r.ser}${r.water ? ' (водяная)' : ', ' + r.code}`, page: location.href };
         const ok = await window.TMlead(lead);
         const text = `Здравствуйте! Я ${ans.name}, ${ans.phone}. Подбор на сайте: ${L[ans.a].toLowerCase()}, высота ${L[ans.b]}, нагрев ${L[ans.c]}. Ориентир: ${lead.result}. Посчитайте, пожалуйста, цену.`;
-        await say(ok
-          ? [`Спасибо, ${esc(ans.name)}! Ответы и номер уже у менеджера — свяжемся в течение 15 минут в рабочее время.`]
-          : [`Спасибо, ${esc(ans.name)}! Отправьте ответы менеджеру в WhatsApp — текст уже готов, останется нажать «Отправить».`]);
-        replies.innerHTML = `<a class="wa-go" href="${TM.wa(text)}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>${ok ? 'Написать в WhatsApp' : 'Отправить в WhatsApp'}</a>`;
-        replies.hidden = false; qz.classList.add('done'); $('#waRestart').hidden = false;
+        stepEl.textContent = 'Готово';
+        await say([ok ? 'Готово! Ответы уже у менеджера — свяжемся в течение 15 минут в рабочее время.' : 'Готово! Отправьте ответы менеджеру в WhatsApp — текст уже собран, останется нажать «Отправить».']);
+        const box = document.createElement('div'); box.className = 'wa-choices';
+        box.innerHTML = `<div class="wa-opts one"><a class="wa-go" href="${TM.wa(text)}" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>${ok ? 'Написать менеджеру в WhatsApp' : 'Отправить в WhatsApp'}</a><button type="button" class="wa-again">Пройти заново</button></div>`;
+        body.appendChild(box); scroll();
       }
     };
-    replies.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b || busy) return;
+    body.addEventListener('click', e => {
+      if (e.target.closest('.wa-again')) { ans = {}; step = 0; body.innerHTML = ''; next(); return; }
+      const b = e.target.closest('.wa-opts button'); if (!b || busy || step > 2) return;
       const q = Q[step]; const v = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v;
-      ans[q.k] = v; bubble(esc(b.textContent), true); replies.innerHTML = ''; live(); step++; next();
+      ans[q.k] = v; b.closest('.wa-choices').remove(); bubble(esc(b.textContent), true); step++; next();
     });
     form.addEventListener('submit', e => {
-      e.preventDefault(); if (busy) return;
-      if (form.querySelector('.hp').value) return;      // bot trap
+      e.preventDefault(); if (busy || form.querySelector('.hp').value) return;
       const v = input.value.trim();
       if (step === 3) { if (v.length < 2) { input.focus(); return; } ans.name = v.slice(0, 60); }
       if (step === 4) {
-        const d = v.replace(/\D/g, '');
-        if (d.length < 10) { input.classList.add('bad'); input.placeholder = 'Например, +7 701 123 45 67'; input.value = ''; input.focus(); return; }
+        if (v.replace(/\D/g, '').length < 10) { input.classList.add('bad'); input.value = ''; input.placeholder = 'Например, +7 701 123 45 67'; input.focus(); return; }
         input.classList.remove('bad'); ans.phone = v.slice(0, 24);
       }
-      bubble(esc(v), true); step++; next();
+      form.hidden = true; bubble(esc(v), true); step++; next();
     });
-    $('#waRestart').addEventListener('click', () => { ans = {}; step = 0; body.innerHTML = ''; replies.innerHTML = ''; qz.classList.remove('done'); $('#waRestart').hidden = true; live(); say(['Давайте подберём заново.']).then(next); });
-    const start = () => { if (started) return; started = true; say(['Здравствуйте! Подберём тепловую завесу под ваш вход — всего 3 вопроса.']).then(next); };
-    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { start(); o.disconnect(); } }, { threshold: .35 }).observe(wa);
-    live();
+    const start = () => { if (started) return; started = true; next(); };
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { start(); o.disconnect(); } }, { threshold: .3 }).observe(wa);
   }
 
   /* decorative unit in the final CTA */
