@@ -242,32 +242,36 @@
     fill('curtains');
   }
 
-  /* PEOPLE: review carousel linked to the team */
-  const crew = $('#crew');
-  if (crew) {
-    const keys = ['Марлен', 'Бекжан', 'Малик', 'Сұлтан|Султан', 'Елжас', 'Дамир', 'Мадияр'];
-    crew.innerHTML = TM.team.map((t, k) => `<figure class="mate rv d${k % 4}" data-k="${k}"><div class="mate-ph"><img src="${t.img}" alt="${t.name}" loading="lazy"></div><figcaption><b>${t.name.split(' ')[1] || t.name}</b><span>${t.role}</span></figcaption><em class="mate-flag">В этом отзыве</em></figure>`).join('');
-    const R = TM.reviews.filter(r => r.text.length < 300);
-    let i = 0, t;
-    const mates = $$('.mate', crew);
-    const show = (k, first) => {
-      i = (k + R.length) % R.length; const r = R[i];
-      const put = () => {
-        $('#rvText').textContent = r.text; $('#rvName').textContent = r.name; $('#rvDate').textContent = r.date;
-        $('#rvIni').textContent = r.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-        $('#rvCount').textContent = (i + 1) + ' / ' + R.length;
-        const hit = keys.findIndex(kk => new RegExp(kk).test(r.text));
-        mates.forEach((mm, n) => mm.classList.toggle('hit', n === hit));
-        if (hit >= 0 && crew.scrollWidth > crew.clientWidth + 4) crew.scrollTo({ left: mates[hit].offsetLeft - crew.offsetLeft - 18, behavior: first ? 'auto' : 'smooth' });
-        const th = $('#rvThanks'); th.hidden = hit < 0;
-        if (hit >= 0) { $('#rvThImg').src = TM.team[hit].img; $('#rvThName').textContent = TM.team[hit].name.split(' ')[1] + ', ' + TM.team[hit].role.toLowerCase(); }
-        $('.rv-stage').classList.remove('out');
-      };
-      if (first) put(); else { $('.rv-stage').classList.add('out'); setTimeout(put, 260); }
-      clearTimeout(t); if (!reduce) t = setTimeout(() => show(i + 1), 8000);
+  /* PEOPLE: leaders with their area of responsibility, managers with a direct "write" button,
+     reviews as a slow two-row marquee; a review that thanks someone by name shows that person */
+  const leads = $('#leads');
+  if (leads) {
+    const T = TM.team, first = n => n.split(' ')[1] || n;
+    const focus = { 0: 'Условия для дилеров и крупных объектов', 1: 'Склад, логистика и доставка по РК', 2: 'Подбор под объект и расчёт стоимости' };
+    const praised = { 2: 'Малика', 5: 'Дамир' };
+    leads.innerHTML = T.slice(0, 3).map((t, k) => `<article class="ld rv d${k}">
+        <div class="ld-ph"><img src="${t.img}" alt="${t.name}" loading="lazy"></div>
+        <div class="ld-b"><span class="ld-role">${t.role}</span><h3>${t.name}</h3><p>${focus[k]}</p>${praised[k] ? '<span class="ld-pr"><svg><use href="#i-star"/></svg>Благодарят в отзывах</span>' : ''}</div>
+      </article>`).join('');
+    $('#mgrs').innerHTML = T.slice(3).map((t, k) => `<article class="mg rv d${k}">
+        <img src="${t.img}" alt="${t.name}" loading="lazy">
+        <div><b>${first(t.name)}</b><span>Подбор · счёт · доставка</span>${praised[k + 3] ? '<em><svg><use href="#i-star"/></svg>в отзывах</em>' : ''}</div>
+        <a class="mg-wa" href="${TM.wa('Здравствуйте, ' + first(t.name) + '! Нужна консультация по тепловой завесе.')}" target="_blank" rel="noopener" aria-label="Написать ${first(t.name)} в WhatsApp"><svg><use href="#i-wa"/></svg><span>Написать</span></a>
+      </article>`).join('');
+    const keys = [['Малик', 2], ['Дамир', 5]];
+    const star = '<svg><use href="#i-star"/></svg>';
+    const card = r => {
+      const hit = keys.find(([k]) => r.text.includes(k));
+      const nick = /\d|^[a-z]/.test(r.name);
+      const nm = nick ? 'Клиент Jamal Group' : r.name;
+      const ini = nick ? 'JG' : r.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+      return `<figure class="rq2${hit ? ' hit' : ''}"><div class="rq2-top"><span class="stars">${star.repeat(5)}</span><span class="rq2-src">2ГИС · ${r.date}</span></div>
+        <blockquote>${r.text}</blockquote>
+        <figcaption><i>${ini}</i><b>${nm}</b>${hit ? `<span class="rq2-thx"><img src="${T[hit[1]].img}" alt="">${first(T[hit[1]].name)}</span>` : ''}</figcaption></figure>`;
     };
-    $('#rvNext').onclick = () => show(i + 1); $('#rvPrev').onclick = () => show(i - 1);
-    show(0, true);
+    const R = TM.reviews, half = Math.ceil(R.length / 2);
+    const row = (list, dir) => `<div class="marq-row ${dir}"><div class="marq-track">${list.map(card).join('')}${list.map(card).join('')}</div></div>`;
+    $('#marq').innerHTML = row(R.slice(0, half), 'l') + row(R.slice(half), 'r');
   }
 
   /* FOOTER: the domain under an air curtain — a warm vertical stream sweeps across the letters
